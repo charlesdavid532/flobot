@@ -69,11 +69,11 @@ class Constants(object):
 
 	@staticmethod
 	def getAWSBucketURL():
-		return "https://s3.ap-south-1.amazonaws.com/flobot/"
+		return "https://s3.amazonaws.com/flobot/"
 
 	@staticmethod
 	def getBlueBotURL():
-		return "https://s3.ap-south-1.amazonaws.com/flobot/blue-bot.png"
+		return "https://s3.amazonaws.com/flobot/blue-bot.png"
 
 	@staticmethod
 	def getAWSBucketName():
