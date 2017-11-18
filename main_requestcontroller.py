@@ -39,6 +39,9 @@ class MainRequestController(object):
 		elif self.requestData.get("result").get("action") == "show.offers":
 			showOffersObj = ShowOffers(self.requestData, self.mongo)
 			self.responseData = showOffersObj.getJSONResponse()
+		elif self.requestData.get("result").get("action") == "selected.offer":
+			selectedOfferObj = SelectedOffer(self.requestData, self.mongo)
+			self.responseData = selectedOfferObj.getJSONResponse()
 		elif self.requestData.get("result").get("action") == "product.chart":
 			chartController = ChartController(self.requestData, self.mongo)
 			self.responseData = chartController.getChartResponse()
