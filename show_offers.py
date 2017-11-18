@@ -17,7 +17,7 @@ class ShowOffers(object):
 		myCarousel = Carousel(simpleResponse)
 
 		for coupon in couponList:
-			myCarousel.addCarouselItem(coupon["_id"]["$oid"], coupon["offerTitle"], 
+			myCarousel.addCarouselItem(coupon["_id"], coupon["offerTitle"], 
 				coupon["offerTitle"], coupon["offerText"], Constants.getAWSCouponsURL() + coupon["offerImage"], 
 				coupon["offerText"])
 		
