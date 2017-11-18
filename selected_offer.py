@@ -14,8 +14,13 @@ class SelectedOffer(object):
 		if optionVal == False:
 			optionVal = "Could not find option chosen"
 
+		couponList = self.mongo.db.couponList
+
+		selectedCouponItem = couponList.find({'_id': ObjectId(optionVal)})
+
+
 		simpleResponse = []
-		simpleResponse.append("Your code is::____. Please provide this to the cashier before placing the order")
+		simpleResponse.append("Your code is " + selectedCouponItem['offerCode'] + "Please provide this to the cashier before placing the order")
 		mySuggestionChipResponse = SuggestionChip(simpleResponse)
 
 		mySuggestionChipResponse.addSugTitles(["Share on Facebook"])
