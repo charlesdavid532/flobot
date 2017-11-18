@@ -10,7 +10,7 @@ class ShowOffers(object):
 
 
 	def getJSONResponse(self):
-		couponList = self.mongo.db.couponList
+		couponList = self.mongo.db.couponList.find()
 
 		simpleResponse = []
 		simpleResponse.append("These are the offers we have for you. Click on any one of them to view the code")
