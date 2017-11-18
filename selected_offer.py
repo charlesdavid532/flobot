@@ -17,11 +17,14 @@ class SelectedOffer(object):
 
 		couponList = self.mongo.db.couponList
 
-		selectedCouponItem = couponList.find({'_id': ObjectId(optionVal)})
+		selectedCouponCode = ""
+
+		for s in couponList.find({'_id': ObjectId(optionVal)}):
+			selectedCouponCode = s['offerCode']		
 
 
 		simpleResponse = []
-		simpleResponse.append("Your code is " + selectedCouponItem['offerCode'] + "Please provide this to the cashier before placing the order")
+		simpleResponse.append("Your code is " + selectedCouponCode + "Please provide this to the cashier before placing the order")
 		mySuggestionChipResponse = SuggestionChip(simpleResponse)
 
 		mySuggestionChipResponse.addSugTitles(["Share on Facebook"])
