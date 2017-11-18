@@ -1,5 +1,6 @@
 from selected_list_item import SelectedListItem
 from suggestion_chip import SuggestionChip
+from bson.objectid import ObjectId
 class SelectedOffer(object):
 	"""docstring for SelectedOffer"""
 	def __init__(self, requestData, mongo):
