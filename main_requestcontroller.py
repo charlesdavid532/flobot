@@ -2,6 +2,7 @@ from welcome import WelcomeResponse
 from constants import Constants
 from free_delivery_controller import FreeDeliveryController
 from selected_list_item import SelectedListItem
+from show_offers import ShowOffers
 class MainRequestController(object):
 	"""Handles the request from api.ai"""
 	def __init__(self, data, mongo):
@@ -34,7 +35,10 @@ class MainRequestController(object):
 			freeDelControllerObj = FreeDeliveryController(self.requestData, self.mongo)
 			freeDelControllerObj.setIsPermissionGiven(True)
 			compareLocationData = freeDelControllerObj.compareDeliveryLocation()
-			self.responseData = self.makeContextWebhookResult(compareLocationData["speech"], [])  
+			self.responseData = self.makeContextWebhookResult(compareLocationData["speech"], [])
+		elif self.requestData.get("result").get("action") == "show.offers":
+			showOffersObj = ShowOffers(self.requestData, self.mongo)
+			self.responseData = showOffersObj.getJSONResponse()
 		elif self.requestData.get("result").get("action") == "product.chart":
 			chartController = ChartController(self.requestData, self.mongo)
 			self.responseData = chartController.getChartResponse()

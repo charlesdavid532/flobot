@@ -72,6 +72,10 @@ class Constants(object):
 		return "https://s3.amazonaws.com/flobot/"
 
 	@staticmethod
+	def getAWSCouponsURL():
+		return "https://s3.amazonaws.com/flobot/coupon-images/"
+
+	@staticmethod
 	def getBlueBotURL():
 		return "https://s3.amazonaws.com/flobot/blue-bot.png"
 
