@@ -3,6 +3,7 @@ from suggestion_chip import SuggestionChip
 from bson.objectid import ObjectId
 from context_response import ContextResponse
 from context_responseList import ContextResponseList
+from constants import Constants
 class SelectedOffer(object):
 	"""docstring for SelectedOffer"""
 	def __init__(self, requestData, mongo):
