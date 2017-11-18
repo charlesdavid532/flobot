@@ -68,6 +68,10 @@ class Constants(object):
 		return "detailed_chart"
 
 	@staticmethod
+	def getStrShareOfferCodeFBContext():
+		return "share_offer_fb"
+
+	@staticmethod
 	def getAWSBucketURL():
 		return "https://s3.amazonaws.com/flobot/"
 

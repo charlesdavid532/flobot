@@ -8,9 +8,13 @@ class SuggestionChip(object):
 		self.simpleResponse = simpleResponse
 		self.expectedUserResponse = True
 		self.sugTitles = None
+		self.outputContext = None
 
 	def addSugTitles(self, sugTitles):
 		self.sugTitles = sugTitles
+
+	def addOutputContext(self, outputContext):
+		self.outputContext = outputContext
 
 	def getSuggestionChipResponse(self):
 		suggestionChipResponse = {}
@@ -54,6 +58,16 @@ class SuggestionChip(object):
 			richResponseDict["suggestions"] = mySuggestionList.getSuggestionListResponse()
 
 		#googleDict["systemIntent"] = self.getInteriorCarouselResponse()
+
+		#Adding the context
+		#Adding context
+		if self.outputContext == None or self.outputContext == "":
+			outputContext = []
+		else:
+			outputContext = self.outputContext
+			print("The length of context list in card response is:"+str(len(outputContext)))
+
+		suggestionChipResponse["contextOut"] = outputContext
 
 		return suggestionChipResponse
 		

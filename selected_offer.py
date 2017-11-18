@@ -1,6 +1,8 @@
 from selected_list_item import SelectedListItem
 from suggestion_chip import SuggestionChip
 from bson.objectid import ObjectId
+from context_response import ContextResponse
+from context_responseList import ContextResponseList
 class SelectedOffer(object):
 	"""docstring for SelectedOffer"""
 	def __init__(self, requestData, mongo):
@@ -29,6 +31,19 @@ class SelectedOffer(object):
 
 		mySuggestionChipResponse.addSugTitles(["Share on Facebook"])
 
+		contextResponseMainList = self.createShareOfferCodeFBContext(optionVal)
+		mySuggestionChipResponse.addOutputContext(contextResponseMainList.getContextJSONResponse())
 
-		return mySuggestionChipResponse.getSuggestionChipResponse()  
+
+		return mySuggestionChipResponse.getSuggestionChipResponse()
+
+	def createShareOfferCodeFBContext(self, offerId):
+		# Creating the share coupon code FB context object
+		shareOfferCodeFBContextResponseObject = ContextResponse(Constants.getStrShareOfferCodeFBContext(), 1)
+		shareOfferCodeFBContextResponseObject.addFeature("context-offer-id", offerId)
+
+		contextResponseMainList = ContextResponseList()
+		contextResponseMainList.addContext(shareOfferCodeFBContextResponseObject)
+
+		return contextResponseMainList
 		
