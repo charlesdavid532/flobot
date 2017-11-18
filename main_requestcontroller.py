@@ -3,6 +3,7 @@ from constants import Constants
 from free_delivery_controller import FreeDeliveryController
 from selected_list_item import SelectedListItem
 from show_offers import ShowOffers
+from selected_offer import SelectedOffer
 class MainRequestController(object):
 	"""Handles the request from api.ai"""
 	def __init__(self, data, mongo):
