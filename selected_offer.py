@@ -24,7 +24,7 @@ class SelectedOffer(object):
 
 
 		simpleResponse = []
-		simpleResponse.append("Your code is " + selectedCouponCode + "Please provide this to the cashier before placing the order")
+		simpleResponse.append("Your code is " + selectedCouponCode + ". Please provide this to the cashier before placing the order")
 		mySuggestionChipResponse = SuggestionChip(simpleResponse)
 
 		mySuggestionChipResponse.addSugTitles(["Share on Facebook"])
