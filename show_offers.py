@@ -16,10 +16,10 @@ class ShowOffers(object):
 		simpleResponse.append("These are the offers we have for you. Click on any one of them to view the code")
 		myCarousel = Carousel(simpleResponse)
 
-		for i in range(0, len(couponList)):
-			myCarousel.addCarouselItem(couponList[i]["_id"]["$oid"], couponList[i]["offerTitle"], 
-				couponList[i]["offerTitle"], couponList[i]["offerText"], Constants.getAWSCouponsURL() + couponList[i]["offerImage"], 
-				couponList[i]["offerText"])
+		for coupon in couponList:
+			myCarousel.addCarouselItem(coupon["_id"]["$oid"], coupon["offerTitle"], 
+				coupon["offerTitle"], coupon["offerText"], Constants.getAWSCouponsURL() + coupon["offerImage"], 
+				coupon["offerText"])
 		
 
 		return myCarousel.getCarouselResponse()
