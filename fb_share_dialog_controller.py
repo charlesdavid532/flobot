@@ -10,7 +10,7 @@ class FBShareDialogController(object):
 		fbShareDialogObj.setDisplayType('popup')
 		fbShareDialogObj.setCaption('An example caption')
 		fbShareDialogObj.setLink('https://developers.facebook.com/docs/')
-		fbShareDialogObj.setRedirectURI('https://developers.facebook.com/tools/explorer')
+		fbShareDialogObj.setRedirectURI('https://developers.facebook.com/')
 
 		return fbShareDialogObj.showDialog()
 		
