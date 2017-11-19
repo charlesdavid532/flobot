@@ -815,7 +815,7 @@ def signup():
 @app.route('/facebook/share')
 def shareFBCoupon():
     fbShareDialogControllerObj = FBShareDialogController()
-    return fbShareDialogControllerObj.getJSONResponse()
+    return redirect(fbShareDialogControllerObj.getJSONResponse())
 
 # Handling HTTP POST when APIAI sends us a payload of messages that have
 # have been sent to our bot. 
