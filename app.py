@@ -812,7 +812,7 @@ def signup():
     return render_template('signup.html', form=form)
 
 
-@app.route('/facebook/share-coupon', methods=['GET'])
+@app.route('/facebook/share')
 def shareFBCoupon():
     fbShareDialogControllerObj = FBShareDialogController()
     return fbShareDialogControllerObj.getJSONResponse()

@@ -31,7 +31,7 @@ class SelectedOffer(object):
 		mySuggestionChipResponse = SuggestionChip(simpleResponse)
 
 		#mySuggestionChipResponse.addSugTitles(["Share on Facebook"])
-		mySuggestionChipResponse.addLinkOutSuggestion("Share on Facebook", "https://flobots.herokuapp.com/authorize/facebook")
+		mySuggestionChipResponse.addLinkOutSuggestion("Share on Facebook", "https://flobots.herokuapp.com/facebook/share")
 
 		contextResponseMainList = self.createShareOfferCodeFBContext(optionVal)
 		mySuggestionChipResponse.addOutputContext(contextResponseMainList.getContextJSONResponse())
