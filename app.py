@@ -33,6 +33,7 @@ import secrets
 from facepy import GraphAPI
 import pyperclip
 from custom_list import List
+from fb_share_dialog_controller import FBShareDialogController
 
 try:
     import apiai
@@ -811,7 +812,10 @@ def signup():
     return render_template('signup.html', form=form)
 
 
-
+@app.route('/facebook/share-coupon', methods=['GET'])
+def shareFBCoupon():
+    fbShareDialogControllerObj = FBShareDialogController()
+    return fbShareDialogControllerObj.getJSONResponse()
 
 # Handling HTTP POST when APIAI sends us a payload of messages that have
 # have been sent to our bot. 

@@ -30,7 +30,8 @@ class SelectedOffer(object):
 		simpleResponse.append("Your code is " + selectedCouponCode + ". Please provide this to the cashier before placing the order")
 		mySuggestionChipResponse = SuggestionChip(simpleResponse)
 
-		mySuggestionChipResponse.addSugTitles(["Share on Facebook"])
+		#mySuggestionChipResponse.addSugTitles(["Share on Facebook"])
+		mySuggestionChipResponse.addLinkOutSuggestion("Share on Facebook", "https://flobots.herokuapp.com/facebook/share-coupon")
 
 		contextResponseMainList = self.createShareOfferCodeFBContext(optionVal)
 		mySuggestionChipResponse.addOutputContext(contextResponseMainList.getContextJSONResponse())
