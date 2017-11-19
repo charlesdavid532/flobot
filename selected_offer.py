@@ -4,6 +4,7 @@ from bson.objectid import ObjectId
 from context_response import ContextResponse
 from context_responseList import ContextResponseList
 from constants import Constants
+from fb_share_dialog_controller import FBShareDialogController
 class SelectedOffer(object):
 	"""docstring for SelectedOffer"""
 	def __init__(self, requestData, mongo):
@@ -31,7 +32,9 @@ class SelectedOffer(object):
 		mySuggestionChipResponse = SuggestionChip(simpleResponse)
 
 		#mySuggestionChipResponse.addSugTitles(["Share on Facebook"])
-		mySuggestionChipResponse.addLinkOutSuggestion("Share on Facebook", "https://flobots.herokuapp.com/authorize/facebook")
+		#mySuggestionChipResponse.addLinkOutSuggestion("Share on Facebook", "https://flobots.herokuapp.com/authorize/facebook")
+		fbShareDialogControllerObj = FBShareDialogController()
+    	mySuggestionChipResponse.addLinkOutSuggestion("Share on Facebook", fbShareDialogControllerObj.getJSONResponse())
 
 		contextResponseMainList = self.createShareOfferCodeFBContext(optionVal)
 		mySuggestionChipResponse.addOutputContext(contextResponseMainList.getContextJSONResponse())

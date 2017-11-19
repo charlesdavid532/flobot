@@ -351,10 +351,6 @@ class FacebookSignIn(OAuthSignIn):
     def authorize(self):
 
         #TODO:::: Check if this user already has a long lived user access token in the db and it has not expired
-        print("inside facebook authorize")
-        fbShareDialogControllerObj = FBShareDialogController()
-        return redirect(fbShareDialogControllerObj.getJSONResponse())
-        '''
         fbAccessTokenObj = self.hasFBAccessToken()
         if fbAccessTokenObj == False:
             print("In FB authorize the request arguments are:"+ str(request.args))
@@ -377,7 +373,7 @@ class FacebookSignIn(OAuthSignIn):
             print("Posting message to facebook from authorize")
             self.postMessageToFB(dbAccessToken, dbProfileID, "Posting random stuff from fb")
             return redirect(self.getFBUserFeedURL())
-        '''
+        
 
     def callback(self):
         def decode_json(payload):
