@@ -9,9 +9,15 @@ class SuggestionChip(object):
 		self.expectedUserResponse = True
 		self.sugTitles = None
 		self.outputContext = None
+		self.linkOutSuggestion = None
 
 	def addSugTitles(self, sugTitles):
 		self.sugTitles = sugTitles
+
+	def addLinkOutSuggestion(self, destinationName, url):
+		self.linkOutSuggestion = {}
+		self.linkOutSuggestion["destinationName"] = destinationName
+		self.linkOutSuggestion["url"] = url
 
 	def addOutputContext(self, outputContext):
 		self.outputContext = outputContext
@@ -56,6 +62,12 @@ class SuggestionChip(object):
 		if self.sugTitles != "" and self.sugTitles != None:
 			mySuggestionList = SuggestionList(self.sugTitles)
 			richResponseDict["suggestions"] = mySuggestionList.getSuggestionListResponse()
+
+
+		#Adding link out suggestion
+		if self.linkOutSuggestion != "" and self.linkOutSuggestion != None:
+			richResponseDict["linkOutSuggestion"] = self.linkOutSuggestion
+
 
 		#googleDict["systemIntent"] = self.getInteriorCarouselResponse()
 
