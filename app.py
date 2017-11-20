@@ -819,6 +819,7 @@ def shareFBCoupon():
     print("the selectedCouponCode is:"+ str(request.args['selectedCouponCode']))
     #print("The coupon code is::" + session['selectedCouponCode'])
     fbShareDialogControllerObj = FBShareDialogController()
+    fbShareDialogControllerObj.setCouponCode(request.args['selectedCouponCode'])
     return redirect(fbShareDialogControllerObj.getJSONResponse())
 
 # Handling HTTP POST when APIAI sends us a payload of messages that have
