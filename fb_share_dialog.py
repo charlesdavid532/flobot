@@ -31,7 +31,7 @@ class FBShareDialog(object):
 		        'caption':self.caption, 'link': self.link, 'redirect_uri': self.redirectURI  }
 		'''
 		paramVars = {'app_id': self.appId, 'display':self.displayType,
-		        'caption':self.caption, 'link': self.link  }
+		        'caption':self.caption, 'link': self.link, 'message':'A very default message', 'name': 'Default name'  }
 		'''
 		paramVars = {'app_id': self.appId, 'display':self.displayType,
 		        'caption':self.caption, 'redirect_uri': self.redirectURI  }
