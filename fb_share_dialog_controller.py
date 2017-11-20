@@ -11,7 +11,7 @@ class FBShareDialogController(object):
 		#fbShareDialogObj.setCaption('An example caption')
 		fbShareDialogObj.setLink('https://developers.facebook.com/docs/')
 		#fbShareDialogObj.setRedirectURI('https://www.facebook.com/')
-		fbShareDialogObj.setHashtag(['#Coupons', '#second'])
+		fbShareDialogObj.setHashtag('#Coupons')
 		#fbShareDialogObj.setQuote('This is a coupon quote')
 
 		return fbShareDialogObj.showDialog()
