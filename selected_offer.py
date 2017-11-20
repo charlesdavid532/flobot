@@ -5,6 +5,7 @@ from context_response import ContextResponse
 from context_responseList import ContextResponseList
 from constants import Constants
 from fb_share_dialog_controller import FBShareDialogController
+import urllib
 class SelectedOffer(object):
 	"""docstring for SelectedOffer"""
 	def __init__(self, requestData, mongo):
