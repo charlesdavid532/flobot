@@ -7,12 +7,12 @@ class FBShareDialogController(object):
 
 	def getJSONResponse(self):
 		fbShareDialogObj = FBShareDialog(os.environ['FACEBOOK_LOGIN_CLIENT_ID'])
-		fbShareDialogObj.setDialogAsPage()
+		#fbShareDialogObj.setDialogAsPage()
 		#fbShareDialogObj.setCaption('An example caption')
 		fbShareDialogObj.setLink('https://developers.facebook.com/docs/')
-		fbShareDialogObj.setRedirectURI('https://www.facebook.com/')
-		fbShareDialogObj.setHashtag('#Coupons')
-		fbShareDialogObj.setQuote('This is a coupon quote')
+		#fbShareDialogObj.setRedirectURI('https://www.facebook.com/')
+		fbShareDialogObj.setHashtag(['#Coupons', '#second'])
+		#fbShareDialogObj.setQuote('This is a coupon quote')
 
 		return fbShareDialogObj.showDialog()
 		
