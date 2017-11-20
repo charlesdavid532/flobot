@@ -31,7 +31,7 @@ class FBShareDialog(object):
 		        'caption':self.caption, 'link': self.link, 'redirect_uri': self.redirectURI  }
 		'''
 		paramVars = {'app_id': self.appId, 'display':self.displayType,
-		        'caption':self.caption  }
+		        'caption':self.caption, 'redirect_uri': self.redirectURI  }
 
 		FBShareDialogCallbackURI = 'https://facebook.com/dialog/feed' + '?' + urllib.parse.urlencode(paramVars)
 
