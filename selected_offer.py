@@ -1,4 +1,3 @@
-from flask import session
 from selected_list_item import SelectedListItem
 from suggestion_chip import SuggestionChip
 from bson.objectid import ObjectId
@@ -31,9 +30,15 @@ class SelectedOffer(object):
 		simpleResponse = []
 		simpleResponse.append("Your code is " + selectedCouponCode + ". Please provide this to the cashier before placing the order")
 		mySuggestionChipResponse = SuggestionChip(simpleResponse)
-		session['selectedCouponCode'] = selectedCouponCode
+		#session['selectedCouponCode'] = selectedCouponCode
 		#mySuggestionChipResponse.addSugTitles(["Share on Facebook"])
+		paramVars = {}
+		paramVars['selectedCouponCode'] = selectedCouponCode
+		FBShareDialogURI = "https://flobots.herokuapp.com/facebook/share" + '?' + urllib.parse.urlencode(paramVars)
+		'''
 		mySuggestionChipResponse.addLinkOutSuggestion("Share on Facebook", "https://flobots.herokuapp.com/facebook/share")
+		'''
+		mySuggestionChipResponse.addLinkOutSuggestion("Share on Facebook", FBShareDialogURI)
 		#fbShareDialogControllerObj = FBShareDialogController()
 		#mySuggestionChipResponse.addLinkOutSuggestion("Share on Facebook", fbShareDialogControllerObj.getJSONResponse())
 

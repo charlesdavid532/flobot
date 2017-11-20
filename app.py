@@ -815,7 +815,9 @@ def signup():
 @app.route('/facebook/share')
 def shareFBCoupon():
     print("Inside share fb coupon")
-    print("The coupon code is::" + session['selectedCouponCode'])
+    print("the request arguments are:"+ str(request.args))
+    print("the selectedCouponCode is:"+ str(request.args['selectedCouponCode']))
+    #print("The coupon code is::" + session['selectedCouponCode'])
     fbShareDialogControllerObj = FBShareDialogController()
     return redirect(fbShareDialogControllerObj.getJSONResponse())
 
