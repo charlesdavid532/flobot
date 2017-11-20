@@ -40,7 +40,7 @@ class FBShareDialog(object):
 		'''
 
 		paramVars = {'app_id': self.appId, 'display':self.displayType,
-		        'hashtag': '#Charles', 'href': self.link  }
+		        'hashtag': '#Charles', 'href': self.link, 'quote': 'A default quote'  }
 
 		FBShareDialogCallbackURI = 'https://facebook.com/dialog/share' + '?' + urllib.parse.urlencode(paramVars)
 
