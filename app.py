@@ -688,6 +688,7 @@ def oauth_callback(provider):
         login_user(user_obj)
         # TODO:::: Add email to session['google_email']
         session['google_email'] = email
+        session['google_name'] = username
         #return redirect(url_for('index'))
         gCallbackURI = oauth.getCallbackURI(email, getStrFutureDateAndTime(10))
         return redirect(gCallbackURI)

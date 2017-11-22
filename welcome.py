@@ -1,6 +1,7 @@
 from card import Card
 from constants import Constants
 from suggestion_chip import SuggestionChip
+from flask import session
 class WelcomeResponse(object):
 	"""Handles the welcome request"""
 	def __init__(self, requestData):
@@ -13,7 +14,7 @@ class WelcomeResponse(object):
 		
 
 		simpleResponse = []
-		simpleResponse.append("Hi abcd! I am Flobot")
+		simpleResponse.append("Hi " + session['google_name'] + "! I am Flobot")
 		simpleResponse.append("What would you like to know?")
 
 		sugList = []
