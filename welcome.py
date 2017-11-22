@@ -1,5 +1,6 @@
 from card import Card
 from constants import Constants
+from suggestion_chip import SuggestionChip
 class WelcomeResponse(object):
 	"""Handles the welcome request"""
 	def __init__(self, requestData):
@@ -12,11 +13,17 @@ class WelcomeResponse(object):
 		
 
 		simpleResponse = []
-		simpleResponse.append("Hi, I am Dr. Dashboard - a sales tracker. The suggestions below are some of the things I can do! At any time if you want to leave the application say Bye Dr. Dashboard! What can I do for you?")
+		simpleResponse.append("Hi abcd! I am Flobot")
+		simpleResponse.append("What would you like to know?")
+
 		sugList = []
-		sugList.append("Show digital employees")
-		sugList.append("Bye doctor dashboard")
-		title = "Dr. Dashboard"
+		sugList.append("Offers")
+		sugList.append("Free delivery")
+		welcomeSuggestionChipObj = SuggestionChip(simpleResponse)
+		welcomeSuggestionChipObj.addSugTitles(sugList)
+		return welcomeSuggestionChipObj.getSuggestionChipResponse()
+		'''
+		title = "Flobot"
 		formattedText = "Phillips bot a.k.a. Dr. Dashboard is designed for voice enabled financial reporting"
 		imgURL = Constants.getBlueBotURL()
 		imgAccText = "Default accessibility text"
@@ -29,4 +36,5 @@ class WelcomeResponse(object):
 		
 
 		return myCard.getCardResponse()
+		'''
 		
