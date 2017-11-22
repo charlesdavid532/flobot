@@ -887,6 +887,8 @@ def handle_message():
 
     
     mainRequestControllerObj = MainRequestController(data, mongo)
+    #To be depreciated
+    mainRequestControllerObj.setUsername(session['google_name'])
     #res = processRequest(data)
     res = mainRequestControllerObj.processRequest()
     

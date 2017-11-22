@@ -8,13 +8,15 @@ class WelcomeResponse(object):
 		super(WelcomeResponse, self).__init__()
 		self.requestData = requestData
 
+	def setUsername(self, username):
+		self.username = username
 
 	def getWelcomeResponse(self):
 		print ("Inside show welcome intent")
 		
 
 		simpleResponse = []
-		simpleResponse.append("Hi " + session['google_name'] + "! I am Flobot")
+		simpleResponse.append("Hi " + self.username + "! I am Flobot")
 		simpleResponse.append("What would you like to know?")
 
 		sugList = []
