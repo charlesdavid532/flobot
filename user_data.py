@@ -19,7 +19,7 @@ class UserDataModel(object):
 
 	def setDefaultPermissions(self, email):
 		userdatacollection = self.mongo.db.userdata
-        user = userdatacollection.find_one({'email' : email})
+		user = userdatacollection.find_one({'email' : email})
 
 		userpermissionscollection = self.mongo.db.userpermissions
 		userpermissionscollection.insert({'userId': user['_id'], 
@@ -30,23 +30,23 @@ class UserDataModel(object):
 
 	def updateLogs(self):
 		userdatacollection = self.mongo.db.userdata
-        user = userdatacollection.find_one({'email' : self.email})
+		user = userdatacollection.find_one({'email' : self.email})
 
-        userlogs = self.mongo.db.userlogs
-        currentUserlog = userlogs.find_one({'userId': user['_id']})
+		userlogs = self.mongo.db.userlogs
+		currentUserlog = userlogs.find_one({'userId': user['_id']})
 
-        if currentUserlog:
-        	userlogs.update(
-	        	{'userId' : currentUserlog['userId']},
-	        	{
-	        		$inc: { 'views': 1 },
+		if currentUserlog:
+			userlogs.update(
+		    	{'userId' : currentUserlog['userId']},
+		    	{
+		    		$inc: { 'views': 1 },
 		        	$set: {
 		        		"lastLogin": DateUtils.getStrCurrentDateAndTime()
 		        	}
-	        	}
-        	)
-        else:
-        	userlogs.insert({'userId': user['_id'], 
+		    	}
+			)
+		else:
+			userlogs.insert({'userId': user['_id'], 
 			'createdOn' : DateUtils.getStrCurrentDateAndTime(), 
 			'lastLogin' : DateUtils.getStrCurrentDateAndTime(),
 			'views': 1})
@@ -64,11 +64,11 @@ class UserDataModel(object):
 	#Utility functions
 	def checkIfGoogleEmailExists(self, email):
 		userdatacollection = self.mongo.db.userdata
-        user = userdatacollection.find_one({'email' : email})
-        if user:
-        	return True
-        else:
-        	return False
+		user = userdatacollection.find_one({'email' : email})
+		if user:
+			return True
+		else:
+			return False
 
 	def insertGoogleData(self, email, username):
 		userdatacollection = self.mongo.db.userdata
@@ -77,24 +77,24 @@ class UserDataModel(object):
 
 	def insertFBData(self, email, profileId, fbUsername, fbEmail):
 		userdatacollection = self.mongo.db.userdata
-        userdatacollection.update(
-        	{'email' : email},
-        	{
-	        	$set: {
-	        		"fbprofileId": profileId,
-	        		"fbUsername": fbUsername
-	        		"fbemail": fbEmail
-	        	}
-        	}
-        )
+		userdatacollection.update(
+			{'email' : email},
+			{
+		    	$set: {
+		    		"fbprofileId": profileId,
+		    		"fbUsername": fbUsername
+		    		"fbemail": fbEmail
+		    	}
+			}
+		)
 
     def getGoogleEmailFromAccessToken(self, accessToken):
 		tokens = self.mongo.db.tokens
 		existing_token = tokens.find_one({'_id' : accessToken})
 		if existing_token:
-        	return existing_token['userId']
-        else:
-        	return False
+			return existing_token['userId']
+		else:
+			return False
 		
     #Getter-Setter Functions
 	def getUsername(self):
@@ -102,10 +102,10 @@ class UserDataModel(object):
 			return self.username
 		else:
 			userdatacollection = self.mongo.db.userdata
-	        user = userdatacollection.find_one({'email' : self.email})
-	        if user:
-	        	self.username = user['username']
-	        	return self.username
-	        else:
-	        	self.username = None
-	        	return False
+		    user = userdatacollection.find_one({'email' : self.email})
+		    if user:
+		    	self.username = user['username']
+		    	return self.username
+		    else:
+		    	self.username = None
+		    	return False
