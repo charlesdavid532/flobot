@@ -899,10 +899,10 @@ def handle_message():
     userDataObj.setAccessToken(data.get('originalRequest').get('data').get('user').get('accessToken'))
 
     #Updating logs only if the user has logged in - otherwise he is continuing in the same session and it is a single view
-    if session['access_token_set'] != True:
+    if session.get('access_token_set') != True:
         print("Updating logs from app")
         userDataObj.updateLogs()
-        
+
     session['access_token_set'] = True
     mainRequestControllerObj = MainRequestController(data, mongo, userDataObj)
     res = mainRequestControllerObj.processRequest()
