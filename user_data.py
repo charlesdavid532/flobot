@@ -58,7 +58,7 @@ class UserDataModel(object):
 		accessTokenEmail = self.getGoogleEmailFromAccessToken(accessToken) 
 		if accessTokenEmail != False:
 			self.email = accessTokenEmail
-			self.updateLogs()
+			#self.updateLogs()
 
 
 	#Utility functions
