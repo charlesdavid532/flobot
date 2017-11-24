@@ -631,7 +631,7 @@ def oauth_authorize(provider):
         return redirect(url_for('index'))
     '''
     print("In authorize for google")
-    print("Value of access_token_set in authorize::" + str(session.get('access_token_set')))
+    #print("Value of access_token_set in authorize::" + str(session.get('access_token_set')))
     oauth = OAuthSignIn.get_provider(provider)
     return oauth.authorize()
 
@@ -898,7 +898,7 @@ def handle_message():
     #Creating userdata object and setting the access token
     userDataObj = UserDataModel(mongo)
     userDataObj.setAccessToken(data.get('originalRequest').get('data').get('user').get('accessToken'))
-
+    '''
     #Updating logs only if the user has logged in - otherwise he is continuing in the same session and it is a single view
     print("Value of access_token_set in webhook::" + str(session.get('access_token_set')))
     if session.get('access_token_set') != True:
@@ -906,6 +906,7 @@ def handle_message():
         userDataObj.updateLogs()
 
     session['access_token_set'] = True
+    '''
     mainRequestControllerObj = MainRequestController(data, mongo, userDataObj)
     res = mainRequestControllerObj.processRequest()
     

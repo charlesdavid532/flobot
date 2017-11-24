@@ -65,6 +65,7 @@ class MainRequestController(object):
 			#self.responseData = generateEmailController(self.requestData.get("result"))
 		elif self.requestData.get("result").get("action") == "welcome.intent":
 			welcomeResponseObj = WelcomeResponse(self.requestData)
+			self.userDataObj.updateLogs()
 			welcomeResponseObj.setUserData(self.userDataObj)
 			self.responseData = welcomeResponseObj.getWelcomeResponse()
 		elif self.requestData.get("result").get("action") == "showAllUsers":
