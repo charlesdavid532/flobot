@@ -2,7 +2,7 @@ from date_utils import DateUtils
 class UserDataModel(object):
 	"""docstring for UserData"""
 	def __init__(self, mongo):
-		super(UserData, self).__init__()
+		super(UserDataModel, self).__init__()
 		self.mongo = mongo
 		self.accessToken = None
 		self.email = None
