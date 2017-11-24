@@ -88,7 +88,7 @@ class UserDataModel(object):
 			}
 		)
 
-    def getGoogleEmailFromAccessToken(self, accessToken):
+	def getGoogleEmailFromAccessToken(self, accessToken):
 		tokens = self.mongo.db.tokens
 		existing_token = tokens.find_one({'_id' : accessToken})
 		if existing_token:
@@ -96,7 +96,7 @@ class UserDataModel(object):
 		else:
 			return False
 		
-    #Getter-Setter Functions
+	#Getter-Setter Functions
 	def getUsername(self):
 		if self.username != None and self.username != '':
 			return self.username
