@@ -82,7 +82,7 @@ class UserDataModel(object):
 			{
 		    	'$set': {
 		    		"fbprofileId": profileId,
-		    		"fbUsername": fbUsername
+		    		"fbUsername": fbUsername,
 		    		"fbemail": fbEmail
 		    	}
 			}
