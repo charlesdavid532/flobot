@@ -39,8 +39,8 @@ class UserDataModel(object):
 			userlogs.update(
 		    	{'userId' : currentUserlog['userId']},
 		    	{
-		    		$inc: { 'views': 1 },
-		        	$set: {
+		    		'$inc': { 'views': int(1) },
+		        	'$set': {
 		        		"lastLogin": DateUtils.getStrCurrentDateAndTime()
 		        	}
 		    	}
@@ -80,7 +80,7 @@ class UserDataModel(object):
 		userdatacollection.update(
 			{'email' : email},
 			{
-		    	$set: {
+		    	'$set': {
 		    		"fbprofileId": profileId,
 		    		"fbUsername": fbUsername
 		    		"fbemail": fbEmail
