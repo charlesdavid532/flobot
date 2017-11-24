@@ -102,10 +102,10 @@ class UserDataModel(object):
 			return self.username
 		else:
 			userdatacollection = self.mongo.db.userdata
-		    user = userdatacollection.find_one({'email' : self.email})
-		    if user:
-		    	self.username = user['username']
-		    	return self.username
-		    else:
-		    	self.username = None
-		    	return False
+			user = userdatacollection.find_one({'email' : self.email})
+			if user:
+				self.username = user['username']
+				return self.username
+			else:
+				self.username = None
+				return False
