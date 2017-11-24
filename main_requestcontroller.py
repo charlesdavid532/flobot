@@ -64,7 +64,6 @@ class MainRequestController(object):
 			#self.responseData = generateEmailController(self.requestData.get("result"))
 		elif self.requestData.get("result").get("action") == "welcome.intent":
 			welcomeResponseObj = WelcomeResponse(self.requestData)
-			welcomeResponseObj.setUsername(self.username)
 			self.responseData = welcomeResponseObj.getWelcomeResponse()
 		elif self.requestData.get("result").get("action") == "showAllUsers":
 			self.responseData = makeListOfAllUsers(self.requestData)
@@ -101,8 +100,6 @@ class MainRequestController(object):
 		return self.responseData
 
 
-	def setUsername(self, username):
-		self.username = username
 	'''
 	This is a very temp function. It is used to just create a sample response in JSON format
 	'''
