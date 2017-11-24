@@ -7,13 +7,17 @@ class WelcomeResponse(object):
 	def __init__(self, requestData):
 		super(WelcomeResponse, self).__init__()
 		self.requestData = requestData
+		self.userDataObj = None
+
+	def setUserData(self, userDataObj):
+		self.userDataObj = userDataObj
 
 	def getWelcomeResponse(self):
 		print ("Inside show welcome intent")
 		
 
 		simpleResponse = []
-		simpleResponse.append("Hi " + "abcd" + "! I am Flobot")
+		simpleResponse.append("Hi " + self.userDataObj.getUsername() + "! I am Flobot")
 		simpleResponse.append("What would you like to know?")
 
 		sugList = []

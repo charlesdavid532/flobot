@@ -640,12 +640,19 @@ def oauth_callback(provider):
         return redirect(url_for('index'))
     '''
     print("In callback for google")
+
+    #Creating user data object for inserting userdata like google info and fb info into db
+    userdataobj = UserDataModel(mongo)
+
     oauth = OAuthSignIn.get_provider(provider)
     if provider == "facebook":
         myId, username, email = oauth.callback()
         print("the id is:"+myId)
         print("the username is:"+username)
         print("the email is:"+email)
+
+        userdataobj.addFBData(session['google_email'], myId, username, email)
+
         gCallbackURI = oauth.getCallbackURI(email, getStrFutureDateAndTime(10))
         return redirect(gCallbackURI)
     else:
@@ -689,6 +696,7 @@ def oauth_callback(provider):
         # TODO:::: Add email to session['google_email']
         session['google_email'] = email
         session['google_name'] = username
+        userdataobj.checkAndInsertGoogleData(email, username)
         #return redirect(url_for('index'))
         gCallbackURI = oauth.getCallbackURI(email, getStrFutureDateAndTime(10))
         return redirect(gCallbackURI)
@@ -885,8 +893,11 @@ def handle_message():
     dbGoogleEmail = getGoogleEmailFromDB(data)
     session['google_email'] = dbGoogleEmail
 
+    #Creating userdata object and setting the access token
+    userDataObj = UserDataModel(mongo)
+    userDataObj.setAccessToken(data.get('originalRequest').get('data').get('user').get('accessToken'))
     
-    mainRequestControllerObj = MainRequestController(data, mongo)
+    mainRequestControllerObj = MainRequestController(data, mongo, userDataObj)
     res = mainRequestControllerObj.processRequest()
     
     #Copying to clipboard
