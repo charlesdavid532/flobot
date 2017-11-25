@@ -34,6 +34,7 @@ from facepy import GraphAPI
 import pyperclip
 from custom_list import List
 from fb_share_dialog_controller import FBShareDialogController
+from user_data import UserDataModel
 
 try:
     import apiai
@@ -630,6 +631,7 @@ def oauth_authorize(provider):
         return redirect(url_for('index'))
     '''
     print("In authorize for google")
+    #print("Value of access_token_set in authorize::" + str(session.get('access_token_set')))
     oauth = OAuthSignIn.get_provider(provider)
     return oauth.authorize()
 
@@ -640,12 +642,19 @@ def oauth_callback(provider):
         return redirect(url_for('index'))
     '''
     print("In callback for google")
+
+    #Creating user data object for inserting userdata like google info and fb info into db
+    userdataobj = UserDataModel(mongo)
+
     oauth = OAuthSignIn.get_provider(provider)
     if provider == "facebook":
         myId, username, email = oauth.callback()
         print("the id is:"+myId)
         print("the username is:"+username)
         print("the email is:"+email)
+
+        userdataobj.addFBData(session['google_email'], myId, username, email)
+
         gCallbackURI = oauth.getCallbackURI(email, getStrFutureDateAndTime(10))
         return redirect(gCallbackURI)
     else:
@@ -689,6 +698,7 @@ def oauth_callback(provider):
         # TODO:::: Add email to session['google_email']
         session['google_email'] = email
         session['google_name'] = username
+        userdataobj.checkAndInsertGoogleData(email, username)
         #return redirect(url_for('index'))
         gCallbackURI = oauth.getCallbackURI(email, getStrFutureDateAndTime(10))
         return redirect(gCallbackURI)
@@ -885,8 +895,19 @@ def handle_message():
     dbGoogleEmail = getGoogleEmailFromDB(data)
     session['google_email'] = dbGoogleEmail
 
-    
-    mainRequestControllerObj = MainRequestController(data, mongo)
+    #Creating userdata object and setting the access token
+    userDataObj = UserDataModel(mongo)
+    userDataObj.setAccessToken(data.get('originalRequest').get('data').get('user').get('accessToken'))
+    '''
+    #Updating logs only if the user has logged in - otherwise he is continuing in the same session and it is a single view
+    print("Value of access_token_set in webhook::" + str(session.get('access_token_set')))
+    if session.get('access_token_set') != True:
+        print("Updating logs from app")
+        userDataObj.updateLogs()
+
+    session['access_token_set'] = True
+    '''
+    mainRequestControllerObj = MainRequestController(data, mongo, userDataObj)
     res = mainRequestControllerObj.processRequest()
     
     #Copying to clipboard
