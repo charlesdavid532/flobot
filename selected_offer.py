@@ -43,6 +43,10 @@ class SelectedOffer(object):
 		#fbShareDialogControllerObj = FBShareDialogController()
 		#mySuggestionChipResponse.addLinkOutSuggestion("Share on Facebook", fbShareDialogControllerObj.getJSONResponse())
 
+		sugList = []
+		sugList.append('Daily Offers')
+		mySuggestionChipResponse.addSugTitles(sugList)
+
 		contextResponseMainList = self.createShareOfferCodeFBContext(optionVal)
 		mySuggestionChipResponse.addOutputContext(contextResponseMainList.getContextJSONResponse())
 
