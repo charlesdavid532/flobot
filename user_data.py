@@ -7,11 +7,17 @@ class UserDataModel(object):
 		self.accessToken = None
 		self.email = None
 		self.username = None
+		self.isFbUserLoggedIn = False
 
 	def checkAndInsertGoogleData(self, email, username):
 		if self.checkIfGoogleEmailExists(email) == False:
 			self.insertGoogleData(email, username)
 			self.setDefaultPermissions(email)
+
+	def checkAndInsertFacebookData(self, psid, profileId, fbUsername, fbEmail):
+		if self.checkIfFacebookPSIDExists(psid) == False:
+			self.insertFacebookData(psid, profileId, fbUsername, fbEmail)
+			self.setDefaultFacebookPermissions(psid)
 
 	def addFBData(self, email, profileId, fbUsername, fbEmail):
 		self.insertFBData(email, profileId, fbUsername, fbEmail)
@@ -22,6 +28,16 @@ class UserDataModel(object):
 		user = userdatacollection.find_one({'email' : email})
 
 		userpermissionscollection = self.mongo.db.userpermissions
+		userpermissionscollection.insert({'userId': user['_id'], 
+			'locationPermissionGranted' : False, 
+			'geolocation' : '',
+			'offerSubscribed': False})
+
+	def setDefaultFacebookPermissions(self, psid):
+		userdatacollection = self.mongo.db.fbuserdata
+		user = userdatacollection.find_one({'psid' : psid})
+
+		userpermissionscollection = self.mongo.db.fbuserpermissions
 		userpermissionscollection.insert({'userId': user['_id'], 
 			'locationPermissionGranted' : False, 
 			'geolocation' : '',
@@ -51,6 +67,28 @@ class UserDataModel(object):
 			'lastLogin' : DateUtils.getStrCurrentDateAndTime(),
 			'views': 1})
 
+	def updateFacebookLogs(self, psid):
+		userdatacollection = self.mongo.db.fbuserdata
+		user = userdatacollection.find_one({'psid' : psid})
+
+		userlogs = self.mongo.db.fbuserlogs
+		currentUserlog = userlogs.find_one({'userId': user['_id']})
+
+		if currentUserlog:
+			userlogs.update(
+		    	{'userId' : currentUserlog['userId']},
+		    	{
+		    		'$inc': { 'views': int(1) },
+		        	'$set': {
+		        		"lastLogin": DateUtils.getStrCurrentDateAndTime()
+		        	}
+		    	}
+			)
+		else:
+			userlogs.insert({'userId': user['_id'], 
+			'createdOn' : DateUtils.getStrCurrentDateAndTime(), 
+			'lastLogin' : DateUtils.getStrCurrentDateAndTime(),
+			'views': 1})
 
 
 	def setAccessToken(self, accessToken):
@@ -74,6 +112,19 @@ class UserDataModel(object):
 		userdatacollection = self.mongo.db.userdata
 		userdatacollection.insert({'email' : email, 'username' : username})
 
+
+	def checkIfFacebookPSIDExists(self, psid):
+		userdatacollection = self.mongo.db.fbuserdata
+		user = userdatacollection.find_one({'psid' : psid})
+		if user:
+			return True
+		else:
+			return False
+
+	def insertFacebookData(self, psid, profileId, fbUsername, fbEmail):
+		userdatacollection = self.mongo.db.fbuserdata
+		userdatacollection.insert({'email' : fbEmail, 'username' : fbUsername,
+									'psid': psid, 'profileId': profileId})
 
 	def insertFBData(self, email, profileId, fbUsername, fbEmail):
 		userdatacollection = self.mongo.db.userdata
@@ -109,3 +160,15 @@ class UserDataModel(object):
 			else:
 				self.username = None
 				return False
+
+
+	def hasFBUserLoggedIn(self, psid):
+		print("in hasFBUserLoggedIn::" + str(self.isFbUserLoggedIn))
+		if self.isFbUserLoggedIn != True:
+			print("in checkIfFacebookPSIDExists::" + str(self.isFbUserLoggedIn))
+			if self.checkIfFacebookPSIDExists(psid) == False:
+				self.isFbUserLoggedIn = False
+			else:
+				self.isFbUserLoggedIn = True
+			return self.isFbUserLoggedIn
+		return True
