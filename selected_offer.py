@@ -63,7 +63,7 @@ class SelectedOffer(object):
 		#This is meant only for facebook
 		if self.source == Constants.getStrFacebook():
 			if self.userDataObj.hasFBUserLoggedIn(self.requestData.get("originalRequest").get("data").get("sender").get("id")) != True:
-				mySuggestionChipResponse.addLoginBtn("https://phillipsbot.herokuapp.com/authorize/facebook")
+				mySuggestionChipResponse.addLoginBtn("https://flobots.herokuapp.com/authorize/facebook")
 
 		return mySuggestionChipResponse.getSuggestionChipResponse()
 
