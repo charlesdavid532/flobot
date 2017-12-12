@@ -12,10 +12,19 @@ class SelectedOffer(object):
 		super(SelectedOffer, self).__init__()
 		self.requestData = requestData
 		self.mongo = mongo
+		self.userDataObj = None
+		self.source = None
+
+	def setSource(self, source):
+		self.source = source
+
+	def setUserData(self, userDataObj):
+		self.userDataObj = userDataObj
 
 
 	def getJSONResponse(self):
-		selectedListItemObj = SelectedListItem(self.requestData)
+		SelectedListItem.set_provider_none()
+		selectedListItemObj = SelectedListItem.get_provider(self.source, self.requestData)
 		optionVal = selectedListItemObj.getSelectedListItem()
 		if optionVal == False:
 			optionVal = "Could not find option chosen"
@@ -30,7 +39,8 @@ class SelectedOffer(object):
 
 		simpleResponse = []
 		simpleResponse.append("Your code is " + selectedCouponCode + ". Please provide this to the cashier before placing the order")
-		mySuggestionChipResponse = SuggestionChip(simpleResponse)
+		SuggestionChip.set_provider_none()
+		mySuggestionChipResponse = SuggestionChip.get_provider(self.source, simpleResponse)
 		#session['selectedCouponCode'] = selectedCouponCode
 		#mySuggestionChipResponse.addSugTitles(["Share on Facebook"])
 		paramVars = {}
@@ -50,6 +60,10 @@ class SelectedOffer(object):
 		contextResponseMainList = self.createShareOfferCodeFBContext(optionVal)
 		mySuggestionChipResponse.addOutputContext(contextResponseMainList.getContextJSONResponse())
 
+		#This is meant only for facebook
+		if self.source == Constants.getStrFacebook():
+			if self.userDataObj.hasFBUserLoggedIn(self.requestData.get("originalRequest").get("data").get("sender").get("id")) != True:
+				mySuggestionChipResponse.addLoginBtn("https://phillipsbot.herokuapp.com/authorize/facebook")
 
 		return mySuggestionChipResponse.getSuggestionChipResponse()
 

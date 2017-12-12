@@ -7,6 +7,10 @@ class ShowOffers(object):
 		super(ShowOffers, self).__init__()
 		self.requestData = requestData
 		self.mongo = mongo
+		self.source = None
+
+	def setSource(self, source):
+		self.source = source
 
 
 	def getJSONResponse(self):
@@ -14,7 +18,9 @@ class ShowOffers(object):
 
 		simpleResponse = []
 		simpleResponse.append("These are the offers we have for you. Click on any one of them to view the code")
-		myCarousel = Carousel(simpleResponse)
+
+		Carousel.set_provider_none()
+		myCarousel = Carousel.get_provider(self.source, simpleResponse)
 
 		for coupon in couponList:
 			myCarousel.addCarouselItem(coupon["_id"], coupon["offerTitle"], 
