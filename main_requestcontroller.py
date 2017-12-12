@@ -12,6 +12,7 @@ class MainRequestController(object):
 		self.responseData = None
 		self.mongo = mongo
 		self.userDataObj = userDataObj
+		self.setSourceAsGoogle()
 
 
 
