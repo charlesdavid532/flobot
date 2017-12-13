@@ -30,6 +30,7 @@ class WelcomeResponse(object):
 		simpleResponse.append("What would you like to know?")
 
 		sugList = []
+		sugList.append("Information")
 		sugList.append("Offers")
 		sugList.append("Free delivery")
 		SuggestionChip.set_provider_none()
