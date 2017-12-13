@@ -4,6 +4,7 @@ from free_delivery_controller import FreeDeliveryController
 from selected_list_item import SelectedListItem
 from show_offers import ShowOffers
 from selected_offer import SelectedOffer
+from information_controller import InformationController
 class MainRequestController(object):
 	"""Handles the request from api.ai"""
 	def __init__(self, data, mongo, userDataObj):
@@ -12,6 +13,7 @@ class MainRequestController(object):
 		self.responseData = None
 		self.mongo = mongo
 		self.userDataObj = userDataObj
+		self.setSourceAsGoogle()
 
 
 
@@ -28,6 +30,7 @@ class MainRequestController(object):
 			self.responseData = self.makeContextWebhookResult(salesResponseData["speech"], salesResponseData["context-list"])
 		elif self.requestData.get("result").get("action") == "free.delivery":
 			freeDelControllerObj = FreeDeliveryController(self.requestData, self.mongo)
+			freeDelControllerObj.setSource(self.source)
 			self.responseData = freeDelControllerObj.getPermissionJSON()
 			'''
 			parsedData = self.parseFreeDeliveryRequest(self.requestData)        
@@ -35,14 +38,18 @@ class MainRequestController(object):
 			'''
 		elif self.requestData.get("result").get("action") == "compare.location":
 			freeDelControllerObj = FreeDeliveryController(self.requestData, self.mongo)
+			freeDelControllerObj.setSource(self.source)
 			freeDelControllerObj.setIsPermissionGiven(True)
 			compareLocationData = freeDelControllerObj.compareDeliveryLocation()
-			self.responseData = self.makeContextWebhookResult(compareLocationData["speech"], [])
+			self.responseData = self.makeContextWebhookResult(compareLocationData["speech"], []) 
 		elif self.requestData.get("result").get("action") == "show.offers":
 			showOffersObj = ShowOffers(self.requestData, self.mongo)
+			showOffersObj.setSource(self.source)
 			self.responseData = showOffersObj.getJSONResponse()
 		elif self.requestData.get("result").get("action") == "selected.offer":
 			selectedOfferObj = SelectedOffer(self.requestData, self.mongo)
+			selectedOfferObj.setSource(self.source)
+			selectedOfferObj.setUserData(self.userDataObj)
 			self.responseData = selectedOfferObj.getJSONResponse()
 		elif self.requestData.get("result").get("action") == "product.chart":
 			chartController = ChartController(self.requestData, self.mongo)
@@ -65,9 +72,16 @@ class MainRequestController(object):
 			#self.responseData = generateEmailController(self.requestData.get("result"))
 		elif self.requestData.get("result").get("action") == "welcome.intent":
 			welcomeResponseObj = WelcomeResponse(self.requestData)
-			self.userDataObj.updateLogs()
+			welcomeResponseObj.setSource(self.source)
+			if self.isSourceFacebook() == False:
+				self.userDataObj.updateLogs()
 			welcomeResponseObj.setUserData(self.userDataObj)
 			self.responseData = welcomeResponseObj.getWelcomeResponse()
+		elif self.requestData.get("result").get("action") == "show.information":
+			informationResponseObj = InformationController(self.requestData)
+			informationResponseObj.setSource(self.source)
+			informationResponseObj.setUserData(self.userDataObj)
+			self.responseData = informationResponseObj.getInformationResponse()
 		elif self.requestData.get("result").get("action") == "showAllUsers":
 			self.responseData = makeListOfAllUsers(self.requestData)
 		elif self.requestData.get("result").get("action") == "detailed.bio":
@@ -82,11 +96,12 @@ class MainRequestController(object):
 				print("The option chosen:::")
 				print(optionVal)
 			'''
-			selectedListItemObj = SelectedListItem(self.requestData)
+			SelectedListItem.set_provider_none()
+			selectedListItemObj = SelectedListItem.get_provider(self.source, self.requestData)
 			optionVal = selectedListItemObj.getSelectedListItem()
 			if optionVal == False:
 				optionVal = "Could not find option chosen"
-			self.responseData = self.makeContextWebhookResult("The option chosen:::"+optionVal, [])    
+			self.responseData = self.makeContextWebhookResult("The option chosen:::"+optionVal, [])
 		elif self.requestData.get("result").get("action") == "time.timeperiod":	        
 			return {}
 		else:
@@ -103,18 +118,51 @@ class MainRequestController(object):
 		return self.responseData
 
 
+	def setSourceAsFacebook(self):
+		self.source = Constants.getStrFacebook()
+
+	def setSourceAsGoogle(self):
+		self.source = Constants.getStrGoogle()
+
+	def getSource(self):
+		return self.source
+
+	def isSourceFacebook(self):
+		if self.source == Constants.getStrFacebook():
+			return True
+		else:
+			return False
 	'''
 	This is a very temp function. It is used to just create a sample response in JSON format
 	'''
 	def makeContextWebhookResult(self, speech, context):
+
+		if self.isSourceFacebook():
+			return self.FBmakeContextWebhookResult(speech, context)
 
 		return {
 		    "speech": speech,
 		    "displayText": speech,
 		    # "data": data,
 		    "contextOut": context,
-		    "source": "flobot"
+		    "source": "phillips-bot"
 		}
+
+
+	def FBmakeContextWebhookResult(self, speech, context):
+
+		return {
+			"speech": speech,
+		    "displayText": speech,
+		    "data": {
+		    	"facebook": {
+		    		"text": speech
+		    	}
+		    },
+		    "contextOut": context,
+		    "source": "phillips-bot"
+		}
+
 
 
 

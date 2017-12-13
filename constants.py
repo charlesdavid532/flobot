@@ -5,6 +5,14 @@ class Constants(object):
 		super(Constants, self).__init__()
 
 	@staticmethod
+	def getStrGoogle():
+		return "google"
+
+	@staticmethod
+	def getStrFacebook():
+		return "facebook"
+
+	@staticmethod
 	def getStrDefaultProduct():
 		return "Fan"
 
