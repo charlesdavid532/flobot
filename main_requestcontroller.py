@@ -8,6 +8,7 @@ from information_controller import InformationController
 from nutrition_outer_controller import NutritionOuterController
 from nutrition_detailed_controller import NutritionDetailedController
 from main_menu import MainMenu
+from delivery_policy import DeliveryPolicy
 class MainRequestController(object):
 	"""Handles the request from api.ai"""
 	def __init__(self, data, mongo, userDataObj):
@@ -85,6 +86,11 @@ class MainRequestController(object):
 			mainMenuResponseObj.setSource(self.source)
 			mainMenuResponseObj.setUserData(self.userDataObj)
 			self.responseData = mainMenuResponseObj.getJSONResponse()
+		elif self.requestData.get("result").get("action") == "delivery.policy":
+			deliveryPolicyResponseObj = DeliveryPolicy(self.requestData)
+			deliveryPolicyResponseObj.setSource(self.source)
+			deliveryPolicyResponseObj.setUserData(self.userDataObj)
+			self.responseData = deliveryPolicyResponseObj.getJSONResponse()
 		elif self.requestData.get("result").get("action") == "nutrition.outer.controller":
 			nutritionOuterResponseObj = NutritionOuterController(self.requestData)
 			nutritionOuterResponseObj.setSource(self.source)
