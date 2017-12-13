@@ -2,7 +2,7 @@ from suggestion_chip import SuggestionChip
 class InformationController(object):
 	"""docstring for InformationController"""
 	def __init__(self, requestData):
-		super(InformationController, requestData).__init__()
+		super(InformationController, self).__init__()
 		self.requestData = requestData
 		self.userDataObj = None
 		self.source = None
