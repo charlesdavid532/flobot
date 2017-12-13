@@ -6,6 +6,7 @@ from show_offers import ShowOffers
 from selected_offer import SelectedOffer
 from information_controller import InformationController
 from nutrition_outer_controller import NutritionOuterController
+from nutrition_detailed_controller import NutritionDetailedController
 class MainRequestController(object):
 	"""Handles the request from api.ai"""
 	def __init__(self, data, mongo, userDataObj):
@@ -83,6 +84,11 @@ class MainRequestController(object):
 			nutritionOuterResponseObj.setSource(self.source)
 			nutritionOuterResponseObj.setUserData(self.userDataObj)
 			self.responseData = nutritionOuterResponseObj.getJSONResponse()
+		elif self.requestData.get("result").get("action") == "detailed.nutrition":
+			nutritionDetailedResponseObj = NutritionDetailedController(self.requestData)
+			nutritionDetailedResponseObj.setSource(self.source)
+			nutritionDetailedResponseObj.setUserData(self.userDataObj)
+			self.responseData = self.makeContextWebhookResult(nutritionDetailedResponseObj.getJSONResponse(), [])
 		elif self.requestData.get("result").get("action") == "show.information":
 			informationResponseObj = InformationController(self.requestData)
 			informationResponseObj.setSource(self.source)
