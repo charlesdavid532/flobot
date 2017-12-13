@@ -1,8 +1,8 @@
 from suggestion_chip import SuggestionChip
-class InformationController(object):
-	"""docstring for InformationController"""
+class NutritionOuterController(object):
+	"""docstring for NutritionOuterController"""
 	def __init__(self, requestData):
-		super(InformationController, self).__init__()
+		super(NutritionOuterController, self).__init__()
 		self.requestData = requestData
 		self.userDataObj = None
 		self.source = None
@@ -16,14 +16,12 @@ class InformationController(object):
 
 	def getJSONResponse(self):
 		simpleResponse = []
-		simpleResponse.append("What would you like to know")
+		simpleResponse.append("At Flobots, we care for your health and happiness. Which product would you like to know more about?")
 		sugList = []
-		sugList.append("Nutrition")
-		sugList.append("Store Information")
-		sugList.append("Offers")
-		sugList.append("Delivery Policy")
-		sugList.append("Menu")
-		sugList.append("Delivery")
+		sugList.append("Chicken Burger")
+		sugList.append("Veggie Burger")
+		sugList.append("Pizza Margherita")
+		sugList.append("Pizza Hawaiian")
 
 		SuggestionChip.set_provider_none()
 		mySuggestionChip = SuggestionChip.get_provider(self.source, simpleResponse)

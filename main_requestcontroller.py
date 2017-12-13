@@ -5,6 +5,7 @@ from selected_list_item import SelectedListItem
 from show_offers import ShowOffers
 from selected_offer import SelectedOffer
 from information_controller import InformationController
+from nutrition_outer_controller import NutritionOuterController
 class MainRequestController(object):
 	"""Handles the request from api.ai"""
 	def __init__(self, data, mongo, userDataObj):
@@ -77,11 +78,16 @@ class MainRequestController(object):
 				self.userDataObj.updateLogs()
 			welcomeResponseObj.setUserData(self.userDataObj)
 			self.responseData = welcomeResponseObj.getWelcomeResponse()
+		elif self.requestData.get("result").get("action") == "nutrition.outer.controller":
+			nutritionOuterResponseObj = NutritionOuterController(self.requestData)
+			nutritionOuterResponseObj.setSource(self.source)
+			nutritionOuterResponseObj.setUserData(self.userDataObj)
+			self.responseData = nutritionOuterResponseObj.getJSONResponse()
 		elif self.requestData.get("result").get("action") == "show.information":
 			informationResponseObj = InformationController(self.requestData)
 			informationResponseObj.setSource(self.source)
 			informationResponseObj.setUserData(self.userDataObj)
-			self.responseData = informationResponseObj.getInformationResponse()
+			self.responseData = informationResponseObj.getJSONResponse()
 		elif self.requestData.get("result").get("action") == "showAllUsers":
 			self.responseData = makeListOfAllUsers(self.requestData)
 		elif self.requestData.get("result").get("action") == "detailed.bio":
