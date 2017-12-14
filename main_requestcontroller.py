@@ -57,9 +57,9 @@ class MainRequestController(object):
 			storeInfoControllerObj.setIsPermissionGiven(True)
 			compareLocationData = storeInfoControllerObj.getNearestStoreLocation()
 			if compareLocationData.get("speech") != None and compareLocationData.get("speech") != "":
-				self.responseData = compareLocationData
-			else:
 				self.responseData = self.makeContextWebhookResult(compareLocationData["speech"], [])
+			else:				
+				self.responseData = compareLocationData
 		elif self.requestData.get("result").get("action") == "show.offers":
 			showOffersObj = ShowOffers(self.requestData, self.mongo)
 			showOffersObj.setSource(self.source)
