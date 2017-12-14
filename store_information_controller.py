@@ -4,7 +4,6 @@ from context_response import ContextResponse
 from context_responseList import ContextResponseList
 from constants import Constants
 from card import Card
-from amazon_s3 import AmazonS3
 class StoreInformationController(object):
 	"""docstring for StoreInformationController"""
 	def __init__(self, requestData, mongo):
@@ -100,7 +99,7 @@ class StoreInformationController(object):
 		return nearestStore
 
 	def createNearestStoreCard(self, nearestStore):
-		myAmazonS3 = AmazonS3(Constants.getAWSStoreImagesBucketName())
+		#myAmazonS3 = AmazonS3(Constants.getAWSStoreImagesBucketName())
 		simpleResponse = []
 		simpleResponse.append("The nearest store to your location is in:" + nearestStore["name"] + ". Here are the store details")
 		sugList = []
@@ -108,7 +107,7 @@ class StoreInformationController(object):
 		sugList.append("Main Menu")
 		title = nearestStore["name"]
 		formattedText = nearestStore["address"] + "  " + nearestStore["phone"] + "  Opens At: " + nearestStore["opensAt"] + "  Closes At: " + nearestStore["closesAt"]
-		imgURL = myAmazonS3.getS3Object(Constants.getAWSStoreImagesBucketName(), nearestStore["imgName"]) 
+		imgURL = Constants.getAWSStoreImagesURL() + nearestStore["imgName"]
 		imgAccText = "Default accessibility text"
 
 
