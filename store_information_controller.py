@@ -106,7 +106,7 @@ class StoreInformationController(object):
 		sugList.append("Order")
 		sugList.append("Main Menu")
 		title = nearestStore["name"]
-		formattedText = nearestStore["address"] + "\n  " + nearestStore["phone"] + "**Opens At:** " + nearestStore["opensAt"] + "\n  Closes At: " + nearestStore["closesAt"]
+		formattedText = nearestStore["address"] + "\n  \n" + nearestStore["phone"] + "\n  \nOpens At: " + nearestStore["opensAt"] + "\n  \nCloses At: " + nearestStore["closesAt"]
 		imgURL = Constants.getAWSStoreImagesURL() + nearestStore["imgName"]
 		imgAccText = "Default accessibility text"
 
