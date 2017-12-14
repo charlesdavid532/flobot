@@ -1,5 +1,7 @@
 from permission_response import PermissionResponse
 from location_parser import LocationParser
+from context_response import ContextResponse
+from context_responseList import ContextResponseList
 class StoreInformationController(object):
 	"""docstring for StoreInformationController"""
 	def __init__(self, requestData, mongo):
@@ -33,8 +35,18 @@ class StoreInformationController(object):
 
 		#permissionResObj = PermissionResponse(speech, "To deliver your order")
 		permissionResObj = PermissionResponse.get_provider(self.source, speech, "To deliver your order")
+		# Creating the store information context object
+		storeInformationContextResponseObject = ContextResponse(Constants.getStrStoreInformationContext(), 1)
+		storeInformationContextResponseObject.addFeature("store-information", True)
+
+		contextResponseMainList = ContextResponseList()
+		contextResponseMainList.addContext(storeInformationContextResponseObject)
+
 		permissionResObj.addNamePermission()
 		permissionResObj.addPreciseLocationPermission()
+
+		permissionResObj.addOutputContext(contextResponseMainList)
+
 		return permissionResObj.getPermissionResponseJSON()
 
 
@@ -60,16 +72,9 @@ class StoreInformationController(object):
 		    print("The longitude is::" + str(geoLong))
 		    #Code to get the nearest delivery location store
 		    #freeDeliverySpeech = self.getFreeDeliveryResponse(devcoords.get('latitude'), devcoords.get('longitude'))
-		    nearestStoreInfoSpeech = self.getNearestStoreResponse(geoLat, geoLong)
-		    '''
-		    return {
-		        "speech" : "Yes you are at::" + str(devcoords.get('latitude')) + " latitude and " + str(devcoords.get('longitude')) + " longitude"
-		    }
-		    '''
-		    return {
-		    	"speech" : nearestStoreInfoSpeech
-		    }
-
+		    nearestStore = self.getNearestStoreResponse(geoLat, geoLong)
+		    
+		    return self.createNearestStoreCard(nearestStore)
 		return {
 		    "speech" : "Could not get your location"
 		}
@@ -88,7 +93,30 @@ class StoreInformationController(object):
 		locationParserObj.setObjectLocations(storeLoc)
 		nearestStore = locationParserObj.getNNearestLocations(1)
 		print("The nearest store distance in kms is:::" + str(nearestStore[0]["distance"]))
-		return "The nearest store distance in kms is:::" + str(nearestStore[0]["distance"]) 
+		#return "The nearest store distance in kms is:::" + str(nearestStore[0]["distance"])
+		return nearestStore
+
+	def createNearestStoreCard(self, nearestStore):
+		simpleResponse = []
+		simpleResponse.append("The nearest store to your location is in:" + nearestStore["name"] + ". Here are the store details")
+		sugList = []
+		sugList.append("Order")
+		sugList.append("Main Menu")
+		title = nearestStore["name"]
+		formattedText = nearestStore["address"] + "  " + nearestStore["phone"] + "  Opens At: " + nearestStore["opensAt"] + "  Closes At: " + nearestStore["closesAt"]
+		imgURL = Constants.getAWSStoreImagesURL() + nearestStore["imgName"]
+		imgAccText = "Default accessibility text"
+
+
+		#myCard = Card(simpleResponse, formattedText, imgURL, imgAccText)
+		Card.set_provider_none()
+		myCard = Card.get_provider(self.source, simpleResponse, formattedText, imgURL, imgAccText)
+		myCard.addTitle(title)
+		myCard.addSugTitles(sugList)
+		myCard.addExpectedUserResponse()
+		
+
+		return myCard.getCardResponse()
 
 		
 		

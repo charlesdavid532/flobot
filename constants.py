@@ -80,12 +80,20 @@ class Constants(object):
 		return "share_offer_fb"
 
 	@staticmethod
+	def getStrStoreInformationContext():
+		return "store_information"
+
+	@staticmethod
 	def getAWSBucketURL():
 		return "https://s3.amazonaws.com/flobot/"
 
 	@staticmethod
 	def getAWSCouponsURL():
 		return "https://s3.amazonaws.com/flobot/coupon-images/"
+
+	@staticmethod
+	def getAWSStoreImagesURL():
+		return "https://s3.amazonaws.com/flobot/store-images/"
 
 	@staticmethod
 	def getBlueBotURL():
