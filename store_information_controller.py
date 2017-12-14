@@ -75,7 +75,7 @@ class StoreInformationController(object):
 		    #freeDeliverySpeech = self.getFreeDeliveryResponse(devcoords.get('latitude'), devcoords.get('longitude'))
 		    nearestStore = self.getNearestStoreResponse(geoLat, geoLong)
 		    
-		    return self.createNearestStoreCard(nearestStore)
+		    return self.createNearestStoreCard(nearestStore[0])
 		return {
 		    "speech" : "Could not get your location"
 		}
