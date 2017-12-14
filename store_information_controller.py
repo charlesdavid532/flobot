@@ -3,6 +3,7 @@ from location_parser import LocationParser
 from context_response import ContextResponse
 from context_responseList import ContextResponseList
 from constants import Constants
+from card import Card
 class StoreInformationController(object):
 	"""docstring for StoreInformationController"""
 	def __init__(self, requestData, mongo):
