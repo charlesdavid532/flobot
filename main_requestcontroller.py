@@ -9,6 +9,7 @@ from nutrition_outer_controller import NutritionOuterController
 from nutrition_detailed_controller import NutritionDetailedController
 from main_menu import MainMenu
 from delivery_policy import DeliveryPolicy
+from store_information_controller import StoreInformationController
 class MainRequestController(object):
 	"""Handles the request from api.ai"""
 	def __init__(self, data, mongo, userDataObj):
@@ -45,7 +46,17 @@ class MainRequestController(object):
 			freeDelControllerObj.setSource(self.source)
 			freeDelControllerObj.setIsPermissionGiven(True)
 			compareLocationData = freeDelControllerObj.compareDeliveryLocation()
-			self.responseData = self.makeContextWebhookResult(compareLocationData["speech"], []) 
+			self.responseData = self.makeContextWebhookResult(compareLocationData["speech"], [])
+		elif self.requestData.get("result").get("action") == "store.information":
+			storeInfoControllerObj = StoreInformationController(self.requestData, self.mongo)
+			storeInfoControllerObj.setSource(self.source)
+			self.responseData = storeInfoControllerObj.getPermissionJSON()
+		elif self.requestData.get("result").get("action") == "nearest.store":
+			storeInfoControllerObj = StoreInformationController(self.requestData, self.mongo)
+			storeInfoControllerObj.setSource(self.source)
+			storeInfoControllerObj.setIsPermissionGiven(True)
+			compareLocationData = storeInfoControllerObj.getNearestStoreLocation()
+			self.responseData = self.makeContextWebhookResult(compareLocationData["speech"], [])
 		elif self.requestData.get("result").get("action") == "show.offers":
 			showOffersObj = ShowOffers(self.requestData, self.mongo)
 			showOffersObj.setSource(self.source)
