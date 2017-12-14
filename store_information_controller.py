@@ -46,7 +46,7 @@ class StoreInformationController(object):
 		permissionResObj.addNamePermission()
 		permissionResObj.addPreciseLocationPermission()
 
-		permissionResObj.addOutputContext(contextResponseMainList)
+		permissionResObj.addOutputContext(contextResponseMainList.getContextJSONResponse())
 
 		return permissionResObj.getPermissionResponseJSON()
 
