@@ -11,6 +11,13 @@ from main_menu import MainMenu
 from delivery_policy import DeliveryPolicy
 from store_information_controller import StoreInformationController
 from default_fallback import DefaultFallback
+
+class JSONEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, ObjectId):
+            return str(o)
+        return json.JSONEncoder.default(self, o)
+        
 class MainRequestController(object):
 	"""Handles the request from api.ai"""
 	def __init__(self, data, mongo, userDataObj):
@@ -50,7 +57,7 @@ class MainRequestController(object):
 			#self.responseData = self.makeContextWebhookResult(compareLocationData["speech"], [])
 			print("Inside compare location")
 			res = json.dumps(compareLocationData, indent=4, cls=JSONEncoder)
-    		print(res)
+			print(res)
 			if compareLocationData.get("speech") != None and compareLocationData.get("speech") != "":
 				print("Inside speeech place")
 				self.responseData = self.makeContextWebhookResult(compareLocationData["speech"], [])
