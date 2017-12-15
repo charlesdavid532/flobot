@@ -10,6 +10,7 @@ from nutrition_detailed_controller import NutritionDetailedController
 from main_menu import MainMenu
 from delivery_policy import DeliveryPolicy
 from store_information_controller import StoreInformationController
+from default_fallback import DefaultFallback
 class MainRequestController(object):
 	"""Handles the request from api.ai"""
 	def __init__(self, data, mongo, userDataObj):
@@ -125,7 +126,12 @@ class MainRequestController(object):
 		elif self.requestData.get("result").get("action") == "detailed.bio":
 			self.responseData = showDetailedBio(self.requestData)
 		elif self.requestData.get("result").get("action") == "application.close":
-			self.responseData = closeApplication(self.requestData)    
+			self.responseData = closeApplication(self.requestData) 
+		elif self.requestData.get("result").get("action") == "input.unknown":
+			defaultFallbackResponseObj = DefaultFallback(self.requestData)
+			defaultFallbackResponseObj.setSource(self.source)
+			defaultFallbackResponseObj.setUserData(self.userDataObj)
+			self.responseData = defaultFallbackResponseObj.getJSONResponse()   
 		elif self.requestData.get("result").get("action") == "detailed.list":
 			'''
 			firstInput = self.requestData["originalRequest"]["data"]["inputs"][0]
