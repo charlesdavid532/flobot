@@ -1,5 +1,6 @@
 from permission_response import PermissionResponse
 from location_parser import LocationParser
+from constants import Constants
 class FreeDeliveryController(object):
 	"""docstring for FreeDeliveryController"""
 	def __init__(self, requestData, mongo):
@@ -143,5 +144,13 @@ class FreeDeliveryController(object):
 		locationParserObj.setObjectLocations(storeLoc)
 		nearestStore = locationParserObj.getNNearestLocations(1)
 		print("The nearest store distance in kms is:::" + str(nearestStore[0]["distance"]))
-		return "Yes you have free delivery since you are only " + str(nearestStore[0]["distance"]) + " km away"
+		#return "Yes you have free delivery since you are only " + str(nearestStore[0]["distance"]) + " km away"
+		return self.checkAndReturnResponseIfWithinDeliveryDistance(nearestStore[0]["distance"])
+
+
+	def checkAndReturnResponseIfWithinDeliveryDistance(self, calculatedDistance):
+		if calculatedDistance > Constants.getMaxDeliveryDistance():
+			return "We deliver only within " + Constants.getMaxDeliveryDistance() + " km range of our stores. I'm sorry your order cannot be delivered to your location"
+		else:
+			return "Yes you have free delivery since you are only " + str(calculatedDistance) + " km away"
 		

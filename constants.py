@@ -122,4 +122,8 @@ class Constants(object):
 	@staticmethod
 	def getStrProductWiseRevenues():
 		return "Product wise Revenues"
+
+	@staticmethod
+	def getMaxDeliveryDistance():
+		return 5
 		
