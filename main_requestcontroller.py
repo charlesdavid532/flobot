@@ -48,6 +48,9 @@ class MainRequestController(object):
 			freeDelControllerObj.setIsPermissionGiven(True)
 			compareLocationData = freeDelControllerObj.compareDeliveryLocation()
 			#self.responseData = self.makeContextWebhookResult(compareLocationData["speech"], [])
+			print("Inside compare location")
+			res = json.dumps(compareLocationData, indent=4, cls=JSONEncoder)
+    		print(res)
 			if compareLocationData.get("speech") != None and compareLocationData.get("speech") != "":
 				print("Inside speeech place")
 				self.responseData = self.makeContextWebhookResult(compareLocationData["speech"], [])
