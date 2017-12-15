@@ -47,7 +47,11 @@ class MainRequestController(object):
 			freeDelControllerObj.setSource(self.source)
 			freeDelControllerObj.setIsPermissionGiven(True)
 			compareLocationData = freeDelControllerObj.compareDeliveryLocation()
-			self.responseData = self.makeContextWebhookResult(compareLocationData["speech"], [])
+			#self.responseData = self.makeContextWebhookResult(compareLocationData["speech"], [])
+			if compareLocationData.get("speech") != None and compareLocationData.get("speech") != "":
+				self.responseData = self.makeContextWebhookResult(compareLocationData["speech"], [])
+			else:	
+				self.responseData = compareLocationData
 		elif self.requestData.get("result").get("action") == "store.information":
 			storeInfoControllerObj = StoreInformationController(self.requestData, self.mongo)
 			storeInfoControllerObj.setSource(self.source)

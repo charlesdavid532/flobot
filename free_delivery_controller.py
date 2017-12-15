@@ -1,6 +1,7 @@
 from permission_response import PermissionResponse
 from location_parser import LocationParser
 from constants import Constants
+from suggestion_chip import SuggestionChip
 class FreeDeliveryController(object):
 	"""docstring for FreeDeliveryController"""
 	def __init__(self, requestData, mongo):
@@ -122,9 +123,7 @@ class FreeDeliveryController(object):
 		        "speech" : "Yes you are at::" + str(devcoords.get('latitude')) + " latitude and " + str(devcoords.get('longitude')) + " longitude"
 		    }
 		    '''
-		    return {
-		    	"speech" : freeDeliverySpeech
-		    }
+		    return freeDeliverySpeech
 
 		return {
 		    "speech" : "Could not get your location"
@@ -145,12 +144,26 @@ class FreeDeliveryController(object):
 		nearestStore = locationParserObj.getNNearestLocations(1)
 		print("The nearest store distance in kms is:::" + str(nearestStore[0]["distance"]))
 		#return "Yes you have free delivery since you are only " + str(nearestStore[0]["distance"]) + " km away"
+
 		return self.checkAndReturnResponseIfWithinDeliveryDistance(nearestStore[0]["distance"])
 
 
 	def checkAndReturnResponseIfWithinDeliveryDistance(self, calculatedDistance):
+		simpleResponse = []		
+		sugList = []	
+
 		if calculatedDistance > Constants.getMaxDeliveryDistance():
-			return "We deliver only within " + str(Constants.getMaxDeliveryDistance()) + " km range of our stores. I'm sorry your order cannot be delivered to your location"
+			responseText = "We deliver only within " + str(Constants.getMaxDeliveryDistance()) + " km range of our stores. I'm sorry your order cannot be delivered to your location"
+			sugList.append("Main Menu")			 
 		else:
-			return "Yes you have free delivery since you are only " + str(calculatedDistance) + " km away"
+			responseText = "Yes you have free delivery since you are only " + str(calculatedDistance) + " km away"
+			sugList.append("Order")
+			sugList.append("Main Menu")
+
+		simpleResponse.append(responseText)
+		SuggestionChip.set_provider_none()
+		mySuggestionChip = SuggestionChip.get_provider(self.source, simpleResponse)
+		mySuggestionChip.addSugTitles(sugList)
+
+		return mySuggestionChip.getSuggestionChipResponse()
 		
