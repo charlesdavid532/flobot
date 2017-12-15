@@ -49,8 +49,10 @@ class MainRequestController(object):
 			compareLocationData = freeDelControllerObj.compareDeliveryLocation()
 			#self.responseData = self.makeContextWebhookResult(compareLocationData["speech"], [])
 			if compareLocationData.get("speech") != None and compareLocationData.get("speech") != "":
+				print("Inside speeech place")
 				self.responseData = self.makeContextWebhookResult(compareLocationData["speech"], [])
-			else:	
+			else:
+				print("Inside non speeech place::::The suggestion chip place")
 				self.responseData = compareLocationData
 		elif self.requestData.get("result").get("action") == "store.information":
 			storeInfoControllerObj = StoreInformationController(self.requestData, self.mongo)
