@@ -150,7 +150,7 @@ class FreeDeliveryController(object):
 
 	def checkAndReturnResponseIfWithinDeliveryDistance(self, calculatedDistance):
 		if calculatedDistance > Constants.getMaxDeliveryDistance():
-			return "We deliver only within " + Constants.getMaxDeliveryDistance() + " km range of our stores. I'm sorry your order cannot be delivered to your location"
+			return "We deliver only within " + str(Constants.getMaxDeliveryDistance()) + " km range of our stores. I'm sorry your order cannot be delivered to your location"
 		else:
 			return "Yes you have free delivery since you are only " + str(calculatedDistance) + " km away"
 		
