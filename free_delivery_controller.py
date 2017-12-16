@@ -126,7 +126,8 @@ class FreeDeliveryController(object):
 		    return freeDeliverySpeech
 
 		return {
-		    "speech" : "Could not get your location"
+		    "speech" : "Could not get your location",
+		    "getDeliveryLocation": False
 		}
 
 	def getFreeDeliveryResponse(self, latitude, longitude):
