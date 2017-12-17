@@ -106,6 +106,7 @@ class FacebookPermissionResponse(PermissionResponse):
 
 		SuggestionChip.set_provider_none()
 		mySuggestionChip = SuggestionChip.get_provider(self.provider_name, simpleResponse)
+		mySuggestionChip.addOutputContext(self.outputContext)
 		mySuggestionChip.setLocationChip()					
 
 		return mySuggestionChip.getSuggestionChipResponse()
