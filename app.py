@@ -9,7 +9,7 @@ from wtforms.validators import InputRequired, Email, Length
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask import jsonify
-from flask.ext.pymongo import PyMongo
+from flask_pymongo import PyMongo
 from pymessenger import Bot
 from datetime import datetime as dt
 from datetime import timedelta
@@ -29,7 +29,6 @@ from card import Card
 from rauth import OAuth2Service
 import urllib
 from urllib.request import urlopen
-import secrets
 from facepy import GraphAPI
 import pyperclip
 from custom_list import List
@@ -45,6 +44,7 @@ except ImportError:
     import apiai
 
 app = Flask(__name__)
+app.config.from_pyfile('config.py')
 app.config['SECRET_KEY'] = os.environ['APP_SECRET']
 Bootstrap(app)
 login_manager = LoginManager()
