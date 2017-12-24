@@ -125,6 +125,7 @@ class GoogleSignIn(OAuthSignIn):
     def __init__(self):
         super(GoogleSignIn, self).__init__('google')
         #TODO this is an external file. Need to host it on my server        
+        print("Before the loading of json")
         googleinfo = urlopen('https://accounts.google.com/.well-known/openid-configuration')
         google_params = json.load(googleinfo)
         self.service = OAuth2Service(
