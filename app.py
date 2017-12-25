@@ -67,8 +67,8 @@ ai = apiai.ApiAI(CLIENT_ACCESS_TOKEN)
 
 bot = Bot(PAGE_ACCESS_TOKEN)
 
-app.config['MONGO_DBNAME'] = 'flobot'
-app.config['MONGO_URI'] = 'mongodb://admin:admin@ds259255.mlab.com:59255/flobot'
+app.config['MONGO_DBNAME'] = os.environ['MONGO_DBNAME']
+app.config['MONGO_URI'] = os.environ['MONGO_URI']
 app.config['ASSIST_ACTIONS_ON_GOOGLE'] = True
 
 app.config['OAUTH_CREDENTIALS'] = {
