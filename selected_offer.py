@@ -54,7 +54,7 @@ class SelectedOffer(object):
 		#mySuggestionChipResponse.addLinkOutSuggestion("Share on Facebook", fbShareDialogControllerObj.getJSONResponse())
 
 		sugList = []
-		sugList.append('Daily Offers')
+		sugList.append('Subscribe to offers')
 		sugList.append('Main Menu')
 		mySuggestionChipResponse.addSugTitles(sugList)
 
