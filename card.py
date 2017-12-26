@@ -22,11 +22,11 @@ class Card(object):
 		self.sugTitles = None
 
 
-		if self.formattedText != '' or self.formattedText != None:
+		if self.formattedText != '' and self.formattedText != None:
 			self.hasText = True
 
 
-		if self.imgURL != '' or self.imgURL != None:
+		if self.imgURL != '' and self.imgURL != None:
 			self.hasImage = True
 
 
@@ -252,7 +252,8 @@ class FacebookCard(Card):
 
 		if self.title != "" and self.title != None:
 			basicCard["title"] = self.title
-
+		else:
+			basicCard["title"] = self.formattedText
 		'''
 		if self.hasText == True:
 			basicCard["formattedText"] = self.formattedText
@@ -261,7 +262,7 @@ class FacebookCard(Card):
 		#Note: Added the formatted text to the subtitle
 		if self.subtitle != "" and self.subtitle != None and self.hasText == True:
 			basicCard["subtitle"] = self.subtitle + '' + self.formattedText
-		elif self.hasText == True:
+		elif self.hasText == True and self.title != "" and self.title != None:
 			basicCard["subtitle"] = self.formattedText
 		elif self.subtitle != "" and self.subtitle != None:
 			basicCard["subtitle"] = self.subtitle
