@@ -19,6 +19,9 @@ class ShowOffers(object):
 		simpleResponse = []
 		simpleResponse.append("These are the offers we have for you. Click on any one of them to view the code")
 
+		sugList = []
+		sugList.append("Main Menu")
+
 		Carousel.set_provider_none()
 		myCarousel = Carousel.get_provider(self.source, simpleResponse)
 
@@ -27,6 +30,6 @@ class ShowOffers(object):
 				coupon["offerTitle"], coupon["offerText"], Constants.getAWSCouponsURL() + coupon["offerImage"], 
 				coupon["offerText"])
 		
-
+		myCarousel.addSugTitles(sugList)
 		return myCarousel.getCarouselResponse()
 		
