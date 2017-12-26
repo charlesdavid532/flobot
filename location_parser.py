@@ -30,6 +30,7 @@ class LocationParser(object):
 			currentLocationObj = self.objectLocations[i]
 			curLocation = (currentLocationObj["latitude"], currentLocationObj["longitude"])
 			distance = great_circle(baseLocation, curLocation).km
+			distance = int(round(distance))
 			print("The distance is:::" + str(distance))
 			self.objectLocations[i]["distance"] = distance
 
