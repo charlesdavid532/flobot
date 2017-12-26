@@ -20,9 +20,11 @@ class DeliveryPolicy(object):
 		formattedText = "Placeholder text"
 		sugList = []
 		sugList.append("Main Menu")
+		imgAccText = "Default accessibility text"
 
 		Card.set_provider_none()
-		myCard = Card.get_provider(self.source, simpleResponse, formattedText, "", "")
+		myCard = Card.get_provider(self.source, simpleResponse, formattedText, '', imgAccText)
+		myCard.addSubTitle(formattedText)
 		myCard.addSugTitles(sugList)
 		myCard.addExpectedUserResponse()
 		
