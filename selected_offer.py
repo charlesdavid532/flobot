@@ -55,6 +55,7 @@ class SelectedOffer(object):
 
 		sugList = []
 		sugList.append('Daily Offers')
+		sugList.append('Main Menu')
 		mySuggestionChipResponse.addSugTitles(sugList)
 
 		contextResponseMainList = self.createShareOfferCodeFBContext(optionVal)
