@@ -9,15 +9,15 @@ from wtforms.validators import InputRequired, Email, Length
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask import jsonify
-from flask.ext.pymongo import PyMongo
+from flask_pymongo import PyMongo
 from pymessenger import Bot
 from datetime import datetime as dt
 from datetime import timedelta
-from PIL import Image
 from bson.objectid import ObjectId
 import boto3
 from botocore.client import Config
 import numpy as np
+import secrets
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -29,7 +29,6 @@ from card import Card
 from rauth import OAuth2Service
 import urllib
 from urllib.request import urlopen
-import secrets
 from facepy import GraphAPI
 import pyperclip
 from custom_list import List
@@ -45,6 +44,7 @@ except ImportError:
     import apiai
 
 app = Flask(__name__)
+app.config.from_pyfile('config.py')
 app.config['SECRET_KEY'] = os.environ['APP_SECRET']
 Bootstrap(app)
 login_manager = LoginManager()
@@ -67,8 +67,8 @@ ai = apiai.ApiAI(CLIENT_ACCESS_TOKEN)
 
 bot = Bot(PAGE_ACCESS_TOKEN)
 
-app.config['MONGO_DBNAME'] = 'flobot'
-app.config['MONGO_URI'] = 'mongodb://admin:admin@ds259255.mlab.com:59255/flobot'
+app.config['MONGO_DBNAME'] = os.environ['MONGO_DBNAME']
+app.config['MONGO_URI'] = os.environ['MONGO_URI']
 app.config['ASSIST_ACTIONS_ON_GOOGLE'] = True
 
 app.config['OAUTH_CREDENTIALS'] = {
@@ -125,9 +125,10 @@ class GoogleSignIn(OAuthSignIn):
     def __init__(self):
         super(GoogleSignIn, self).__init__('google')
         #TODO this is an external file. Need to host it on my server        
-        print("Before the loading of json")
-        googleinfo = urlopen('https://accounts.google.com/.well-known/openid-configuration')
-        google_params = json.load(googleinfo)
+        #googleinfo = urlopen('https://accounts.google.com/.well-known/openid-configuration')
+        #google_params = json.load(googleinfo)
+        googleinfo = urlopen('https://accounts.google.com/.well-known/openid-configuration').read().decode('utf8')
+        google_params = json.loads(googleinfo)
         self.service = OAuth2Service(
                 name='google',
                 client_id=self.consumer_id,
@@ -200,6 +201,8 @@ class GoogleSignIn(OAuthSignIn):
             )
 
     def callback(self):
+        def decode_json(payload):
+            return json.loads(payload.decode('utf-8'))
         print("the request arguments are:"+ str(request.args))
         if 'code' not in request.args:
             return None, None, None
@@ -209,7 +212,7 @@ class GoogleSignIn(OAuthSignIn):
                       'grant_type': 'authorization_code',
                       'redirect_uri': self.get_callback_url()
                      },
-                decoder = json.loads
+                decoder = decode_json
         )
         me = oauth_session.get('').json()
         print("The me is:"+ str(me))
