@@ -5,8 +5,8 @@ from selected_list_item import SelectedListItem
 from show_offers import ShowOffers
 from selected_offer import SelectedOffer
 from information_controller import InformationController
-from nutrition_outer_controller import NutritionOuterController
-from nutrition_detailed_controller import NutritionDetailedController
+from nutrition.nutrition_outer_controller import NutritionOuterController
+from nutrition.nutrition_detailed_controller import NutritionDetailedController
 from main_menu import MainMenu
 from delivery_policy import DeliveryPolicy
 from store_information_controller import StoreInformationController
