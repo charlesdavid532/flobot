@@ -18,10 +18,12 @@ class NutritionOuterController(object):
 		simpleResponse = []
 		simpleResponse.append("At Flobots, we care for your health and happiness. Which product would you like to know more about?")
 		sugList = []
-		sugList.append("Chicken Burger")
-		sugList.append("Veggie Burger")
-		sugList.append("Pizza Margherita")
-		sugList.append("Pizza Hawaiian")
+
+		#TODO::This sug list should be taken from a table which has the most frequent items
+		sugList.append("Sausage & Egg McMuffin™")
+		sugList.append("Ham & Cheese Toastie")
+		sugList.append("Cheese Toastie")
+		sugList.append("Toastie")
 
 		SuggestionChip.set_provider_none()
 		mySuggestionChip = SuggestionChip.get_provider(self.source, simpleResponse)
