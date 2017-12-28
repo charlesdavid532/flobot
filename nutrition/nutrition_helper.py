@@ -4,9 +4,12 @@ class NutritionHelper(object):
 		super(NutritionHelper, self).__init__()
 		self.mongo = mongo
 
-	def getNutritionData(self, item):
+	def getNutritionData(self, item, isExactSearch):
 		nutritioninfo = self.mongo.db.nutrition
-		nutritionData = nutritioninfo.find({'Item' : {'$regex': item, '$options': 'i'}})
+		if isExactSearch == True:
+			nutritionData = nutritioninfo.find({'Item' : item})
+		else:
+			nutritionData = nutritioninfo.find({'Item' : {'$regex': item, '$options': 'i'}})
 		print("The matched items count is::"+ str(nutritionData.count()))
 		if nutritionData:
 			return nutritionData

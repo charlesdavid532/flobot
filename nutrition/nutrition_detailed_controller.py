@@ -1,6 +1,8 @@
 from nutrition.nutrition_helper import NutritionHelper
 from card import Card
 from carousel import Carousel
+from selected_list_item import SelectedListItem
+from bson.objectid import ObjectId
 class NutritionDetailedController(object):
 	"""docstring for NutritionDetailedController"""
 	def __init__(self, requestData, mongo):
@@ -21,7 +23,7 @@ class NutritionDetailedController(object):
 	def getJSONResponse(self):
 		self.foodItems = self.parseFoodItems(self.userParameters)
 		print("The food item is::"+ str(self.foodItems))
-		return self.createNutritionResponse(self.foodItems)
+		return self.createNutritionResponse(self.foodItems, False)
 		#return "The nutrition for " + self.foodItems + "is as follows"
 
 	def parseFoodItems(self, parameters):
@@ -30,9 +32,26 @@ class NutritionDetailedController(object):
 
 		return 'invalid input'
 
-	def createNutritionResponse(self, item):
+	def getSelectedItemResponse(self):
+		SelectedListItem.set_provider_none()
+		selectedListItemObj = SelectedListItem.get_provider(self.source, self.requestData)
+		optionVal = selectedListItemObj.getSelectedListItem()
+		if optionVal == False:
+			optionVal = "Could not find option chosen"
+
+		nutritioninfo = self.mongo.db.nutrition
+
+		selectedFoodItem = ""
+
+		for s in nutritioninfo.find({'_id': ObjectId(optionVal)}):
+			selectedFoodItem = s['Item']
+
+		print("The food item is::"+ str(selectedFoodItem))
+		return self.createNutritionResponse(selectedFoodItem, True)
+
+	def createNutritionResponse(self, item, isExactSearch):
 		nutritionHelperObj = NutritionHelper(self.mongo)
-		nutritionData = nutritionHelperObj.getNutritionData(item)
+		nutritionData = nutritionHelperObj.getNutritionData(item, isExactSearch)
 		if nutritionData != False:
 			if nutritionData.count() > 1:
 				#Make a carousel
@@ -62,10 +81,10 @@ class NutritionDetailedController(object):
 		sugList.append("Order")
 		sugList.append("Main Menu")
 		title = nutItem
-		formattedText = "Calories: " + str(nutCal) + "\n  \n" + "Protein: " + str(nutProtein) + "\n  \n" + "Fats: " + str(nutFat) + "\n  \n" + \
-						"Carbohydrates: " + str(nutCarbs) + \
-						"\n  \n" + "Salt: " + str(nutSalt) + "\n  \n" + "Saturated Fat: " + str(nutSatFat) + "\n  \n" + \
-						"Sugar: " + str(nutSugar) + "\n  \n" + "Fibre: " + str(nutFibre)
+		formattedText = "Calories: " + str(nutCal) + " K Cal"+ "\n  \n" + "Protein: " + str(nutProtein) + " gm" + "\n  \n" + \
+						"Fats: " + str(nutFat) + " gm" +"\n  \n" + "Carbohydrates: " + str(nutCarbs) + " gm" + "\n  \n" + \
+						"Salt: " + str(nutSalt) + " gm" + "\n  \n" + "Saturated Fat: " + str(nutSatFat) + " gm" + "\n  \n" + \
+						"Sugar: " + str(nutSugar) + " gm" + "\n  \n" + "Fibre: " + str(nutFibre) + " gm" 
 		#imgURL = Constants.getAWSStoreImagesURL() + nearestStore["imgName"]
 		imgAccText = "Default accessibility text"
 
@@ -84,7 +103,7 @@ class NutritionDetailedController(object):
 
 	def createNutritionCarouselResponse(self, nutritionData):
 		simpleResponse = []
-		simpleResponse.append("These are the items that matched your search. Click on any one of them to view the item")
+		simpleResponse.append("These are the items that matched your search. Click on any one of them to view more detailed nutrition information")
 
 		sugList = []
 		sugList.append("Main Menu")
@@ -93,7 +112,8 @@ class NutritionDetailedController(object):
 		myCarousel = Carousel.get_provider(self.source, simpleResponse)
 
 		for nutData in nutritionData:
-			formattedText = "Calories: " + str(nutData["Energy (K Cal)"]) + "\n  \nProtein: " + str(nutData["Protein"]) 
+			formattedText = "Calories: " + str(nutData["Energy (K Cal)"]) + " K Cal" + ", Protein: " + str(nutData["Protein"]) + " gm" + \
+							", Fats: " + str(nutData["Fat"]) + " gm" 
 
 			myCarousel.addCarouselItem(nutData["_id"], nutData["Item"], 
 				nutData["Item"], formattedText, '', 

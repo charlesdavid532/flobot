@@ -20,7 +20,7 @@ class NutritionOuterController(object):
 		sugList = []
 
 		#TODO::This sug list should be taken from a table which has the most frequent items
-		sugList.append("Sausage & Egg McMuffin™")
+		sugList.append("Sausage & Egg McMuffin")
 		sugList.append("Ham & Cheese Toastie")
 		sugList.append("Cheese Toastie")
 		sugList.append("Toastie")
