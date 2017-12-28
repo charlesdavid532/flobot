@@ -3,6 +3,9 @@ from card import Card
 from carousel import Carousel
 from selected_list_item import SelectedListItem
 from bson.objectid import ObjectId
+from constants import Constants
+from context_response import ContextResponse
+from context_responseList import ContextResponseList
 class NutritionDetailedController(object):
 	"""docstring for NutritionDetailedController"""
 	def __init__(self, requestData, mongo):
@@ -50,20 +53,29 @@ class NutritionDetailedController(object):
 		return self.createNutritionResponse(selectedFoodItem, True)
 
 	def createNutritionResponse(self, item, isExactSearch):
+		#Adding a basic context
+		# Creating the store information context object
+		nutritionContextResponseObject = ContextResponse(Constants.getStrNutritionContext(), 1)
+		nutritionContextResponseObject.addFeature("nutrition-information", True)
+
+		contextResponseMainList = ContextResponseList()
+		contextResponseMainList.addContext(nutritionContextResponseObject)
+
+
 		nutritionHelperObj = NutritionHelper(self.mongo)
 		nutritionData = nutritionHelperObj.getNutritionData(item, isExactSearch)
 		if nutritionData != False:
 			if nutritionData.count() > 1:
 				#Make a carousel
-				return self.createNutritionCarouselResponse(nutritionData)
+				return self.createNutritionCarouselResponse(nutritionData, contextResponseMainList.getContextJSONResponse())
 			else:
 				#Make a card
-				return self.createNutritionCardResponse(nutritionData)
+				return self.createNutritionCardResponse(nutritionData, contextResponseMainList.getContextJSONResponse())
 				
 
 
 
-	def createNutritionCardResponse(self, nutritionData):
+	def createNutritionCardResponse(self, nutritionData, nutOutputContext):
 		for nutData in nutritionData:
 			nutItem = nutData['Item']
 			nutCal = nutData['Energy (K Cal)']
@@ -96,12 +108,12 @@ class NutritionDetailedController(object):
 		myCard.addTitle(title)
 		myCard.addSugTitles(sugList)
 		myCard.addExpectedUserResponse()
-		
+		myCard.addOutputContext(nutOutputContext)
 
 		return myCard.getCardResponse()
 
 
-	def createNutritionCarouselResponse(self, nutritionData):
+	def createNutritionCarouselResponse(self, nutritionData, nutOutputContext):
 		simpleResponse = []
 		simpleResponse.append("These are the items that matched your search. Click on any one of them to view more detailed nutrition information")
 
@@ -120,4 +132,5 @@ class NutritionDetailedController(object):
 				nutData["Item"])
 		
 		myCarousel.addSugTitles(sugList)
+		myCarousel.addOutputContext(nutOutputContext)
 		return myCarousel.getCarouselResponse()

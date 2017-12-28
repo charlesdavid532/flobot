@@ -84,6 +84,10 @@ class Constants(object):
 		return "store_information"
 
 	@staticmethod
+	def getStrNutritionContext():
+		return "nutrition_information"
+
+	@staticmethod
 	def getAWSBucketURL():
 		return "https://s3.amazonaws.com/flobot/"
 
