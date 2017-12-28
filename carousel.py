@@ -46,7 +46,8 @@ class Carousel(object):
 		self.imgAccTextArr = imgAccTextArr
 
 
-
+	def addOutputContext(self, outputContext):
+		self.outputContext = outputContext
 	
 
 	def getCarouselResponse(self):
@@ -137,6 +138,16 @@ class GoogleCarousel(Carousel):
 		carouselResponse["speech"] = self.simpleResponse[0]
 		carouselResponse["data"] = {}
 		carouselResponse["source"] = "phillips-bot"
+
+		#Adding context
+		if self.outputContext == None or self.outputContext == "":
+			outputContext = []
+		else:
+			outputContext = self.outputContext
+			print("The length of context list in card response is:"+str(len(outputContext)))
+
+		carouselResponse["contextOut"] = outputContext
+
 		dataDict = carouselResponse["data"]
 
 		dataDict["google"] = {}
@@ -229,7 +240,7 @@ class FacebookCarousel(Carousel):
 		carouselResponse["source"] = "phillips-bot"
 
 		#Adding context
-		'''
+		
 		if self.outputContext == None or self.outputContext == "":
 			outputContext = []
 		else:
@@ -237,7 +248,7 @@ class FacebookCarousel(Carousel):
 			print("The length of context list in card response is:"+str(len(outputContext)))
 
 		carouselResponse["contextOut"] = outputContext
-		'''
+		
 		
 		dataDict = carouselResponse["data"]
 		dataDict["facebook"] = {}

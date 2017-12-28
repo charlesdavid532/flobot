@@ -250,6 +250,9 @@ class FacebookCard(Card):
 	def getInteriorCardResponse(self):
 		basicCard = {}
 
+		#Adding code to replace double \n with single \n
+		self.formattedText = self.formattedText.replace("\n  \n", "\n")
+
 		if self.title != "" and self.title != None:
 			basicCard["title"] = self.title
 		else:

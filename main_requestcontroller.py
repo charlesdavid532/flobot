@@ -5,8 +5,8 @@ from selected_list_item import SelectedListItem
 from show_offers import ShowOffers
 from selected_offer import SelectedOffer
 from information_controller import InformationController
-from nutrition_outer_controller import NutritionOuterController
-from nutrition_detailed_controller import NutritionDetailedController
+from nutrition.nutrition_outer_controller import NutritionOuterController
+from nutrition.nutrition_detailed_controller import NutritionDetailedController
 from main_menu import MainMenu
 from delivery_policy import DeliveryPolicy
 from store_information_controller import StoreInformationController
@@ -118,10 +118,37 @@ class MainRequestController(object):
 			nutritionOuterResponseObj.setUserData(self.userDataObj)
 			self.responseData = nutritionOuterResponseObj.getJSONResponse()
 		elif self.requestData.get("result").get("action") == "detailed.nutrition":
-			nutritionDetailedResponseObj = NutritionDetailedController(self.requestData)
+			nutritionDetailedResponseObj = NutritionDetailedController(self.requestData, self.mongo)
 			nutritionDetailedResponseObj.setSource(self.source)
 			nutritionDetailedResponseObj.setUserData(self.userDataObj)
-			self.responseData = self.makeContextWebhookResult(nutritionDetailedResponseObj.getJSONResponse(), [])
+			self.responseData = nutritionDetailedResponseObj.getJSONResponse()
+			#self.responseData = self.makeContextWebhookResult(nutritionDetailedResponseObj.getJSONResponse(), [])
+		elif self.requestData.get("result").get("action") == "selected.item.nutrition":
+			nutritionDetailedResponseObj = NutritionDetailedController(self.requestData, self.mongo)
+			nutritionDetailedResponseObj.setSource(self.source)
+			nutritionDetailedResponseObj.setUserData(self.userDataObj)
+			self.responseData = nutritionDetailedResponseObj.getSelectedItemResponse()
+		elif self.requestData.get("result").get("action") == "context.detailed.nutrition":
+			nutritionDetailedResponseObj = NutritionDetailedController(self.requestData, self.mongo)
+			nutritionDetailedResponseObj.setSource(self.source)
+			nutritionDetailedResponseObj.setUserData(self.userDataObj)
+			self.responseData = nutritionDetailedResponseObj.getJSONResponse()
+		elif self.requestData.get("result").get("action") == "show.nutrition.ingredient":
+			nutritionDetailedResponseObj = NutritionDetailedController(self.requestData, self.mongo)
+			nutritionDetailedResponseObj.setSource(self.source)
+			nutritionDetailedResponseObj.setUserData(self.userDataObj)
+			self.responseData = nutritionDetailedResponseObj.getNutritionIngredientResponse()
+		elif self.requestData.get("result").get("action") == "selected.item.nutrition.ingredient":
+			nutritionDetailedResponseObj = NutritionDetailedController(self.requestData, self.mongo)
+			nutritionDetailedResponseObj.setSource(self.source)
+			nutritionDetailedResponseObj.setUserData(self.userDataObj)			
+			self.responseData = nutritionDetailedResponseObj.getSelectedItemResponse()
+		elif self.requestData.get("result").get("action") == "nutrition.ingredient.context":
+			nutritionDetailedResponseObj = NutritionDetailedController(self.requestData, self.mongo)
+			nutritionDetailedResponseObj.setSource(self.source)
+			nutritionDetailedResponseObj.setUserData(self.userDataObj)
+			nutritionDetailedResponseObj.setIsContext(Constants.getStrNutritionIngredientContext())
+			self.responseData = nutritionDetailedResponseObj.getSelectedIngredientResponse()
 		elif self.requestData.get("result").get("action") == "show.information":
 			informationResponseObj = InformationController(self.requestData)
 			informationResponseObj.setSource(self.source)
