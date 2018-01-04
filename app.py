@@ -902,7 +902,7 @@ def shareFBCoupon():
 def offers():
     form = OffersForm(mongo)
     if request.method == 'POST' and form.validate_on_submit():
-        flash(form.validateOffer(form.offerCode.data))
+        flash(form.validateOffer(form.offerCode.data, form.billAmount.data))
         #return 'Form posted.'
         #return redirect('/success')
     return render_template('offers.html', form=form)
