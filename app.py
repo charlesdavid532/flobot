@@ -1,7 +1,7 @@
 from __future__ import print_function
 import json
 import os, sys, json, requests
-from flask import Flask, request, make_response, render_template, redirect, url_for, session
+from flask import Flask, request, make_response, render_template, redirect, url_for, session, flash
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm 
 from wtforms import StringField, PasswordField, BooleanField, validators
@@ -34,6 +34,7 @@ import pyperclip
 from custom_list import List
 from fb_share_dialog_controller import FBShareDialogController
 from user_data import UserDataModel
+from offers.offer_form import OffersForm
 
 try:
     import apiai
@@ -895,6 +896,16 @@ def shareFBCoupon():
     fbShareDialogControllerObj = FBShareDialogController()
     fbShareDialogControllerObj.setCouponCode(request.args['selectedCouponCode'])
     return redirect(fbShareDialogControllerObj.getJSONResponse())
+
+
+@app.route('/offers', methods=('GET', 'POST'))
+def offers():
+    form = OffersForm(mongo)
+    if request.method == 'POST' and form.validate_on_submit():
+        flash(form.validateOffer(form.offerCode.data))
+        #return 'Form posted.'
+        #return redirect('/success')
+    return render_template('offers.html', form=form)
 
 # Handling HTTP POST when APIAI sends us a payload of messages that have
 # have been sent to our bot. 
