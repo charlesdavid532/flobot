@@ -9,6 +9,7 @@ class Carousel(object):
 		self.provider_name = provider_name
 		self.simpleResponse = simpleResponse
 		self.expectedUserResponse = True
+		self.outputContext = None
 		self.sugTitles = None
 		self.keyArr = []
 		self.titleArr = []
