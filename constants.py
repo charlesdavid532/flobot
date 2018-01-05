@@ -1,8 +1,17 @@
 from datetime import datetime as dt
+import os
 class Constants(object):
 	"""docstring for Constants"""
 	def __init__(self):
 		super(Constants, self).__init__()
+
+	@staticmethod
+	def getAppURL():
+		return os.environ['APP_URL']
+
+	@staticmethod
+	def getLocalhostURL():
+		return "https://localhost:5000/"
 
 	@staticmethod
 	def getStrGoogle():
@@ -134,4 +143,12 @@ class Constants(object):
 	@staticmethod
 	def getMaxDeliveryDistance():
 		return 5
+
+	@staticmethod
+	def getFBShareDialogURL():
+		return Constants.getAppURL() + "/facebook/share"
+
+	@staticmethod
+	def getFBLoginAuthorizeURL():
+		return Constants.getAppURL() + "/authorize/facebook"
 		
