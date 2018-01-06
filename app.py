@@ -1,7 +1,7 @@
 from __future__ import print_function
 import json
 import os, sys, json, requests
-from flask import Flask, request, make_response, render_template, redirect, url_for, session
+from flask import Flask, request, make_response, render_template, redirect, url_for, session, flash
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm 
 from wtforms import StringField, PasswordField, BooleanField, validators
@@ -34,6 +34,7 @@ import pyperclip
 from custom_list import List
 from fb_share_dialog_controller import FBShareDialogController
 from user_data import UserDataModel
+from offers.offer_form import OffersForm
 
 try:
     import apiai
@@ -422,12 +423,23 @@ class FacebookSignIn(OAuthSignIn):
             decoder=decode_json
         )
         me = oauth_session.get('me?fields=id,email').json()
-        print("The users id is:::" + str(me.get('id')))
-        print("The users name is:::" + str(me.get('email').split('@')[0]))
-        print("The users email is:::" + str(me.get('email')))
 
-        session['profile_id'] = me.get('id')
-        session['fbEmail'] = me.get('email')
+        fbUserId = me.get('id')
+        fbUserEmail = me.get('email')
+
+        if fbUserEmail == None or fbUserEmail == '':
+            fbUserEmail = ''
+            fbUserName = ''
+        else:
+            fbUserName = fbUserEmail.split('@')[0]
+
+
+        print("The users id is:::" + str(fbUserId))
+        print("The users name is:::" + str(fbUserName))
+        print("The users email is:::" + str(fbUserEmail))
+
+        session['profile_id'] = fbUserId
+        session['fbEmail'] = fbUserEmail
 
 
         #TODO: Retrieve the PSID from the endpoint and return it back so that that can be inserted in the db
@@ -435,15 +447,22 @@ class FacebookSignIn(OAuthSignIn):
 
         return (
             psid,
-            'facebook$' + me['id'],
-            me.get('email').split('@')[0],  # Facebook does not provide
+            'facebook$' + fbUserId,
+            fbUserName,  # Facebook does not provide
                                             # username, so the email's user
                                             # is used instead
-            me.get('email')
+            fbUserEmail
         )
 
 
     def getFBUserAccessToken(self):
+        # Checking whether the token exists
+        fbAccessToken = self.checkAndReturnFBAccessToken()
+        if fbAccessToken != False:
+            #Adding to db and posting on fb
+            #self.addFBAccessTokenToDB(fbAccessToken, session['fbEmail'], session['profile_id'])
+            return fbAccessToken
+
         getVars = {'code': session['facebook_code'],'client_id':self.consumer_id,
                     'client_secret':self.consumer_secret, 'redirect_uri': self.get_callback_url()}
         callbackURI = 'https://graph.facebook.com/oauth/access_token' + '?' + urllib.parse.urlencode(getVars)
@@ -483,6 +502,15 @@ class FacebookSignIn(OAuthSignIn):
 
     def getFBPageAccessToken(self):
         longLivedUserToken = self.getFBUserAccessToken()
+
+        # Checking whether the token exists
+        fbPageAccessToken = self.checkAndReturnFBPageAccessToken()
+        if fbPageAccessToken != False:
+            #Adding to db and posting on fb
+            #self.addFBPageAccessToken(fbPageAccessToken, session['fbEmail'], session['profile_id'])
+            return fbPageAccessToken
+
+
         getVars = {'fields': 'access_token',
                     'access_token': longLivedUserToken}
         callbackURI = 'https://graph.facebook.com/' +  os.environ['FACEBOOK_PAGE_ID'] + '?' + urllib.parse.urlencode(getVars)
@@ -591,6 +619,24 @@ class FacebookSignIn(OAuthSignIn):
                             'clientId': 'facebook',
                             'fbEmail': fbEmail, 'profileID': profileID})
 
+
+    def checkAndReturnFBAccessToken(self):
+        tokenCodes = mongo.db.tokens
+
+        for token in tokenCodes.find({'type' : 'ACCESS', 'clientId': 'facebook'}):
+            print("token is:::::" + str(token['_id']))
+            return token['_id']
+
+        return False
+
+
+    def checkAndReturnFBPageAccessToken(self):
+        tokenCodes = mongo.db.tokens
+
+        for token in tokenCodes.find({'type' : 'PAGE_ACCESS', 'clientId': 'facebook'}):
+            return token['_id']
+
+        return False
 
     def getCurrentDateAndTime(self):
         return dt.now()
@@ -895,6 +941,16 @@ def shareFBCoupon():
     fbShareDialogControllerObj = FBShareDialogController()
     fbShareDialogControllerObj.setCouponCode(request.args['selectedCouponCode'])
     return redirect(fbShareDialogControllerObj.getJSONResponse())
+
+
+@app.route('/offers', methods=('GET', 'POST'))
+def offers():
+    form = OffersForm(mongo)
+    if request.method == 'POST' and form.validate_on_submit():
+        flash(form.validateOffer(form.offerCode.data, form.billAmount.data))
+        #return 'Form posted.'
+        #return redirect('/success')
+    return render_template('offers.html', form=form)
 
 # Handling HTTP POST when APIAI sends us a payload of messages that have
 # have been sent to our bot. 

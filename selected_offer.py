@@ -45,7 +45,8 @@ class SelectedOffer(object):
 		#mySuggestionChipResponse.addSugTitles(["Share on Facebook"])
 		paramVars = {}
 		paramVars['selectedCouponCode'] = selectedCouponCode
-		FBShareDialogURI = "https://flobots.herokuapp.com/facebook/share" + '?' + urllib.parse.urlencode(paramVars)
+		#FBShareDialogURI = "https://flobots.herokuapp.com/facebook/share" + '?' + urllib.parse.urlencode(paramVars)
+		FBShareDialogURI = Constants.getFBShareDialogURL() + '?' + urllib.parse.urlencode(paramVars)
 		'''
 		mySuggestionChipResponse.addLinkOutSuggestion("Share on Facebook", "https://flobots.herokuapp.com/facebook/share")
 		'''
@@ -64,7 +65,8 @@ class SelectedOffer(object):
 		#This is meant only for facebook
 		if self.source == Constants.getStrFacebook():
 			if self.userDataObj.hasFBUserLoggedIn(self.requestData.get("originalRequest").get("data").get("sender").get("id")) != True:
-				mySuggestionChipResponse.addLoginBtn("https://flobots.herokuapp.com/authorize/facebook")
+				#mySuggestionChipResponse.addLoginBtn("https://flobots.herokuapp.com/authorize/facebook")
+				mySuggestionChipResponse.addLoginBtn(Constants.getFBLoginAuthorizeURL())
 
 		return mySuggestionChipResponse.getSuggestionChipResponse()
 
