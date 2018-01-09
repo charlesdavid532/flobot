@@ -1,4 +1,4 @@
-from suggestion_list import SuggestionList
+from common.suggestion_list import SuggestionList
 
 class ButtonTemplate(object):
 	"""docstring for ButtonTemplate"""

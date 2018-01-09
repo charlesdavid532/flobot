@@ -1,12 +1,12 @@
 from nutrition.nutrition_helper import NutritionHelper
-from card import Card
-from carousel import Carousel
-from selected_list_item import SelectedListItem
+from common.card import Card
+from common.carousel import Carousel
+from common.selected_list_item import SelectedListItem
 from bson.objectid import ObjectId
 from constants import Constants
-from context_request import ContextRequest
-from context_response import ContextResponse
-from context_responseList import ContextResponseList
+from common.context_request import ContextRequest
+from common.context_response import ContextResponse
+from common.context_responseList import ContextResponseList
 class NutritionDetailedController(object):
 	"""docstring for NutritionDetailedController"""
 	def __init__(self, requestData, mongo):

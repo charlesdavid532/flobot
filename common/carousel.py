@@ -1,15 +1,15 @@
-from suggestion_list import SuggestionList
+from common.suggestion_list import SuggestionList
 
-class List(object):
+class Carousel(object):
 	providers = None
-	"""creates and returns a JSON response for List"""
+	"""creates and returns a JSON response for Carousel"""
 	def __init__(self, provider_name, simpleResponse):
-		super(List, self).__init__()
-		print("Inside custom list")
+		super(Carousel, self).__init__()
+		print("Inside carousel")
 		self.provider_name = provider_name
 		self.simpleResponse = simpleResponse
-		self.listTitle = None
 		self.expectedUserResponse = True
+		self.outputContext = None
 		self.sugTitles = None
 		self.keyArr = []
 		self.titleArr = []
@@ -17,7 +17,7 @@ class List(object):
 		self.descriptionArr = []
 		self.imgURLArr = []
 		self.imgAccTextArr = []
-
+		
 
 
 	def removeExpectedUserResponse(self):
@@ -29,10 +29,8 @@ class List(object):
 	def addSugTitles(self, sugTitles):
 		self.sugTitles = sugTitles
 
-	def addListTitle(self, listTitle):
-		self.listTitle = listTitle
 
-	def addListItem(self, key, title, syn, description, imgURL, imgAccText):
+	def addCarouselItem(self, key, title, syn, description, imgURL, imgAccText):
 		self.keyArr.append(key)
 		self.titleArr.append(title)
 		self.synArr.append(syn)
@@ -40,7 +38,7 @@ class List(object):
 		self.imgURLArr.append(imgURL)
 		self.imgAccTextArr.append(imgAccText)
 
-	def addCompleteListItem(self, keyArr, titleArr, synArr, descriptionArr, imgURLArr, imgAccTextArr):
+	def addCompleteCarouselItem(self, keyArr, titleArr, synArr, descriptionArr, imgURLArr, imgAccTextArr):
 		self.keyArr = keyArr
 		self.titleArr = titleArr
 		self.synArr = synArr
@@ -49,7 +47,11 @@ class List(object):
 		self.imgAccTextArr = imgAccTextArr
 
 
-	def getListResponse(self):
+	def addOutputContext(self, outputContext):
+		self.outputContext = outputContext
+	
+
+	def getCarouselResponse(self):
 		pass
 
 
@@ -67,62 +69,60 @@ class List(object):
 		return self.providers[provider_name]
 
 
-class GoogleList(List):
-	"""docstring for GoogleList"""
+class GoogleCarousel(Carousel):
+	"""docstring for GoogleCarousel"""
 	def __init__(self, simpleResponse):
-		super(GoogleList, self).__init__('google', simpleResponse)
+		super(GoogleCarousel, self).__init__('google', simpleResponse)
 
 
-	def getListItemResponse(self, key, title, syn, description, imgURL, imgAccText):
-		listItemDict = {}
-		listItemDict["optionInfo"] = {}
+	def getCarouselItemResponse(self, key, title, syn, description, imgURL, imgAccText):
+		carouselItemDict = {}
+		carouselItemDict["optionInfo"] = {}
 
-		optionInfoDict = listItemDict["optionInfo"]
+		optionInfoDict = carouselItemDict["optionInfo"]
 		optionInfoDict["key"] = key
 		optionInfoDict["synonyms"] = []
 
 		synList = optionInfoDict["synonyms"]
 		synList.append(syn)
 
-		listItemDict["title"] = title
-		listItemDict["description"] = description
+		carouselItemDict["title"] = title
+		carouselItemDict["description"] = description
 
-		listItemDict["image"] = {}
+		carouselItemDict["image"] = {}
 
-		imageDict = listItemDict["image"]
+		imageDict = carouselItemDict["image"]
 		imageDict["url"] = imgURL
 		imageDict["accessibilityText"] = imgAccText
 
-		return listItemDict
+		return carouselItemDict
 
-	def getInteriorListResponse(self):
+
+	def getInteriorCarouselResponse(self):
 		systemIntentDict = {}
 		systemIntentDict["intent"] = "actions.intent.OPTION"
 		systemIntentDict["data"] = {}
 
 		dataDict = systemIntentDict["data"]
 		dataDict["@type"] = "type.googleapis.com/google.actions.v2.OptionValueSpec"
-		dataDict["listSelect"] = {}
+		dataDict["carouselSelect"] = {}
 
-		listSelectDict = dataDict["listSelect"]
+		carouselSelectDict = dataDict["carouselSelect"]
 
-		if self.listTitle != "" and self.listTitle != None:
-			listSelectDict["title"] = self.listTitle
+		carouselSelectDict["items"] = []
 
-		listSelectDict["items"] = []
-
-		itemList = listSelectDict["items"]
+		itemList = carouselSelectDict["items"]
 
 		for index in range(0, len(self.titleArr)):
-			itemList.append(self.getListItemResponse(self.keyArr[index], self.titleArr[index], 
+			itemList.append(self.getCarouselItemResponse(self.keyArr[index], self.titleArr[index], 
 				self.synArr[index], self.descriptionArr[index], self.imgURLArr[index], self.imgAccTextArr[index]))
 
 
 		return systemIntentDict
 
 
-	def getListResponse(self):
-		listResponse = {}
+	def getCarouselResponse(self):
+		carouselResponse = {}
 		itemsDict = {}
 		itemsDict["simpleResponse"] = {}
 		simpleResponseDict = itemsDict["simpleResponse"]
@@ -136,9 +136,20 @@ class GoogleList(List):
 			simpleResponseDict1["textToSpeech"] = self.simpleResponse[1]
 
 		
-		listResponse["data"] = {}
-		listResponse["source"] = "phillips-bot"
-		dataDict = listResponse["data"]
+		carouselResponse["speech"] = self.simpleResponse[0]
+		carouselResponse["data"] = {}
+		carouselResponse["source"] = "phillips-bot"
+
+		#Adding context
+		if self.outputContext == None or self.outputContext == "":
+			outputContext = []
+		else:
+			outputContext = self.outputContext
+			print("The length of context list in card response is:"+str(len(outputContext)))
+
+		carouselResponse["contextOut"] = outputContext
+
+		dataDict = carouselResponse["data"]
 
 		dataDict["google"] = {}
 		googleDict = dataDict["google"]
@@ -161,24 +172,25 @@ class GoogleList(List):
 
 		if self.sugTitles != "" and self.sugTitles != None:
 			mySuggestionList = SuggestionList(self.sugTitles)
+			mySuggestionList.setSource(self.provider_name)
 			richResponseDict["suggestions"] = mySuggestionList.getSuggestionListResponse()
 
-		googleDict["systemIntent"] = self.getInteriorListResponse()
+		googleDict["systemIntent"] = self.getInteriorCarouselResponse()
 
-		return listResponse
+		return carouselResponse
+		
 
-
-class FacebookList(List):
-	"""docstring for FacebookList"""
+class FacebookCarousel(Carousel):
+	"""docstring for FacebookCarousel"""
 	def __init__(self, simpleResponse):
-		super(FacebookList, self).__init__('facebook', simpleResponse)
+		super(FacebookCarousel, self).__init__('facebook', simpleResponse)
 
 
-	def getInteriorListResponse(self, key, title, syn, description, imgURL, imgAccText):
-		basicList = {}
+	def getInteriorCarouselResponse(self, key, title, syn, description, imgURL, imgAccText):
+		basicCarousel = {}
 
 		if title != "" and title != None:
-			basicList["title"] = title
+			basicCarousel["title"] = title
 
 		'''
 		if self.hasText == True:
@@ -187,22 +199,22 @@ class FacebookList(List):
 
 		#Note: Added the formatted text to the subtitle
 		if description != "" and description != None:
-			basicList["subtitle"] = description
+			basicCarousel["subtitle"] = description
 
 		if imgURL != "" and imgURL != None:
-			basicList["image_url"] = imgURL			
+			basicCarousel["image_url"] = imgURL			
 
 
 		
-		basicList["buttons"] = []
+		basicCarousel["buttons"] = []
 
-		buttonsList = basicList["buttons"]
+		buttonsList = basicCarousel["buttons"]
 
 		#Adding the default btn type
 		#buttonsList.append(self.getButtonResponse("postback", title, "", key))
 		buttonsList.append(self.getButtonResponse("postback", "Tap to view", "", key))
 
-		return basicList
+		return basicCarousel
 
 
 
@@ -221,15 +233,15 @@ class FacebookList(List):
 		return btnDict
 
 
-	def getListResponse(self):
-		listResponse = {}
+	def getCarouselResponse(self):
+		carouselResponse = {}
 
 
-		listResponse["data"] = {}
-		listResponse["source"] = "phillips-bot"
+		carouselResponse["data"] = {}
+		carouselResponse["source"] = "phillips-bot"
 
 		#Adding context
-		'''
+		
 		if self.outputContext == None or self.outputContext == "":
 			outputContext = []
 		else:
@@ -237,9 +249,9 @@ class FacebookList(List):
 			print("The length of context list in card response is:"+str(len(outputContext)))
 
 		carouselResponse["contextOut"] = outputContext
-		'''
 		
-		dataDict = listResponse["data"]
+		
+		dataDict = carouselResponse["data"]
 		dataDict["facebook"] = {}
 		facebookDict = dataDict["facebook"]
 
@@ -256,15 +268,14 @@ class FacebookList(List):
 		attachmentMessage["payload"] = {}
 
 		payload = attachmentMessage["payload"]
-		payload["template_type"] = "list"
-		payload["top_element_style"] = "compact"
+		payload["template_type"] = "generic"
 		payload["elements"] = []
 
 		elementsPayload = payload["elements"]
 
 		#Adding a loop to append all elements
 		for index in range(0, len(self.titleArr)):
-			elementsPayload.append(self.getInteriorListResponse(self.keyArr[index], self.titleArr[index], 
+			elementsPayload.append(self.getInteriorCarouselResponse(self.keyArr[index], self.titleArr[index], 
 				self.synArr[index], self.descriptionArr[index], self.imgURLArr[index], self.imgAccTextArr[index]))
 		#elementsPayload.append(self.getInteriorCardResponse())
 
@@ -279,5 +290,4 @@ class FacebookList(List):
 
 
 
-		return listResponse
-		
+		return carouselResponse

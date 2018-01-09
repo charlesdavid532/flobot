@@ -1,8 +1,8 @@
-from selected_list_item import SelectedListItem
-from suggestion_chip import SuggestionChip
+from common.selected_list_item import SelectedListItem
+from common.suggestion_chip import SuggestionChip
 from bson.objectid import ObjectId
-from context_response import ContextResponse
-from context_responseList import ContextResponseList
+from common.context_response import ContextResponse
+from common.context_responseList import ContextResponseList
 from constants import Constants
 from fb_share_dialog_controller import FBShareDialogController
 import urllib

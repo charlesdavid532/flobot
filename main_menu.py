@@ -1,4 +1,4 @@
-from suggestion_chip import SuggestionChip
+from common.suggestion_chip import SuggestionChip
 class MainMenu(object):
 	"""docstring for MainMenu"""
 	def __init__(self, requestData):

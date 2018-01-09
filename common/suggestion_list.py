@@ -1,4 +1,4 @@
-from suggestion import Suggestion
+from common.suggestion import Suggestion
 
 class SuggestionList(object):
 	"""Creates and Returns a suggestion list response in SuggestionList"""

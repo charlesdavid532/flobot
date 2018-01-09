@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, DecimalField
 from wtforms.validators import DataRequired
 import re
-from date_utils import DateUtils
+from utils.date_utils import DateUtils
 
 class OffersForm(FlaskForm):
 	offerCode = StringField('Offer code', validators=[DataRequired()])

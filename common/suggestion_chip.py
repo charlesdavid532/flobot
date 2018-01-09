@@ -1,7 +1,7 @@
-from suggestion_list import SuggestionList
-from button_template import ButtonTemplate
-from suggestion import Suggestion
-from common.utils import Utils
+from common.suggestion_list import SuggestionList
+from common.button_template import ButtonTemplate
+from common.suggestion import Suggestion
+from utils.utils import Utils
 
 class SuggestionChip(object):
 	providers = None

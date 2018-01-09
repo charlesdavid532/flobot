@@ -1,4 +1,4 @@
-from date_utils import DateUtils
+from utils.date_utils import DateUtils
 class UserDataModel(object):
 	"""docstring for UserData"""
 	def __init__(self, mongo):

@@ -1,4 +1,4 @@
-from card import Card
+from common.card import Card
 class DeliveryPolicy(object):
 	"""docstring for DeliveryPolicy"""
 	def __init__(self, requestData):

@@ -1,5 +1,5 @@
-from suggestion_list import SuggestionList
-from common.utils import Utils
+from common.suggestion_list import SuggestionList
+from utils.utils import Utils
 
 class Card(object):
 	providers = None

@@ -1,7 +1,7 @@
-from card import Card
+from common.card import Card
 from constants import Constants
-from suggestion_chip import SuggestionChip
-from common.utils import Utils
+from common.suggestion_chip import SuggestionChip
+from utils.utils import Utils
 class WelcomeResponse(object):
 	"""Handles the welcome request"""
 	def __init__(self, requestData):
