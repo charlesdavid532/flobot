@@ -1,4 +1,4 @@
-from carousel import Carousel
+from common.carousel import Carousel
 from constants import Constants
 
 class ShowOffers(object):

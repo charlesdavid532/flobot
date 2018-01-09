@@ -1,5 +1,5 @@
-from suggestion_list import SuggestionList
-from suggestion_chip import SuggestionChip
+from common.suggestion_list import SuggestionList
+from common.suggestion_chip import SuggestionChip
 
 class PermissionResponse(object):
 	providers = None

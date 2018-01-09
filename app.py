@@ -25,13 +25,13 @@ import io
 import uuid
 from main_requestcontroller import MainRequestController
 from constants import Constants
-from card import Card
+from common.card import Card
 from rauth import OAuth2Service
 import urllib
 from urllib.request import urlopen
 from facepy import GraphAPI
 import pyperclip
-from custom_list import List
+from common.custom_list import List
 from fb_share_dialog_controller import FBShareDialogController
 from user_data import UserDataModel
 from offers.offer_form import OffersForm

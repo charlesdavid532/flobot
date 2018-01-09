@@ -1,6 +1,7 @@
-from card import Card
+from common.card import Card
 from constants import Constants
-from suggestion_chip import SuggestionChip
+from common.suggestion_chip import SuggestionChip
+from utils.utils import Utils
 class WelcomeResponse(object):
 	"""Handles the welcome request"""
 	def __init__(self, requestData):
@@ -21,7 +22,12 @@ class WelcomeResponse(object):
 
 		simpleResponse = []
 
-		gUsername = self.userDataObj.getUsername()
+		psid = ''
+
+		if Utils.isSourceFacebook(self.source) == True:
+			psid = self.requestData.get("originalRequest").get("data").get("sender").get("id")
+
+		gUsername = self.userDataObj.getUsername(psid)
 
 		if gUsername == False:
 			gUsername = ""

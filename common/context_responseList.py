@@ -1,4 +1,4 @@
-from context_response import ContextResponse
+from common.context_response import ContextResponse
 
 class ContextResponseList(object):
 	"""Holds the entire list of all contexts that are to be passed to api.ai"""

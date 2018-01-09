@@ -1,4 +1,4 @@
-from date_utils import DateUtils
+from utils.date_utils import DateUtils
 class UserDataModel(object):
 	"""docstring for UserData"""
 	def __init__(self, mongo):
@@ -121,6 +121,14 @@ class UserDataModel(object):
 		else:
 			return False
 
+	def getFBUsernameFromPSID(self, psid):
+		userdatacollection = self.mongo.db.fbuserdata
+		user = userdatacollection.find_one({'psid' : psid})
+		if user:
+			return user['username']
+		else:
+			return False
+
 	def insertFacebookData(self, psid, profileId, fbUsername, fbEmail):
 		userdatacollection = self.mongo.db.fbuserdata
 		userdatacollection.insert({'email' : fbEmail, 'username' : fbUsername,
@@ -148,12 +156,19 @@ class UserDataModel(object):
 			return False
 		
 	#Getter-Setter Functions
-	def getUsername(self):
+	def getUsername(self, psid):
 		if self.username != None and self.username != '':
 			return self.username
 		else:
+			#Add FB check
+			if self.checkIfFacebookPSIDExists(psid) == True:
+				# This user has logged in to facebook
+				self.username = self.getFBUsernameFromPSID(psid)
+				return self.username
+
 			userdatacollection = self.mongo.db.userdata
-			user = userdatacollection.find_one({'email' : self.email})
+			user = userdatacollection.find_one({'email' : self.email})			
+
 			if user:
 				self.username = user['username']
 				return self.username

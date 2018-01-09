@@ -1,4 +1,5 @@
-from suggestion_list import SuggestionList
+from common.suggestion_list import SuggestionList
+from utils.utils import Utils
 
 class Card(object):
 	providers = None
@@ -193,12 +194,12 @@ class FacebookCard(Card):
 
 	def getCardResponse(self):
 		cardResponse = {}
-
+		resStr = Utils.getConcatenatedTextResponse(self.simpleResponse)
 
 		cardResponse["data"] = {}
 		cardResponse["source"] = "phillips-bot"
-		cardResponse["speech"] = self.simpleResponse[0]
-		cardResponse["displayText"] = self.simpleResponse[0]
+		cardResponse["speech"] = resStr
+		cardResponse["displayText"] = resStr
 
 		#Adding context
 		if self.outputContext == None or self.outputContext == "":

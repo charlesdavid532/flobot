@@ -1,6 +1,7 @@
-from suggestion_list import SuggestionList
-from button_template import ButtonTemplate
-from suggestion import Suggestion
+from common.suggestion_list import SuggestionList
+from common.button_template import ButtonTemplate
+from common.suggestion import Suggestion
+from utils.utils import Utils
 
 class SuggestionChip(object):
 	providers = None
@@ -137,11 +138,12 @@ class FacebookSuggestionChip(SuggestionChip):
 		
 
 	def getSuggestionChipResponse(self):
+		resStr = Utils.getConcatenatedTextResponse(self.simpleResponse)
 		#If link out suggestion then create a Button template with this button as link button and the remaining chips as quick replies
 		if self.linkOutSuggestion != "" and self.linkOutSuggestion != None:
 			btnTemplateObj = ButtonTemplate()
 			btnTemplateObj.setSource(self.provider_name)
-			btnTemplateObj.addText(self.simpleResponse[0])
+			btnTemplateObj.addText(resStr)
 			btnTemplateObj.addSugTitles(self.sugTitles)
 			btnTemplateObj.addOutputContext(self.outputContext)
 			btnTemplateObj.addLinkButton(self.linkOutSuggestion["destinationName"], self.linkOutSuggestion["url"])
@@ -157,7 +159,7 @@ class FacebookSuggestionChip(SuggestionChip):
 		if self.loginBtnUrl != "" and self.loginBtnUrl != None:
 			btnTemplateObj = ButtonTemplate()
 			btnTemplateObj.setSource(self.provider_name)
-			btnTemplateObj.addText(self.simpleResponse[0])
+			btnTemplateObj.addText(resStr)
 			btnTemplateObj.addSugTitles(self.sugTitles)
 			btnTemplateObj.addOutputContext(self.outputContext)
 			btnTemplateObj.addLoginButton(self.loginBtnUrl)
@@ -169,8 +171,8 @@ class FacebookSuggestionChip(SuggestionChip):
 
 		suggestionChipResponse["data"] = {}
 		suggestionChipResponse["source"] = "phillips-bot"
-		suggestionChipResponse["speech"] = self.simpleResponse[0]
-		suggestionChipResponse["displayText"] = self.simpleResponse[0]
+		suggestionChipResponse["speech"] = resStr
+		suggestionChipResponse["displayText"] = resStr
 
 		#Adding context
 		if self.outputContext == None or self.outputContext == "":
@@ -185,7 +187,7 @@ class FacebookSuggestionChip(SuggestionChip):
 		dataDict["facebook"] = {}
 		facebookDict = dataDict["facebook"]
 
-		facebookDict["text"] = self.simpleResponse[0]
+		facebookDict["text"] = resStr
 
 		#Added check to see if it is a location Quick Reply
 		if self.isLocationChip == True:

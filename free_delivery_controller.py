@@ -1,7 +1,7 @@
-from permission_response import PermissionResponse
-from location_parser import LocationParser
+from common.permission_response import PermissionResponse
+from common_parser.location_parser import LocationParser
 from constants import Constants
-from suggestion_chip import SuggestionChip
+from common.suggestion_chip import SuggestionChip
 class FreeDeliveryController(object):
 	"""docstring for FreeDeliveryController"""
 	def __init__(self, requestData, mongo):

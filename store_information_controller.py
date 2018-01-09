@@ -1,9 +1,9 @@
-from permission_response import PermissionResponse
-from location_parser import LocationParser
-from context_response import ContextResponse
-from context_responseList import ContextResponseList
+from common.permission_response import PermissionResponse
+from common_parser.location_parser import LocationParser
+from common.context_response import ContextResponse
+from common.context_responseList import ContextResponseList
 from constants import Constants
-from card import Card
+from common.card import Card
 class StoreInformationController(object):
 	"""docstring for StoreInformationController"""
 	def __init__(self, requestData, mongo):

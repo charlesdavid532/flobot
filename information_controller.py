@@ -1,4 +1,4 @@
-from suggestion_chip import SuggestionChip
+from common.suggestion_chip import SuggestionChip
 class InformationController(object):
 	"""docstring for InformationController"""
 	def __init__(self, requestData):
