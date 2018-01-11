@@ -945,11 +945,18 @@ def shareFBCoupon():
 
 @app.route('/offers', methods=('GET', 'POST'))
 def offers():
+    print("In offers endpoint")
+    print("Method is::" + str(request.method))
     form = OffersForm(mongo)
     if request.method == 'POST' and form.validate_on_submit():
         flash(form.validateOffer(form.offerCode.data, form.billAmount.data))
+    elif request.method == 'POST':
+        for fieldName, errorMessages in form.errors.items():
+            for err in errorMessages:
+                flash(err)
         #return 'Form posted.'
         #return redirect('/success')
+    print("Before rendering template")
     return render_template('offers.html', form=form)
 
 # Handling HTTP POST when APIAI sends us a payload of messages that have
