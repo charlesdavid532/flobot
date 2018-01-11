@@ -1,4 +1,5 @@
 from constants import Constants
+import secrets
 class Utils(object):
 	"""docstring for Utils"""
 	def __init__(self):
@@ -27,3 +28,8 @@ class Utils(object):
 			return True
 		else:
 			return False
+
+
+	@staticmethod
+	def generateRandomHex(nbytes):
+		return secrets.token_hex(nbytes)

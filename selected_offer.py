@@ -6,6 +6,7 @@ from common.context_responseList import ContextResponseList
 from constants import Constants
 from fb_share_dialog_controller import FBShareDialogController
 import urllib
+from utils.utils import Utils
 class SelectedOffer(object):
 	"""docstring for SelectedOffer"""
 	def __init__(self, requestData, mongo):
@@ -32,19 +33,23 @@ class SelectedOffer(object):
 		couponList = self.mongo.db.couponList
 
 		selectedCouponCode = ""
+		selectedCoupon = ""
 
 		for s in couponList.find({'_id': ObjectId(optionVal)}):
+			selectedCoupon = s
 			selectedCouponCode = s['offerCode']		
 
 
+		generatedCouponCode = self.createAndAddCouponCodeToGeneratedTable(selectedCoupon)
+
 		simpleResponse = []
-		simpleResponse.append("Your code is " + selectedCouponCode + ". Please provide this to the cashier before placing the order")
+		simpleResponse.append("Your code is " + generatedCouponCode + ". Please provide this to the cashier before placing the order")
 		SuggestionChip.set_provider_none()
 		mySuggestionChipResponse = SuggestionChip.get_provider(self.source, simpleResponse)
 		#session['selectedCouponCode'] = selectedCouponCode
 		#mySuggestionChipResponse.addSugTitles(["Share on Facebook"])
 		paramVars = {}
-		paramVars['selectedCouponCode'] = selectedCouponCode
+		paramVars['selectedCouponCode'] = generatedCouponCode
 		#FBShareDialogURI = "https://flobots.herokuapp.com/facebook/share" + '?' + urllib.parse.urlencode(paramVars)
 		FBShareDialogURI = Constants.getFBShareDialogURL() + '?' + urllib.parse.urlencode(paramVars)
 		'''
@@ -79,4 +84,45 @@ class SelectedOffer(object):
 		contextResponseMainList.addContext(shareOfferCodeFBContextResponseObject)
 
 		return contextResponseMainList
+
+
+	def createAndAddCouponCodeToGeneratedTable(self, couponData):
+		newCouponCode = self.createNewCouponCode(couponData['offerCode'])
+		
+		while self.checkForDuplicateCoupon(newCouponCode) == True:
+			newCouponCode = self.createNewCouponCode(couponData['offerCode'])
+
+		self.addCouponToGeneratedTable(couponData, newCouponCode)
+		return newCouponCode
+
+	def createNewCouponCode(self, couponCode):
+		return couponCode + Utils.generateRandomHex(2)
+
+	def addCouponToGeneratedTable(self, couponData, newCouponCode):
+		generatedCouponData = self.mongo.db.couponGenerated
+
+		print("The offer title is:: " + str(couponData['offerTitle']))
+
+		# TODO:: Add the user data as well
+		# Looks like over-kill need not insert all the other data again
+		generatedCouponData.insert({
+			'offerCode' : newCouponCode,
+			'offerTitle' : couponData['offerTitle'],
+			'offerText' : couponData['offerText'],
+			'minBillAmount' : couponData['minBillAmount'],
+			'expiresAt' : couponData['expiresAt'],
+			'offerImage' : couponData['offerImage']
+			})
+
+
+	def checkForDuplicateCoupon(self, couponCode):
+		generatedCouponData = self.mongo.db.couponGenerated
+
+		couponExist = generatedCouponData.find_one({'offerCode' : couponCode})
+
+		if couponExist:
+			return True
+
+		return False
+
 		
