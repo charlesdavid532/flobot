@@ -9,10 +9,10 @@ from phonenumbers.phonenumberutil import NumberParseException
 from phonenumbers import NumberParseException
 
 class OffersForm(FlaskForm):
-	name = StringField('Name', validators=[DataRequired("Name is required")])
+	name = StringField('Name', render_kw={'disabled':'disabled'})
 	#phone = TelField('Phone')
-	phone = StringField('Phone')
-	area = StringField('Area')
+	phone = StringField('Phone', render_kw={'disabled':'disabled'})
+	area = StringField('Area', render_kw={'disabled':'disabled'})
 	offerCode = StringField('Offer code', validators=[DataRequired("Offer code is required")])
 	billAmount = DecimalField('Bill Amount')
 	"""docstring for NutritionDetailedController"""
@@ -110,6 +110,12 @@ class OffersForm(FlaskForm):
 			return True
 
 		return False
+
+
+	def setPersonalDetails(self, offerForm):
+		offerForm.name.data = 'abc'
+		offerForm.phone.data = '8425915607'
+		offerForm.area.data = 'Vastrapur'
 				
 				
 		

@@ -2,12 +2,12 @@
 {% block content %}
     <div class="offer-container">
         <form method="POST" action="{{ url_for('offers') }}">
-            {{ form.csrf_token }}
+            {{ form.csrf_token }}            
+            {{ form.offerCode.label }} {{ form.offerCode(size=20) }}
+            {{ form.billAmount.label }} {{ form.billAmount(size=20) }}
             {{ form.name.label }} {{ form.name(size=20) }}
             {{ form.phone.label }} {{ form.phone(size=20) }}
             {{ form.area.label }} {{ form.area(size=20) }}
-            {{ form.offerCode.label }} {{ form.offerCode(size=20) }}
-            {{ form.billAmount.label }} {{ form.billAmount(size=20) }}
             <input type="submit" value="Go" id="offer-submit">
         </form>
         {% for message in get_flashed_messages() %}

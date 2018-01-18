@@ -70,6 +70,7 @@ class MainRequestController(object):
 		elif self.requestData.get("result").get("action") == "show.offers":
 			showOffersObj = ShowOffers(self.requestData, self.mongo)
 			showOffersObj.setSource(self.source)
+			showOffersObj.setUserData(self.userDataObj)
 			self.responseData = showOffersObj.getJSONResponse()
 		elif self.requestData.get("result").get("action") == "selected.offer":
 			selectedOfferObj = SelectedOffer(self.requestData, self.mongo)
