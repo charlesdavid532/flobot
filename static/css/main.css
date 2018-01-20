@@ -23,6 +23,8 @@ header h1.logo {
   color: #fff;
   text-transform: uppercase;
   float: left;
+  margin-top: 2px;
+  margin-left: 280px;
 }
  
 header h1.logo:hover {
@@ -41,10 +43,11 @@ header h1.logo:hover {
  
 div.offer-container {
   padding: 10px 0 30px 0;
-  background-color: #eeeeee;
+  background-color: #e1eeee;
   -webkit-border-radius: 6px;
      -moz-border-radius: 6px;
           border-radius: 6px;
+  height: 350px;
 }
  
 h2 {
@@ -70,6 +73,7 @@ form label {
   font-weight: bold;
   display: block;
   padding: 10px 0;
+  margin-left: 10px;
 }
  
 form input#offerCode,
@@ -78,12 +82,13 @@ form input#area,
 form input#phone,
 form input#billAmount {
   width: 400px;
-  background-color: #fafafa;
+  /*background-color: #fafafa;*/
   -webkit-border-radius: 3px;
      -moz-border-radius: 3px;
           border-radius: 3px;
   border: 1px solid #cccccc;
   padding: 5px;
+  margin-left: 10px;
   font-size: 1.1em;
 }
  
@@ -100,13 +105,18 @@ form textarea#message {
   font-size: 1.1em;
 }
  
-form input#offer-submit {
+form input#offer-submit,
+form input#redeem-another {
   display: block;
+  float: left;
+  width: 100px;
   -webkit-border-radius: 3px; 
      -moz-border-radius: 3px;
           border-radius: 3px;
   border:1px solid #d8d8d8;
-  padding: 10px; 
+  padding: 10px;
+  margin-top: 10px;
+  margin-left: 100px;
   font-weight:bold; 
   text-align: center; 
   color: #000000; 
@@ -118,8 +128,13 @@ form input#offer-submit {
   background-image: -o-linear-gradient(top, #f4f4f4, #e5e5e5);
   background-image: linear-gradient(top, #f4f4f4, #e5e5e5);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#f4f4f4, endColorstr=#e5e5e5);
 }
+
+form input#redeem-another{
+  margin-left: 10px;
+}
  
-form input#offer-submit:hover{
+form input#offer-submit:hover,
+form input#redeem-another:hover{
   cursor: pointer;
   border:1px solid #c1c1c1; 
   background-color: #dbdbdb;
@@ -131,3 +146,7 @@ form input#offer-submit:hover{
   background-image: linear-gradient(top, #dbdbdb, #cccccc);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#dbdbdb, endColorstr=#cccccc);
 }
 
+.flash {
+  margin-left: 10px;
+  margin-top: 66px;
+}
