@@ -111,7 +111,8 @@ class SelectedOffer(object):
 			'offerText' : couponData['offerText'],
 			'minBillAmount' : couponData['minBillAmount'],
 			'expiresAt' : couponData['expiresAt'],
-			'offerImage' : couponData['offerImage']
+			'offerImage' : couponData['offerImage'],
+			'psid': self.requestData.get("originalRequest").get("data").get("sender").get("id")
 			})
 
 

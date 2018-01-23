@@ -950,6 +950,7 @@ def offers():
     form = OffersForm(mongo)
     if request.method == 'POST' and form.validate_on_submit():
         #flash(form.validateOffer(form.offerCode.data, form.billAmount.data))
+        #form.setPersonalDetails(form)
         flash(form.validateOffer(form))
     elif request.method == 'POST':
         for fieldName, errorMessages in form.errors.items():

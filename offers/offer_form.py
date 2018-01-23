@@ -9,10 +9,10 @@ from phonenumbers.phonenumberutil import NumberParseException
 from phonenumbers import NumberParseException
 
 class OffersForm(FlaskForm):
-	name = StringField('Name', validators=[DataRequired("Name is required")])
+	name = StringField('Name', render_kw={'disabled':'disabled'})
 	#phone = TelField('Phone')
-	phone = StringField('Phone')
-	area = StringField('Area')
+	#phone = StringField('Phone', render_kw={'disabled':'disabled'})
+	#area = StringField('Area', render_kw={'disabled':'disabled'})
 	offerCode = StringField('Offer code', validators=[DataRequired("Offer code is required")])
 	billAmount = DecimalField('Bill Amount')
 	"""docstring for NutritionDetailedController"""
@@ -28,14 +28,18 @@ class OffersForm(FlaskForm):
 	def validateOffer(self, offerForm):
 		offerCode = offerForm.offerCode.data
 		billAmt = offerForm.billAmount.data
-		personName = offerForm.name.data
-		personPhone = offerForm.phone.data
-		personArea = offerForm.area.data
+		#personName = offerForm.name.data
+		#personPhone = offerForm.phone.data
+		#personArea = offerForm.area.data
 		#couponList = self.mongo.db.couponList
 		couponList = self.mongo.db.couponGenerated
 		offerCode = '^' + offerCode + '$'
 		print("The current date and time is::" + DateUtils.getStrCurrentDateAndTime())
 		for offerData in couponList.find({'offerCode' : re.compile(offerCode, re.IGNORECASE)}):
+
+			#Setting the personal details
+			self.setPersonalDetails(offerForm, offerData['psid'])
+
 			#Check for coupon expiry
 			if 'expiresAt' in offerData:
 				if DateUtils.compareDateAndTime(DateUtils.getStrCurrentDateAndTime(), offerData['expiresAt']) == False:
@@ -48,11 +52,11 @@ class OffersForm(FlaskForm):
 
 			#self.addCouponToRedeemedTable(offerData, personName, personPhone, personArea)
 			#return offerData['offerText']
-			return self.getTextAndAddCouponCodeToRedeemedTable(offerData, personName, personPhone, personArea)
+			return self.getTextAndAddCouponCodeToRedeemedTable(offerForm, offerData)
 
 		return 'Offer does not exist'
 
-
+	'''
 	def validate_phone(form, field):
 		print("In validate phone" + str(field.data))
 		if field.data != '' and field.data != "" and field.data != None:
@@ -74,16 +78,18 @@ class OffersForm(FlaskForm):
 					    raise ValidationError('Invalid phone number.')
 				except NumberParseException:
 					raise ValidationError('Invalid phone number.')
+	'''
 
-
-	def getTextAndAddCouponCodeToRedeemedTable(self, couponData, personName, personPhone, personArea):
-		if self.checkForDuplicateCoupon(couponData['offerCode']) == True:
+	def getTextAndAddCouponCodeToRedeemedTable(self, offerForm, couponData):
+		if self.checkForDuplicateCoupon(couponData['offerCode']) == True:			
+			#self.setPersonalDetails(offerForm, couponData['psid'])
 			return 'This offer code has been used before. ' + couponData['offerText']
 		else:
-			self.addCouponToRedeemedTable(couponData, personName, personPhone, personArea)
+			self.addCouponToRedeemedTable(couponData)
+			#self.setPersonalDetails(offerForm, couponData['psid'])
 			return 	couponData['offerText']	
 
-	def addCouponToRedeemedTable(self, couponData, personName, personPhone, personArea):
+	def addCouponToRedeemedTable(self, couponData):
 		redeemedCouponData = self.mongo.db.couponRedeemed
 
 		
@@ -95,9 +101,7 @@ class OffersForm(FlaskForm):
 			'minBillAmount' : couponData['minBillAmount'],
 			'expiresAt' : couponData['expiresAt'],
 			'offerImage' : couponData['offerImage'],
-			'personName' : personName,
-			'personPhone' : personPhone,
-			'personArea' : personArea
+			'psid' : couponData['psid']
 			})
 
 
@@ -110,6 +114,23 @@ class OffersForm(FlaskForm):
 			return True
 
 		return False
+
+
+	def setPersonalDetails(self, offerForm, offerPsid):
+		#offerForm.name.data = 'abc'
+		#offerForm.phone.data = '8425915607'
+		#offerForm.area.data = 'Vastrapur'
+		offerForm.name.data = self.getNameFromPsid(offerPsid)
+
+
+	def getNameFromPsid(self, psid):
+		userdatacollection = self.mongo.db.fbuserdata
+		user = userdatacollection.find_one({'psid' : psid})
+		if user:
+			print("The user is::" + str(user['username']))
+			return user['username']
+		else:
+			return False
 				
 				
 		
