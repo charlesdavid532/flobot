@@ -1,5 +1,10 @@
 {% extends "layout.html" %}
 {% block content %}
+    <header>
+      <div class="container">
+        <h1 class="logo">Flobot Offers Page</h1>
+      </div>
+    </header> 
     <div class="offer-container">
         <form method="POST" id="offer-form" action="{{ url_for('offers') }}">
             {{ form.csrf_token }}            

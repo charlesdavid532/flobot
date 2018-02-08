@@ -9,4 +9,18 @@ $(function(){
         $(".flash").html("");
     });
 
+
+   $("#create-another").click(function(){
+        $("#create-offer-form").trigger("reset");
+        $("#percentOff").val('');
+        $("#minbillAmount").val('');
+        $("#startDate").val('');
+        $("#expiresAtDate").val('');
+        $("#photo").val('');
+        $("#offerCode").val('');
+        $("#offerTitle").val('');
+        $("#offerText").val('');
+        $(".flash").html("");
+    });
+
 });

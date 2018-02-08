@@ -7,6 +7,7 @@ from utils.date_utils import DateUtils
 import phonenumbers
 from phonenumbers.phonenumberutil import NumberParseException
 from phonenumbers import NumberParseException
+import decimal
 
 class OffersForm(FlaskForm):
 	name = StringField('Name', render_kw={'disabled':'disabled'})
@@ -47,7 +48,8 @@ class OffersForm(FlaskForm):
 
 			#Check for min bill amount
 			if 'minBillAmount' in offerData:
-				if billAmt < offerData['minBillAmount']:
+				offerMinBillAmount = decimal.Decimal(offerData['minBillAmount'])
+				if billAmt < offerMinBillAmount:
 					return 'Sorry your bill is less than the minimum bill amount of: ' + str(offerData['minBillAmount'])
 
 			#self.addCouponToRedeemedTable(offerData, personName, personPhone, personArea)

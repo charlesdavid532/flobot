@@ -49,6 +49,15 @@ div.offer-container {
           border-radius: 6px;
   height: 350px;
 }
+
+div.create-offer-container {
+  padding: 10px 0 30px 0;
+  background-color: #e1eeee;
+  -webkit-border-radius: 6px;
+     -moz-border-radius: 6px;
+          border-radius: 6px;
+  height: 850px;
+}
  
 h2 {
   font-size: 3em;
@@ -91,6 +100,25 @@ form input#billAmount {
   margin-left: 10px;
   font-size: 1.1em;
 }
+
+form input#percentOff,
+form input#minbillAmount,
+form input#startDate,
+form input#expiresAtDate,
+form input#photo,
+form input#offerCode,
+form input#offerTitle,
+form input#offerText {
+  width: 400px;
+  /*background-color: #fafafa;*/
+  -webkit-border-radius: 3px;
+     -moz-border-radius: 3px;
+          border-radius: 3px;
+  border: 1px solid #cccccc;
+  padding: 5px;
+  margin-left: 10px;
+  font-size: 1.1em;
+}
  
 form textarea#message {
   width: 500px;
@@ -106,7 +134,9 @@ form textarea#message {
 }
  
 form input#offer-submit,
-form input#redeem-another {
+form input#redeem-another,
+form input#create-offer-submit,
+form input#create-another {
   display: block;
   float: left;
   width: 100px;
@@ -134,7 +164,9 @@ form input#redeem-another{
 }
  
 form input#offer-submit:hover,
-form input#redeem-another:hover{
+form input#redeem-another:hover,
+form input#create-offer-submit:hover,
+form input#create-another:hover{
   cursor: pointer;
   border:1px solid #c1c1c1; 
   background-color: #dbdbdb;

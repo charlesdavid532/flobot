@@ -35,6 +35,7 @@ from common.custom_list import List
 from fb_share_dialog_controller import FBShareDialogController
 from user_data import UserDataModel
 from offers.offer_form import OffersForm
+from offers.create_offer_form import CreateOfferForm
 
 try:
     import apiai
@@ -960,6 +961,25 @@ def offers():
         #return redirect('/success')
     print("Before rendering template")
     return render_template('offers.html', form=form)
+
+
+@app.route('/create-offers', methods=('GET', 'POST'))
+def createOffers():
+    print("In create offers endpoint")
+    print("Method is::" + str(request.method))
+    form = CreateOfferForm(mongo)
+    if request.method == 'POST' and form.validate_on_submit():
+        #flash(form.validateOffer(form.offerCode.data, form.billAmount.data))
+        #form.setPersonalDetails(form)
+        flash(form.validateAndCreateOffer(form))
+    elif request.method == 'POST':
+        for fieldName, errorMessages in form.errors.items():
+            for err in errorMessages:
+                flash(err)
+        #return 'Form posted.'
+        #return redirect('/success')
+    print("Before rendering template")
+    return render_template('createOffers.html', form=form)
 
 # Handling HTTP POST when APIAI sends us a payload of messages that have
 # have been sent to our bot. 
