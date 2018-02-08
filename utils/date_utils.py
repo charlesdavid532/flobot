@@ -32,6 +32,13 @@ class DateUtils(object):
 
 
 	'''
+	Adds time component to the date string
+	'''
+	@staticmethod
+	def convertDateStrToDateTimeStr(dateTime1):
+		return str(dateTime1) + " 00:00:00"
+
+	'''
 	Compares date time 1 with date time 2
 	Returns True if 1 < 2
 	Else False

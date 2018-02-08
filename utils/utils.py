@@ -33,3 +33,22 @@ class Utils(object):
 	@staticmethod
 	def generateRandomHex(nbytes):
 		return secrets.token_hex(nbytes)
+
+
+	@staticmethod
+	def getExtensionFromFilename(filename):
+		return filename.rsplit('.', 1)[1].lower()
+
+
+	@staticmethod
+	def getImageContentType(filename):
+		fileExt = Utils.getExtensionFromFilename(filename)
+
+		if fileExt == 'png':
+			return Constants.getStrPngImageContentType()
+		elif fileExt == 'jpg':
+			return Constants.getStrJpgImageContentType()
+		elif fileExt == 'jpeg':
+			return Constants.getStrJpegImageContentType()
+
+

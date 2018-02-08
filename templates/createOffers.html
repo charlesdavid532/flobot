@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block content %}
+    <header>
+      <div class="container">
+        <h1 class="logo">Flobot Create Offers Page</h1>
+      </div>
+    </header> 
+    <div class="create-offer-container">
+        <form method="POST" id="create-offer-form" action="{{ url_for('createOffers') }}" enctype="multipart/form-data">
+            {{ form.csrf_token }}            
+            {{ form.percentOff.label }} {{ form.percentOff(size=20) }}
+            {{ form.minbillAmount.label }} {{ form.minbillAmount(size=20) }}
+            {{ form.startDate.label }} {{ form.startDate(size=20) }}
+            {{ form.expiresAtDate.label }} {{ form.expiresAtDate(size=20) }}
+            {{ form.photo.label }} {{ form.photo }}
+            {{ form.offerCode.label }} {{ form.offerCode(size=20) }}
+            {{ form.offerTitle.label }} {{ form.offerTitle(size=20) }}
+            {{ form.offerText.label }} {{ form.offerText(size=20) }}
+            <div class="create-offer-button-container">         
+                <input type="submit" value="Create" id="create-offer-submit">
+                <input type="button" id="create-another" value="Reset">
+            </div>
+        </form>
+        {% for message in get_flashed_messages() %}
+            <div class="flash">{{ message }}</div>
+        {% endfor %}
+    </div>
+{% endblock %}

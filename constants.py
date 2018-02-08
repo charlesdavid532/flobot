@@ -125,8 +125,24 @@ class Constants(object):
 		return "flobot/my-store-images"
 
 	@staticmethod
+	def getAWSCouponImagesBucketName():
+		return "coupon-images"
+
+	@staticmethod
 	def getStrImageContentType():
 		return "image/png"
+
+	@staticmethod
+	def getStrPngImageContentType():
+		return "image/png"
+
+	@staticmethod
+	def getStrJpgImageContentType():
+		return "image/jpg"
+
+	@staticmethod
+	def getStrJpegImageContentType():
+		return "image/jpeg"
 
 	@staticmethod
 	def getStrProducts():
