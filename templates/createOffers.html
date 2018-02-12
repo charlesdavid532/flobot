@@ -9,10 +9,10 @@
         <form method="POST" id="create-offer-form" action="{{ url_for('createOffers') }}" enctype="multipart/form-data">
             {{ form.csrf_token }}            
             {{ form.percentOff.label }} {{ form.percentOff(size=20) }}
-            {{ form.minbillAmount.label }} {{ form.minbillAmount(size=20) }}
-            {{ form.startDate.label }} {{ form.startDate(size=20) }}
-            {{ form.expiresAtDate.label }} {{ form.expiresAtDate(size=20) }}
-            {{ form.photo.label }} {{ form.photo }}
+            {{ form.minBillAmount.label }} {{ form.minBillAmount(size=20) }}
+            {{ form.startedAt.label }} {{ form.startedAt(size=20) }}
+            {{ form.expiresAt.label }} {{ form.expiresAt(size=20) }}
+            {{ form.offerImage.label }} {{ form.offerImage }}
             {{ form.offerCode.label }} {{ form.offerCode(size=20) }}
             {{ form.offerTitle.label }} {{ form.offerTitle(size=20) }}
             {{ form.offerText.label }} {{ form.offerText(size=20) }}
