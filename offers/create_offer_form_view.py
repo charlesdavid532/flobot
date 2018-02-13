@@ -6,6 +6,7 @@ from constants import Constants
 from common.amazon_s3 import AmazonS3
 from bson.decimal128 import Decimal128
 from werkzeug.utils import secure_filename
+from decimal import *
 class CreateOfferFormView(ModelView):
 	column_list = ('percentOff', 'minBillAmount', 'startedAt', 'expiresAt', 'offerImage', 'offerCode', 'offerTitle', 'offerText')
 	form = CouponListForm
@@ -83,3 +84,18 @@ class CreateOfferFormView(ModelView):
 		myAmazonS3 = AmazonS3(Constants.getAWSBucketName())
 		myAmazonS3.saveResourceToAWS(fileData, Constants.getAWSCouponImagesBucketName() + '/' + filename, 
 			Utils.getImageContentType(filename), Constants.getAWSBucketName())
+
+
+	'''
+	Overrides the edit form function to change the model back to the way in which it can be displayed in wtforms
+	'''
+	def edit_form(self, obj):
+		print("inside edit form")
+		print("Initial obj::" + str(obj))
+
+		obj['minBillAmount'] = Decimal(obj['minBillAmount'])
+		obj['startedAt'] = DateUtils.convertDateStrToDate(obj['startedAt'].split()[0])
+		obj['expiresAt'] = DateUtils.convertDateStrToDate(obj['expiresAt'].split()[0])
+		obj['percentOff'] = Decimal(obj['percentOff'])
+		#return CouponListForm(obj=obj)
+		return super(CreateOfferFormView, self).edit_form(obj)
