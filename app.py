@@ -1,7 +1,7 @@
 from __future__ import print_function
 import json
 import os, sys, json, requests
-from flask import Flask, request, make_response, render_template, redirect, url_for, session, flash
+from flask import Flask, request, make_response, render_template, redirect, url_for, session, flash, current_app
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm 
 from wtforms import StringField, PasswordField, BooleanField, validators
@@ -36,6 +36,9 @@ from fb_share_dialog_controller import FBShareDialogController
 from user_data import UserDataModel
 from offers.offer_form import OffersForm
 from offers.create_offer_form import CreateOfferForm
+import flask_admin as admin
+from offers.create_offer_form_view import CreateOfferFormView
+
 
 try:
     import apiai
@@ -1209,8 +1212,14 @@ def query():
     return jsonify({'output':output})
 
 if __name__ == "__main__":
-    app.run()
-    '''app.run(debug = True, port = 80)'''
+    with app.app_context():
+        # Create admin
+        admin = admin.Admin(app, name='Flobot')
+        # Add views
+        admin.add_view(CreateOfferFormView(mongo.db.couponList, 'CouponList'))
+
+        app.run()
+        '''app.run(debug = True, port = 80)'''
     
 '''
 End of file!!!!
