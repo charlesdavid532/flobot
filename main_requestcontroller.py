@@ -11,6 +11,7 @@ from main_menu import MainMenu
 from delivery_policy import DeliveryPolicy
 from store_information_controller import StoreInformationController
 from default_fallback import DefaultFallback
+from handover_offer import HandoverOffer
 
 
 class MainRequestController(object):
@@ -68,10 +69,17 @@ class MainRequestController(object):
 			else:				
 				self.responseData = compareLocationData
 		elif self.requestData.get("result").get("action") == "show.offers":
+			
 			showOffersObj = ShowOffers(self.requestData, self.mongo)
 			showOffersObj.setSource(self.source)
 			showOffersObj.setUserData(self.userDataObj)
 			self.responseData = showOffersObj.getJSONResponse()
+			
+			'''
+			handoverObj = HandoverOffer()
+			handoverObj.handoverOffer()
+			self.responseData = ''
+			'''
 		elif self.requestData.get("result").get("action") == "selected.offer":
 			selectedOfferObj = SelectedOffer(self.requestData, self.mongo)
 			selectedOfferObj.setSource(self.source)
