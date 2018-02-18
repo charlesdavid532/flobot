@@ -1,6 +1,7 @@
 from common.carousel import Carousel
 from constants import Constants
 from common.suggestion_chip import SuggestionChip
+from utils.date_utils import DateUtils
 
 class ShowOffers(object):
 	"""docstring for ShowOffers"""
@@ -52,9 +53,12 @@ class ShowOffers(object):
 		myCarousel = Carousel.get_provider(self.source, simpleResponse)
 
 		for coupon in couponList:
-			myCarousel.addCarouselItem(coupon["_id"], coupon["offerTitle"], 
-				coupon["offerTitle"], coupon["offerText"], Constants.getAWSCouponsURL() + coupon["offerImage"], 
-				coupon["offerText"])
+			#Check for coupon expiry
+			if 'expiresAt' in coupon:
+				if DateUtils.compareDateAndTime(DateUtils.getStrCurrentDateAndTime(), coupon['expiresAt']) != False:
+					myCarousel.addCarouselItem(coupon["_id"], coupon["offerTitle"], 
+						coupon["offerTitle"], coupon["offerText"], Constants.getAWSCouponsURL() + coupon["offerImage"], 
+						coupon["offerText"])
 		
 		myCarousel.addSugTitles(sugList)
 		return myCarousel.getCarouselResponse()
