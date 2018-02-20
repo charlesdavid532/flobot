@@ -728,12 +728,12 @@ def index():
     with app.app_context():
         # Create admin
         print("Before creating admin:::")
-        admin = admin.Admin(app, name='Flobot')
+        adminA = admin.Admin(app, name='Flobot')
         print("The admin object is:::" + str(admin))
         # Add views
-        admin.add_view(CreateOfferFormView(mongo.db.couponList, 'CouponList'))
-        admin.add_view(ShowGeneratedOfferFormView(mongo.db.couponGenerated, 'CouponGenerated'))
-        admin.add_view(ShowGeneratedOfferFormView(mongo.db.couponRedeemed, 'CouponRedeemed'))
+        adminA.add_view(CreateOfferFormView(mongo.db.couponList, 'CouponList'))
+        adminA.add_view(ShowGeneratedOfferFormView(mongo.db.couponGenerated, 'CouponGenerated'))
+        adminA.add_view(ShowGeneratedOfferFormView(mongo.db.couponRedeemed, 'CouponRedeemed'))
 
         app.run()
 	# Webhook verification
