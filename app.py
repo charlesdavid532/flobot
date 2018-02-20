@@ -723,6 +723,7 @@ def index():
 @app.route('/', methods=['GET'])
 def index():
     print ("Hellow world")
+    print ("Hellow world 123")
 	# Webhook verification
     if request.args.get("hub.mode") == "subscribe" and request.args.get("hub.challenge"):
         if not request.args.get("hub.verify_token") == "hello":
