@@ -97,7 +97,7 @@ with app.app_context():
     admin.add_view(CreateOfferFormView(mongo.db.couponList, 'CouponList'))
     admin.add_view(ShowGeneratedOfferFormView(mongo.db.couponGenerated, 'CouponGenerated'))
     admin.add_view(ShowGeneratedOfferFormView(mongo.db.couponRedeemed, 'CouponRedeemed'))
-    app.run()
+    #app.run()
 
 class JSONEncoder(json.JSONEncoder):
     def default(self, o):
