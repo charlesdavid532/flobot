@@ -101,8 +101,10 @@ class OffersForm(FlaskForm):
 			'offerTitle' : couponData['offerTitle'],
 			'offerText' : couponData['offerText'],
 			'minBillAmount' : couponData['minBillAmount'],
+			'startedAt' : couponData['startedAt'],
 			'expiresAt' : couponData['expiresAt'],
 			'offerImage' : couponData['offerImage'],
+			'percentOff' : couponData['percentOff'],
 			'psid' : couponData['psid']
 			})
 

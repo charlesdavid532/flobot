@@ -9,6 +9,8 @@ from werkzeug.utils import secure_filename
 from decimal import *
 class CreateOfferFormView(ModelView):
 	column_list = ('percentOff', 'minBillAmount', 'startedAt', 'expiresAt', 'offerImage', 'offerCode', 'offerTitle', 'offerText')
+	create_template = 'admin/model/coupon-create.html'
+	edit_template = 'admin/model/coupon-edit.html'
 	form = CouponListForm
 
 	def on_model_change(self, form, model, is_created):
