@@ -90,13 +90,14 @@ app.config['OAUTH_CREDENTIALS'] = {
 
 mongo = PyMongo(app)
 
-
-admin = admin.Admin(app, name='Flobot')
-print("The admin object is:::" + str(admin))
-# Add views
-admin.add_view(CreateOfferFormView(mongo.db.couponList, 'CouponList'))
-admin.add_view(ShowGeneratedOfferFormView(mongo.db.couponGenerated, 'CouponGenerated'))
-admin.add_view(ShowGeneratedOfferFormView(mongo.db.couponRedeemed, 'CouponRedeemed'))
+with app.app_context():
+    admin = admin.Admin(app, name='Flobot')
+    print("The admin object is:::" + str(admin))
+    # Add views
+    admin.add_view(CreateOfferFormView(mongo.db.couponList, 'CouponList'))
+    admin.add_view(ShowGeneratedOfferFormView(mongo.db.couponGenerated, 'CouponGenerated'))
+    admin.add_view(ShowGeneratedOfferFormView(mongo.db.couponRedeemed, 'CouponRedeemed'))
+    app.run()
 
 class JSONEncoder(json.JSONEncoder):
     def default(self, o):
