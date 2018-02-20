@@ -90,6 +90,14 @@ app.config['OAUTH_CREDENTIALS'] = {
 
 mongo = PyMongo(app)
 
+with app.app_context():
+    admin = admin.Admin(app, name='Flobot')
+    print("The admin object is:::" + str(admin))
+    # Add views
+    admin.add_view(CreateOfferFormView(mongo.db.couponList, 'CouponList'))
+    admin.add_view(ShowGeneratedOfferFormView(mongo.db.couponGenerated, 'CouponGenerated'))
+    admin.add_view(ShowGeneratedOfferFormView(mongo.db.couponRedeemed, 'CouponRedeemed'))
+    #app.run()
 
 class JSONEncoder(json.JSONEncoder):
     def default(self, o):
@@ -723,6 +731,21 @@ def index():
 @app.route('/', methods=['GET'])
 def index():
     print ("Hellow world")
+    print ("Hellow world 123")
+    '''
+    print("Before creating app context:::")
+    with app.app_context():
+        # Create admin
+        print("Before creating admin:::")
+        adminA = admin.Admin(app, name='Flobot')
+        print("The admin object is:::" + str(admin))
+        # Add views
+        adminA.add_view(CreateOfferFormView(mongo.db.couponList, 'CouponList'))
+        adminA.add_view(ShowGeneratedOfferFormView(mongo.db.couponGenerated, 'CouponGenerated'))
+        adminA.add_view(ShowGeneratedOfferFormView(mongo.db.couponRedeemed, 'CouponRedeemed'))
+
+        app.run()
+    '''
 	# Webhook verification
     if request.args.get("hub.mode") == "subscribe" and request.args.get("hub.challenge"):
         if not request.args.get("hub.verify_token") == "hello":
@@ -1213,16 +1236,22 @@ def query():
     return jsonify({'output':output})
 
 if __name__ == "__main__":
+    print("Before creating app context:::")
+    app.run()
+    '''
     with app.app_context():
         # Create admin
+        print("Before creating admin:::")
         admin = admin.Admin(app, name='Flobot')
+        print("The admin object is:::" + str(admin))
         # Add views
         admin.add_view(CreateOfferFormView(mongo.db.couponList, 'CouponList'))
         admin.add_view(ShowGeneratedOfferFormView(mongo.db.couponGenerated, 'CouponGenerated'))
         admin.add_view(ShowGeneratedOfferFormView(mongo.db.couponRedeemed, 'CouponRedeemed'))
 
         app.run()
-        '''app.run(debug = True, port = 80)'''
+    '''
+    #app.run(debug = True, port = 80)
     
 '''
 End of file!!!!
