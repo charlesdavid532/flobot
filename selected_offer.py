@@ -110,7 +110,9 @@ class SelectedOffer(object):
 			'offerTitle' : couponData['offerTitle'],
 			'offerText' : couponData['offerText'],
 			'minBillAmount' : couponData['minBillAmount'],
+			'startedAt' : couponData['startedAt'],
 			'expiresAt' : couponData['expiresAt'],
+			'percentOff' : couponData['percentOff'],
 			'offerImage' : couponData['offerImage'],
 			'psid': self.requestData.get("originalRequest").get("data").get("sender").get("id")
 			})

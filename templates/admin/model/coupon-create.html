@@ -1,0 +1,31 @@
+{% extends 'admin/model/create.html' %}
+{% block head_css %}
+{{ super() }}
+<link href="{{ url_for('static', filename='css/offer-create.css') }}" rel="stylesheet">
+{% endblock head_css %}
+
+{% block head %}
+{{ super() }}
+<script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+<script type = "text/javascript" src = "https://ajax.cdnjs.com/ajax/libs/underscore.js/1.1.4/underscore-min.js"></script>
+<script type = "text/javascript" src = "https://ajax.cdnjs.com/ajax/libs/backbone.js/0.3.3/backbone-min.js"></script>
+<!--
+<script type="text/javascript" src="./static/js/coupon-create.js"></script>
+-->
+<script type="text/javascript" src="{{ url_for('static', filename='js/coupon-create.js') }}"></script>
+{% endblock head %}
+
+{% block body %}
+{{ super() }}
+<div id="main-offer-preview-container" class="main-offer-preview-container">
+	<div id="top-preview-container" class="top-preview-container"></div>
+	<div id="middle-preview-container" class="middle-preview-container">
+		<div id="offer-title-preview-container" class="offer-title-preview-container"></div>
+		<div id="offer-text-preview-container" class="offer-text-preview-container"></div>
+	</div>
+	<div id="bottom-preview-container" class="bottom-preview-container">Tap to view</div>
+</div>
+<input type="button" id="create-offer-preview" class="create-offer-preview btn" value="Preview">
+{% endblock body %}
+
+

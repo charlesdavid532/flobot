@@ -1,0 +1,55 @@
+div .main-offer-preview-container{
+	position: relative;
+    top: -450px;
+    left: 500px;
+    height: 350px;
+    width: 500px;
+    border-radius: 25px;
+    border: 1px solid #D3D3D3;
+}
+
+div .top-preview-container{
+	display: block;
+	background-repeat: no-repeat;
+    background-size: 100% 100%;
+    height: 250px;
+    width: 500px;
+    border-radius: 25px;
+}
+
+div .middle-preview-container{
+    height: 60px;
+    width: 500px;
+    border-top: 1px solid #D3D3D3;
+}
+
+div .bottom-preview-container{
+    height: 40px;
+    width: 500px;
+    line-height: 40px;
+    text-align: center;
+    color: blue;
+    border-top: 1px solid #D3D3D3;
+}
+
+div .top-preview-container.hide {
+	visibility: hidden;
+}
+
+div .offer-title-preview-container {
+	padding-left: 6px;
+    padding-top: 4px;
+    font-weight: bold;
+}
+
+div .offer-text-preview-container {
+	color: #A9A9A9;
+    padding-left: 6px;
+}
+
+.create-offer-preview {
+	position: relative;
+    top: -422px;
+    left: 608px;
+    margin-left: 3px;
+}

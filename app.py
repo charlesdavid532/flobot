@@ -38,6 +38,7 @@ from offers.offer_form import OffersForm
 from offers.create_offer_form import CreateOfferForm
 import flask_admin as admin
 from offers.create_offer_form_view import CreateOfferFormView
+from offers.show_generated_offer_form_view import ShowGeneratedOfferFormView
 
 
 try:
@@ -1217,6 +1218,8 @@ if __name__ == "__main__":
         admin = admin.Admin(app, name='Flobot')
         # Add views
         admin.add_view(CreateOfferFormView(mongo.db.couponList, 'CouponList'))
+        admin.add_view(ShowGeneratedOfferFormView(mongo.db.couponGenerated, 'CouponGenerated'))
+        admin.add_view(ShowGeneratedOfferFormView(mongo.db.couponRedeemed, 'CouponRedeemed'))
 
         app.run()
         '''app.run(debug = True, port = 80)'''
