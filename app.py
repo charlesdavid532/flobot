@@ -1237,6 +1237,8 @@ def query():
 
 if __name__ == "__main__":
     print("Before creating app context:::")
+    app.run()
+    '''
     with app.app_context():
         # Create admin
         print("Before creating admin:::")
@@ -1248,7 +1250,8 @@ if __name__ == "__main__":
         admin.add_view(ShowGeneratedOfferFormView(mongo.db.couponRedeemed, 'CouponRedeemed'))
 
         app.run()
-        '''app.run(debug = True, port = 80)'''
+    '''
+    #app.run(debug = True, port = 80)
     
 '''
 End of file!!!!
