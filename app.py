@@ -1213,6 +1213,7 @@ def query():
     return jsonify({'output':output})
 
 if __name__ == "__main__":
+    print("Before creating app context:::")
     with app.app_context():
         # Create admin
         print("Before creating admin:::")
