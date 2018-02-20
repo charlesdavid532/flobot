@@ -91,6 +91,13 @@ app.config['OAUTH_CREDENTIALS'] = {
 mongo = PyMongo(app)
 
 
+admin = admin.Admin(app, name='Flobot')
+print("The admin object is:::" + str(admin))
+# Add views
+admin.add_view(CreateOfferFormView(mongo.db.couponList, 'CouponList'))
+admin.add_view(ShowGeneratedOfferFormView(mongo.db.couponGenerated, 'CouponGenerated'))
+admin.add_view(ShowGeneratedOfferFormView(mongo.db.couponRedeemed, 'CouponRedeemed'))
+
 class JSONEncoder(json.JSONEncoder):
     def default(self, o):
         if isinstance(o, ObjectId):
@@ -724,6 +731,7 @@ def index():
 def index():
     print ("Hellow world")
     print ("Hellow world 123")
+    '''
     print("Before creating app context:::")
     with app.app_context():
         # Create admin
@@ -736,6 +744,7 @@ def index():
         adminA.add_view(ShowGeneratedOfferFormView(mongo.db.couponRedeemed, 'CouponRedeemed'))
 
         app.run()
+    '''
 	# Webhook verification
     if request.args.get("hub.mode") == "subscribe" and request.args.get("hub.challenge"):
         if not request.args.get("hub.verify_token") == "hello":
