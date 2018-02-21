@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, DecimalField, ValidationError
 from wtforms.fields.html5 import TelField
-from wtforms.validators import DataRequired, NumberRange
+from wtforms.validators import DataRequired, NumberRange, Optional
 import re
 from utils.date_utils import DateUtils
 from utils.utils import Utils
@@ -16,9 +16,7 @@ from constants import Constants
 from common.amazon_s3 import AmazonS3
 from bson.decimal128 import Decimal128
 
-class CouponListForm(FlaskForm):
-	percentOff = DecimalField('Percentage Off', validators=[DataRequired("Percentage off is required"), 
-															NumberRange(min=0, max=100, message="Percentage should be between 0 and 100")])	
+class CouponListForm(FlaskForm):	
 	minBillAmount = DecimalField('Bill Amount')
 	startedAt = DateField('Start Date', format='%Y-%m-%d')
 	expiresAt = DateField('Expires At', format='%Y-%m-%d')
@@ -26,3 +24,4 @@ class CouponListForm(FlaskForm):
 	offerCode = StringField('Offer code', validators=[DataRequired("Offer code is required")])
 	offerTitle = StringField('Offer Title', validators=[DataRequired("Offer title is required")])
 	offerText = StringField('Offer Text', validators=[DataRequired("Offer text is required")])
+	percentOff = DecimalField('Percentage Off', validators=[NumberRange(min=0, max=100, message="Percentage should be between 0 and 100"), Optional()])	
