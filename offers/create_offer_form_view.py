@@ -98,6 +98,9 @@ class CreateOfferFormView(ModelView):
 		obj['minBillAmount'] = Decimal(obj['minBillAmount'])
 		obj['startedAt'] = DateUtils.convertDateStrToDate(obj['startedAt'].split()[0])
 		obj['expiresAt'] = DateUtils.convertDateStrToDate(obj['expiresAt'].split()[0])
-		obj['percentOff'] = Decimal(obj['percentOff'])
+		if obj['percentOff'] != 'None' and obj['percentOff'] != None:
+			obj['percentOff'] = Decimal(obj['percentOff'])
+		else:
+			obj['percentOff'] = None
 		#return CouponListForm(obj=obj)
 		return super(CreateOfferFormView, self).edit_form(obj)
