@@ -39,6 +39,7 @@ from offers.create_offer_form import CreateOfferForm
 import flask_admin as admin
 from offers.create_offer_form_view import CreateOfferFormView
 from offers.show_generated_offer_form_view import ShowGeneratedOfferFormView
+from offers.redeem_offer_form_view import RedeemOfferFormView
 
 
 try:
@@ -96,6 +97,9 @@ with app.app_context():
     admin.add_view(CreateOfferFormView(mongo.db.couponList, 'CouponList'))
     admin.add_view(ShowGeneratedOfferFormView(mongo.db.couponGenerated, 'CouponGenerated'))
     admin.add_view(ShowGeneratedOfferFormView(mongo.db.couponRedeemed, 'CouponRedeemed'))
+    redeemOfferView = RedeemOfferFormView(name='Redeem Now', endpoint="offers")
+    redeemOfferView.setMongo(mongo) 
+    admin.add_view(redeemOfferView)
     #app.run()
 
 class JSONEncoder(json.JSONEncoder):
