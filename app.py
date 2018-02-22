@@ -1017,6 +1017,7 @@ def createOffers():
 def handle_message():
     data = request.get_json()
     print("Request:")
+    print("add comment")
     print(json.dumps(data, indent=4))
 
     '''
