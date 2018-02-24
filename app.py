@@ -99,16 +99,18 @@ with app.app_context():
     admin = admin.Admin(app, name='Flobot')
     #admin.add_link(MenuLink(name='Back Home', url='/'))
     # Add views
-    admin.add_view(CreateOfferFormView(mongo.db.couponList, 'CouponList'))
-    admin.add_view(ShowGeneratedOfferFormView(mongo.db.couponGenerated, 'CouponGenerated'))
-    admin.add_view(ShowGeneratedOfferFormView(mongo.db.couponRedeemed, 'CouponRedeemed'))
-    redeemOfferView = RedeemOfferFormView(name='Redeem Now', endpoint="offers")
+    admin.add_view(CreateOfferFormView(mongo.db.couponList, 'CouponList', category='Offers'))
+    admin.add_view(ShowGeneratedOfferFormView(mongo.db.couponGenerated, 'CouponGenerated', category='Offers'))
+    admin.add_view(ShowGeneratedOfferFormView(mongo.db.couponRedeemed, 'CouponRedeemed', category='Offers'))
+    redeemOfferView = RedeemOfferFormView(name='Redeem Now', endpoint="offers", category='Offers')
     redeemOfferView.setMongo(mongo) 
     admin.add_view(redeemOfferView)
+    '''
     broadcastMainView = BroadcastOfferView(name='Broadcast Now', endpoint="broadcast")
     broadcastMainView.setMongo(mongo) 
     admin.add_view(broadcastMainView)
-    nonPromBroadcastMainView = NonPromBroadcastView(name='Non Prom Broadcast', endpoint="non-prom-broadcast")
+    '''
+    nonPromBroadcastMainView = NonPromBroadcastView(name='Non Prom Broadcast', endpoint="non-prom-broadcast", category='Broadcast')
     nonPromBroadcastMainView.setMongo(mongo) 
     admin.add_view(nonPromBroadcastMainView)
     #app.run()

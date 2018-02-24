@@ -8,7 +8,7 @@
 {% block body %}
 {{ super() }}    
 <div class="offer-container">
-    <form method="POST" id="offer-form" action="{{ url_for('broadcast.index') }}">
+    <form method="POST" id="offer-form" action="{{ url_for('non-prom-broadcast.index') }}">
         {{ form.csrf_token }}            
         {{ form.data.label }} {{ form.data(size=20) }}
         {{ form.billAmount.label }} {{ form.billAmount(size=20) }}
