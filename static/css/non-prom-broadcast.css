@@ -1,0 +1,24 @@
+#messageTiming {
+	list-style-type: none;
+}
+
+
+#messageTiming-0 {
+	float: left;
+}
+
+.label-radio-control {
+	float: left;
+    margin-left: 10px;
+}
+
+#messageTiming-1 {
+	margin-left: 10px;
+    float: left;
+}
+
+
+
+div #message-timing-date-time-widget {
+	clear: both;
+}

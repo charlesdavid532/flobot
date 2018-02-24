@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, DecimalField, ValidationError
+from wtforms import StringField, DecimalField, RadioField, ValidationError
 from wtforms.fields.html5 import TelField
 from wtforms.validators import DataRequired
 import re
@@ -10,9 +10,9 @@ from phonenumbers import NumberParseException
 import decimal
 
 class NonPromBroadCastForm(FlaskForm):
-	data = StringField('Data', render_kw={'disabled':'disabled'})	
+	data = StringField('Message Content', render_kw={'disabled':'disabled'})	
 	offerCode = StringField('Offer code', validators=[DataRequired("Offer code is required")])
-	billAmount = DecimalField('Bill Amount')
+	messageTiming = RadioField('Message Timing', choices=[('0','Send Now'),('1','Send Later')])
 	"""docstring for NutritionDetailedController"""
 	def __init__(self, mongo):
 		super(NonPromBroadCastForm, self).__init__()

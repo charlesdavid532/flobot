@@ -9,12 +9,33 @@
 {{ super() }}    
 <div class="offer-container">
     <form method="POST" id="offer-form" action="{{ url_for('non-prom-broadcast.index') }}">
-        {{ form.csrf_token }}            
-        {{ form.data.label }} {{ form.data(size=20) }}
-        {{ form.billAmount.label }} {{ form.billAmount(size=20) }}
-        {{ form.offerCode.label }} {{ form.offerCode(size=20) }}
+        {{ form.csrf_token }}
+        <div id="message-content-outer-container" class="message-content-outer-container">
+            {{ form.data.label }} {{ form.data(size=20) }}
+            <div id="message-content-container" class="message-content-container">
+                <div id="item-holder" class="item-holder"></div>
+                <div id="build-section" class="build-section"></div>
+            </div>
+        </div>
+        <div id="message-user-outer-container" class="message-user-outer-container">
+            {{ form.offerCode.label }} {{ form.offerCode(size=20) }}
+            <div id="message-user-container" class="message-user-container">               
+            </div>
+        </div>
+        <div id="message-timing-outer-container" class="message-timing-outer-container">
+            <!--{{ form.messageTiming.label(class_="label-radio-control") }} {{ form.messageTiming(size=20) }} -->
+            {{ form.messageTiming.label }}
+            {% for subfield in form.messageTiming %}
+            <tr>
+                <td>{{ subfield }}</td>
+                <td>{{ subfield.label(class_="label-radio-control") }}</td>
+            </tr>
+            {% endfor %}
+            <div id="message-timing-date-time-widget" class="message-timing-date-time-widget">               
+            </div>
+        </div>
         <div class="offer-button-container">         
-            <input type="submit" value="Go" id="offer-submit" class="btn btn-primary">
+            <input type="submit" value="Broadcast" id="offer-submit" class="btn btn-primary">
             <input type="button" id="redeem-another" value="Reset" class="btn btn-danger">
         </div>
     </form>
