@@ -1,0 +1,25 @@
+{% extends 'admin/master.html' %}
+
+{% block head_css %}
+{{ super() }}
+<link href="{{ url_for('static', filename='css/non-prom-broadcast.css') }}" rel="stylesheet">
+{% endblock head_css %}
+
+{% block body %}
+{{ super() }}    
+<div class="offer-container">
+    <form method="POST" id="offer-form" action="{{ url_for('broadcast.index') }}">
+        {{ form.csrf_token }}            
+        {{ form.data.label }} {{ form.data(size=20) }}
+        {{ form.billAmount.label }} {{ form.billAmount(size=20) }}
+        {{ form.offerCode.label }} {{ form.offerCode(size=20) }}
+        <div class="offer-button-container">         
+            <input type="submit" value="Go" id="offer-submit" class="btn btn-primary">
+            <input type="button" id="redeem-another" value="Reset" class="btn btn-danger">
+        </div>
+    </form>
+    {% for message in get_flashed_messages() %}
+        <div class="flash">{{ message }}</div>
+    {% endfor %}
+</div>
+{% endblock body %}

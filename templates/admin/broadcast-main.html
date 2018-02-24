@@ -1,0 +1,28 @@
+{% extends 'admin/master.html' %}
+
+{% block head_css %}
+{{ super() }}
+<link href="{{ url_for('static', filename='css/broadcast-main.css') }}" rel="stylesheet">
+{% endblock head_css %}
+
+{% block head %}
+<script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+<script type = "text/javascript" src = "https://ajax.cdnjs.com/ajax/libs/underscore.js/1.1.4/underscore-min.js"></script>
+<script type = "text/javascript" src = "https://ajax.cdnjs.com/ajax/libs/backbone.js/0.3.3/backbone-min.js"></script>
+
+<script type="text/javascript" src="{{ url_for('static', filename='js/broadcast-main.js') }}"></script>
+{% endblock head %}
+
+{% block body %}
+{{ super() }}    
+<div class="broadcast-container">
+    <div class="row row-1">
+        <input type="button" value="Promotional Messages" id="prom-msg" class="prom-msg btn btn-primary btn-lg btn-huge">
+        <input type="button" value="Non-Promotional Messages" id="non-prom-msg" class="non-prom-msg btn btn-primary btn-lg btn-huge">
+    </div>
+    <div class="row row-2">
+        <input type="button" value="Broadcast less than 24 hours" class="broadcast-24 btn btn-primary btn-lg btn-huge">
+        <input type="button" value="Send birthday wishes" class="birthday-wishes btn btn-primary btn-lg btn-huge">
+    </div>
+</div>
+{% endblock body %}
