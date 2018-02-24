@@ -2,11 +2,23 @@
 
 {% block head_css %}
 {{ super() }}
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
 <link href="{{ url_for('static', filename='css/non-prom-broadcast.css') }}" rel="stylesheet">
 {% endblock head_css %}
 
+{% block head %}
+{{ super () }}
+<script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script type = "text/javascript" src = "https://ajax.cdnjs.com/ajax/libs/underscore.js/1.1.4/underscore-min.js"></script>
+<script type = "text/javascript" src = "https://ajax.cdnjs.com/ajax/libs/backbone.js/0.3.3/backbone-min.js"></script>
+
+<script type="text/javascript" src="{{ url_for('static', filename='js/non-prom-broadcast.js') }}"></script>
+{% endblock head %}
+
 {% block body %}
-{{ super() }}    
+{{ super() }}
+<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-ui-timepicker-addon.js') }}"></script>
 <div class="offer-container">
     <form method="POST" id="offer-form" action="{{ url_for('non-prom-broadcast.index') }}">
         {{ form.csrf_token }}
@@ -31,7 +43,8 @@
                 <td>{{ subfield.label(class_="label-radio-control") }}</td>
             </tr>
             {% endfor %}
-            <div id="message-timing-date-time-widget" class="message-timing-date-time-widget">               
+            <div id="message-timing-date-time-widget-container" class="message-timing-date-time-widget-container">
+                <input type="text" name="message-timing-date-time-widget" id="message-timing-date-time-widget" class="message-timing-date-time-widget" value="">         
             </div>
         </div>
         <div class="offer-button-container">         
