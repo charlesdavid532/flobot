@@ -13,7 +13,7 @@ class NonPromBroadcastView(BaseView):
 		form = NonPromBroadCastForm(self.mongo)
 		
 		if request.method == 'POST' and form.validate_on_submit():		    
-		    flash(form.validateOffer(form))
+		    flash(form.validateBroadcast(form))
 		elif request.method == 'POST':
 		    for fieldName, errorMessages in form.errors.items():
 		        for err in errorMessages:

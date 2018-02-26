@@ -8,17 +8,26 @@
 
 {% block head %}
 {{ super () }}
-<script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-<script type = "text/javascript" src = "https://ajax.cdnjs.com/ajax/libs/underscore.js/1.1.4/underscore-min.js"></script>
-<script type = "text/javascript" src = "https://ajax.cdnjs.com/ajax/libs/backbone.js/0.3.3/backbone-min.js"></script>
+<!--<script data-main="non-prom-broadcast" src="{{ url_for('static', filename='js/require.js') }}"></script>-->
+<!--<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-ui-timepicker-addon.js') }}"></script>-->
 
+<!--<script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>-->
+<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>-->
+<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-ui.js') }}"></script>
+<!--<script type = "text/javascript" src = "https://ajax.cdnjs.com/ajax/libs/underscore.js/1.1.4/underscore-min.js"></script>-->
+<script type="text/javascript" src="{{ url_for('static', filename='js/underscore.min.js') }}"></script>
+<!--<script type = "text/javascript" src = "https://ajax.cdnjs.com/ajax/libs/backbone.js/0.3.3/backbone-min.js"></script>-->
+<script type="text/javascript" src="{{ url_for('static', filename='js/backbone.min.js') }}"></script>
+
+<!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.6.3/i18n/jquery-ui-timepicker-addon-i18n.js"></script>-->
+<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-ui-timepicker-addon.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/non-prom-broadcast.js') }}"></script>
 {% endblock head %}
 
 {% block body %}
-{{ super() }}
-<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-ui-timepicker-addon.js') }}"></script>
+
+
 <div class="offer-container">
     <form method="POST" id="offer-form" action="{{ url_for('non-prom-broadcast.index') }}">
         {{ form.csrf_token }}
@@ -30,7 +39,7 @@
             </div>
         </div>
         <div id="message-user-outer-container" class="message-user-outer-container">
-            {{ form.offerCode.label }} {{ form.offerCode(size=20) }}
+            {{ form.messageUsers.label }} {{ form.messageUsers(size=20) }}
             <div id="message-user-container" class="message-user-container">               
             </div>
         </div>
@@ -56,4 +65,7 @@
         <div class="flash">{{ message }}</div>
     {% endfor %}
 </div>
+
+{% block tail_js %}
+{% endblock tail_js %}
 {% endblock body %}
