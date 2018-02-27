@@ -55,7 +55,8 @@
             </tr>
             {% endfor %}
             <div id="message-timing-date-time-widget-container" class="message-timing-date-time-widget-container">
-                <input type="text" name="message-timing-date-time-widget" id="message-timing-date-time-widget" class="message-timing-date-time-widget" value="">         
+                <!--<input type="text" name="messageTimingDateTimeWidget" id="messageTimingDateTimeWidget" class="message-timing-date-time-widget" value="">         -->
+                {{ form.messageTimingDateTimeWidget(size=20, class_="message-timing-date-time-widget") }}
             </div>
         </div>
         <div class="offer-button-container">         

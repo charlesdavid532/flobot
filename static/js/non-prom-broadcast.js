@@ -25,7 +25,7 @@ var NonPromBroadcastView = Backbone.View.extend({
 
     render: function () {
         console.log('Inside render');
-        $('#message-timing-date-time-widget').datetimepicker();
+        $('#messageTimingDateTimeWidget').datetimepicker();
         
         $("#messageTiming-0").attr('checked', true);
         $(".message-timing-date-time-widget-container").addClass('hidden-container');
