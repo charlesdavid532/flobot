@@ -21,6 +21,9 @@ requirejs.config({
 		jqueryTimeAddon: [
 			'//cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.6.3/jquery-ui-timepicker-addon.min',
 			'jquery-ui-timepicker-addon.min'
+		],
+		nonPromBroadcast: [
+			'non-prom-broadcast'
 		]
 	}
 
