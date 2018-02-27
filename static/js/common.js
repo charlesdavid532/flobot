@@ -11,11 +11,11 @@ requirejs.config({
 			'jquery-ui.min'
 		],
 		underscore: [
-			'//ajax.cdnjs.com/ajax/libs/underscore.js/1.1.4/underscore-min',
+			'//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min',
 			'underscore.min'
 		],
 		backbone: [
-			'//ajax.cdnjs.com/ajax/libs/backbone.js/0.3.3/backbone-min',
+			'//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min',
 			'backbone.min'
 		],
 		jqueryTimeAddon: [			
