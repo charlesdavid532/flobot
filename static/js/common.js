@@ -18,8 +18,7 @@ requirejs.config({
 			'//ajax.cdnjs.com/ajax/libs/backbone.js/0.3.3/backbone-min',
 			'backbone.min'
 		],
-		jqueryTimeAddon: [
-			'//cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.6.3/jquery-ui-timepicker-addon.min',
+		jqueryTimeAddon: [			
 			'jquery-ui-timepicker-addon.min'
 		],
 		nonPromBroadcast: [
