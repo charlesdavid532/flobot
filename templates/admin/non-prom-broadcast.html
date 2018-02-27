@@ -36,8 +36,20 @@
         <div id="message-content-outer-container" class="message-content-outer-container">
             {{ form.data.label }} {{ form.data(size=20) }}
             <div id="message-content-container" class="message-content-container">
-                <div id="item-holder" class="item-holder"></div>
-                <div id="build-section" class="build-section"></div>
+                <div id="sidebar-container" class="sidebar-container">
+                    <div id="sidebar-text-holder" class="sidebar-text-holder sidebar-common sidebar-elem-1">Text</div>
+                    <div id="sidebar-media-holder" class="sidebar-media-holder sidebar-common sidebar-elem-2">Media</div>
+                    <div id="sidebar-card-holder" class="sidebar-card-holder sidebar-common sidebar-elem-3">Card</div>
+                    <div id="sidebar-button-holder" class="sidebar-button-holder sidebar-common sidebar-elem-4">Button</div>
+                    <div id="sidebar-quick-reply-holder" class="sidebar-quick-reply-holder sidebar-common sidebar-elem-5">Quick Reply</div>
+                </div>
+                <div id="broadcast-builder-container" class="broadcast-builder-container">
+                    <div id="broadcast-builder-top-container" class="broadcast-builder-top-container">
+                        <div id="broadcast-builder-content-holder" class="broadcast-builder-content-holder"></div>
+                        <div id="broadcast-builder-buttons-holder" class="broadcast-builder-buttons-holder"></div>
+                    </div>
+                    <div id="broadcast-builder-bottom-container" class="broadcast-builder-bottom-container"></div>
+                </div>
             </div>
         </div>
         <div id="message-user-outer-container" class="message-user-outer-container">
