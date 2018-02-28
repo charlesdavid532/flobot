@@ -123,3 +123,32 @@ div .message-timing-date-time-widget-container.hidden-container {
 .message-user-outer-container {
 	clear: both;
 }
+
+
+.qr-elem {
+	float: left;
+    margin: 10px;
+    width: 110px;
+    border: 1px solid blue;
+    height: 30px;
+}
+
+.quick-reply-close-button {
+	position: relative;
+    float: left;
+    /* border: 1px solid blue; */
+    width: 10px;
+    border-left: 1px solid blue;
+    border-bottom: 1px solid blue;
+    height: 15px;
+    line-height: 15px;
+    text-align: center;
+}
+
+.qr-text {
+	float: left;
+    width: 99px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+}

@@ -14,6 +14,7 @@ var NonPromBroadcastView = Backbone.View.extend({
     
 
     initialize: function initialize() {
+        this.quickReplyViewList = [];
         this.render();
     },
 
@@ -75,10 +76,58 @@ var NonPromBroadcastView = Backbone.View.extend({
         
     },
 
-    onQuickReplyClicked: function (ev) {
+    onQuickReplyClicked: function onQuickReplyClicked(ev) {
         console.log('Quick Reply event detected in main view');
-        
+        if (this.quickReplyViewList.length < 3) {
+            this.generateNewQuickReply();
+        }
     },
+
+    generateNewQuickReply: function generateNewQuickReply() {
+        var qrModel = new QuickReplyData();
+        qrModelId = this.generateRandomNum(1000,10000);
+        qrModel.setNumId(qrModelId);
+
+        this.injectQuickReplyHtml(qrModelId);
+
+        var qrView = new QuickReplyView({ model: qrModel, el: '#' + qrModelId.toString() });
+
+        this.listenTo(qrView, 'QUICK_REPLY_CLOSE_BTN_CLICKED', this.onQRCloseBtnClicked);
+        this.quickReplyViewList.push(qrView);
+
+    },
+
+    generateRandomNum: function generateRandomNum (x, y) {
+        return Math.floor(x + (y - x) * Math.random());
+    },
+
+    injectQuickReplyHtml: function injectQuickReplyHtml(qrId) {
+        this.$el.find('.broadcast-builder-bottom-container').append(this.createQuickReplyHtml(qrId));
+        var self = this,
+            quickReplyContainer = this.$el.find('#' + qrId);
+
+        quickReplyContainer.find('.quick-reply-close-button').on("click","", qrId, function(ev) {
+            self.onQRCloseBtnClicked(ev.data);
+        });
+    },
+
+    createQuickReplyHtml: function createQuickReplyHtml(qrId) {
+        return "<div id='" + qrId + "' class='qr-elem'><div class='qr-text' contentEditable='true'></div><div class='quick-reply-close-button'>x</div></div>"
+    },
+
+    onQRCloseBtnClicked: function onQRCloseBtnClicked(data) {
+        console.log("Inside onQRCloseBtnClicked of main view");
+        console.log("Data is::" + data);
+        // Destroying the appropriate view
+        for (var i = 0; i < this.quickReplyViewList.length; i++) {
+            var curView = this.quickReplyViewList[i];
+            if (data == curView.model.getNumId()) {
+                curView.remove();
+                this.quickReplyViewList.splice(i, 1);
+                break;
+            }
+        }
+    }
 
 
 
@@ -143,6 +192,52 @@ var SideBarView = Backbone.View.extend({
 
 });
 
+
+
+
+var QuickReplyData = Backbone.Model.extend({
+    defaults: function() {
+        return {
+            "numId": 999
+        }
+    },
+
+    getNumId: function getNumId() {
+        return this.get('numId');
+    },
+
+    setNumId: function setNumId(numId) {
+        this.set({'numId': numId});
+    },
+
+    initialize: function () {
+    }
+});
+
+
+var QuickReplyView = Backbone.View.extend({
+    model: QuickReplyData,
+    
+
+    initialize: function () {
+        this.render();
+    },
+
+    events: {        
+        'click .quick-reply-close-button': 'onCloseBtnClicked',
+        
+    },
+
+    render: function () {
+        console.log('Inside render of QuickReplyView');        
+    },
+
+    onCloseBtnClicked: function onCloseBtnClicked(ev) {
+        console.log("Close button clicked");
+        this.trigger('QUICK_REPLY_CLOSE_BTN_CLICKED', this.model.get('numId'));
+    }
+
+});
 
 
 var model = new Data();
