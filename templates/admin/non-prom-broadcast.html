@@ -34,7 +34,7 @@
     <form method="POST" id="offer-form" action="{{ url_for('non-prom-broadcast.index') }}">
         {{ form.csrf_token }}
         <div id="message-content-outer-container" class="message-content-outer-container">
-            {{ form.data.label }} {{ form.data(size=20) }}
+            {{ form.data.label }} {{ form.data(size=20,class_="message-content-hidden-container") }}
             <div id="message-content-container" class="message-content-container">
                 <div id="sidebar-container" class="sidebar-container">
                     <div id="sidebar-text-holder" class="sidebar-text-holder sidebar-common sidebar-elem-1">Text</div>

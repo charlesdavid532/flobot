@@ -118,6 +118,7 @@ div .message-timing-date-time-widget-container.hidden-container {
     width: 400px;
     position: relative;
     left: -50px;
+    clear: both;
 }
 
 .message-user-outer-container {
@@ -125,7 +126,9 @@ div .message-timing-date-time-widget-container.hidden-container {
 }
 
 
-.qr-elem {
+.qr-elem,
+.btn-elem,
+.text-elem {
 	float: left;
     margin: 10px;
     width: 110px;
@@ -133,7 +136,21 @@ div .message-timing-date-time-widget-container.hidden-container {
     height: 30px;
 }
 
-.quick-reply-close-button {
+.btn-elem {
+	width: 86px;
+	height: 27px;
+	margin-right: 0px;
+    margin-left: 10px;
+}
+
+.text-elem {
+	width: 277px;
+	height: 120px;
+}
+
+.quick-reply-close-button,
+.btn-close-button,
+.text-close-button {
 	position: relative;
     float: left;
     /* border: 1px solid blue; */
@@ -145,10 +162,22 @@ div .message-timing-date-time-widget-container.hidden-container {
     text-align: center;
 }
 
-.qr-text {
+.qr-text,
+.btn-text,
+.text-text {
 	float: left;
     width: 99px;
     height: 30px;
     text-align: center;
     line-height: 30px;
+}
+
+.btn-text {
+	width: 75px;
+	height: 27px;
+}
+
+.text-text {
+	width: 266px;
+    height: 120px;
 }
