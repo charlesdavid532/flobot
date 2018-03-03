@@ -342,6 +342,38 @@ var NonPromBroadcastView = Backbone.View.extend({
         dataSugListJSON = sugListJSON["messages"];
 
         messagesDict = {};
+        messagesDict["text"] = this.$el.find('.text-text').html();
+        messagesDict["quick_replies"] = this.constructQRJSON();
+
+        dataSugListJSON.push(messagesDict);
+
+        return sugListJSON;
+    },
+
+    constructBtnTemplateJSON: function constructBtnTemplateJSON() {
+
+    },
+
+
+    constructMediaJSON: function constructMediaJSON() {
+
+    },
+
+    constructCardJSON: function constructCardJSON() {
+        var sugListJSON = {};
+        //sugListJSON["source"] = "phillips-bot";
+        //sugListJSON["contextOut"] = [];
+        //sugListJSON["speech"] = this.$el.find('.text-text').html();
+        //sugListJSON["displayText"] = this.$el.find('.text-text').html();
+        //sugListJSON["data"] = {};
+
+        sugListJSON["messages"] = [];
+
+
+        //dataSugListJSON = sugListJSON["data"];
+        dataSugListJSON = sugListJSON["messages"];
+
+        messagesDict = {};
         messagesDict["attachment"] = {};
         attachmentDict = messagesDict["attachment"];
 
@@ -368,19 +400,6 @@ var NonPromBroadcastView = Backbone.View.extend({
         dataSugListJSON.push(messagesDict);
 
         return sugListJSON;
-    },
-
-    constructBtnTemplateJSON: function constructBtnTemplateJSON() {
-
-    },
-
-
-    constructMediaJSON: function constructMediaJSON() {
-
-    },
-
-    constructCardJSON: function constructCardJSON() {
-
     },
 
 
