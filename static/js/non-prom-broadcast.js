@@ -351,7 +351,40 @@ var NonPromBroadcastView = Backbone.View.extend({
     },
 
     constructBtnTemplateJSON: function constructBtnTemplateJSON() {
+        var sugListJSON = {};
+        //sugListJSON["source"] = "phillips-bot";
+        //sugListJSON["contextOut"] = [];
+        //sugListJSON["speech"] = this.$el.find('.text-text').html();
+        //sugListJSON["displayText"] = this.$el.find('.text-text').html();
+        //sugListJSON["data"] = {};
 
+        sugListJSON["messages"] = [];
+
+
+        //dataSugListJSON = sugListJSON["data"];
+        dataSugListJSON = sugListJSON["messages"];
+
+        messagesDict = {};
+        messagesDict["attachment"] = {};
+        attachmentDict = messagesDict["attachment"];
+
+        attachmentDict["type"] = "template";
+        attachmentDict["payload"] = {};
+        payloadDict = attachmentDict["payload"];
+        //facebookDict["facebook"] = {};
+        //dataSugListJSON["facebook"] = {};
+
+        //facebookSugListJSON = facebookDict["facebook"];
+        payloadDict["template_type"] = "button";
+        payloadDict["text"] = this.$el.find('.text-text').html();
+        payloadDict["buttons"] = this.constructBtnJSON();
+
+        messagesDict["quick_replies"] = this.constructQRJSON();
+
+
+        dataSugListJSON.push(messagesDict);
+
+        return sugListJSON;
     },
 
 
@@ -402,6 +435,17 @@ var NonPromBroadcastView = Backbone.View.extend({
         return sugListJSON;
     },
 
+    constructBtnJSON: function constructBtnJSON() {
+        var btnJSONList = [];
+        for (var i = 0; i < this.btnViewList.length; i++) {
+            var curView = this.btnViewList[i];
+            btnJSONList.push(curView.getJSON());
+        }
+
+        console.log(JSON.stringify(btnJSONList));
+        return btnJSONList;
+
+    },
 
     constructQRJSON: function constructQRJSON() {
         var qrJSONList = [];
