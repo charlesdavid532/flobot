@@ -424,6 +424,7 @@ var NonPromBroadcastView = Backbone.View.extend({
         elementsDict = {};
         elementsDict["title"] = this.$el.find('.text-text').html();
         elementsDict["subtitle"] = "Dummy";
+        elementsDict["buttons"] = this.constructBtnJSON();
         
         elementsArr.push(elementsDict);
 
