@@ -193,3 +193,8 @@ div .message-timing-date-time-widget-container.hidden-container {
 .card-content-holder.content-hide {
 	display: none;
 }
+
+.card-title,
+.card-subtitle {
+	border: 1px solid blue;
+}

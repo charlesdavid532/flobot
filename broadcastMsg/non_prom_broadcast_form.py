@@ -89,7 +89,8 @@ class NonPromBroadCastForm(FlaskForm):
 
 	def createBroadcast(self, bBroadcastType, bMessageContent, savedMediaImage, savedCardImage):
 		self.checkAndSaveImage(bBroadcastType, savedMediaImage, savedCardImage)
-		bMessageContent = self.getUpdatedMessageContentForImageType(bMessageContent, savedMediaImage)
+		if bBroadcastType == 'media':
+			bMessageContent = self.getUpdatedMessageContentForImageType(bMessageContent, savedMediaImage)
 
 		headers = {
 		    'Content-Type': 'application/json',

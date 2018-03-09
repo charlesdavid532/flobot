@@ -193,10 +193,42 @@ var NonPromBroadcastView = Backbone.View.extend({
         this.mainContentElement = 'card';
         this.mainContentViewList = [];
         this.displayCardContainer();
+        this.generateNewCard();
     },
 
 
+    generateNewCard: function generateNewCard() {
+        /*
+        var textModel = new TextData();
+        textModelId = this.generateRandomNum(1000,10000);
+        textModel.setNumId(textModelId);
+        */
+        cardModelId = this.generateRandomNum(1000,10000);
+        this.injectCardHtml(cardModelId);
+        /*
+        var textView = new TextView({ model: textModel, el: '#' + textModelId.toString() });
 
+        this.listenTo(textView, 'TEXT_CLOSE_BTN_CLICKED', this.onTextCloseBtnClicked);
+        this.mainContentViewList.push(textView);
+        */
+    },
+
+    injectCardHtml: function injectCardHtml(cardId) {
+        //this.$el.find('.broadcast-builder-content-holder').html(this.createTextHtml(textId));
+        this.$el.find('.card-text-holder').html(this.createCardHtml(cardId));
+        /*
+        var self = this,
+            textContainer = this.$el.find('#' + textId);
+
+        textContainer.find('.text-close-button').on("click","", textId, function(ev) {
+            self.onTextCloseBtnClicked(ev.data);
+        });
+        */
+    },
+
+    createCardHtml: function createCardHtml(cardId) {
+        return "<div id='" + cardId + "' class='card-elem'><div class='card-title-container'><div class='card-title-label'>Title:</div><div class='card-title' contentEditable='true'></div></div><div class='card-subtitle-container'><div class='card-subtitle-label'>Sub Title:</div><div class='card-subtitle' contentEditable='true'></div></div></div>"
+    },
 
 
     /**
@@ -564,6 +596,8 @@ var NonPromBroadcastView = Backbone.View.extend({
     },
 
     constructCardJSON: function constructCardJSON() {
+        var cardFileName = $('.card-image')[0].value.replace('C:\\fakepath\\', '');
+        console.log('The filename is::'+cardFileName);
         var sugListJSON = {};
         //sugListJSON["source"] = "phillips-bot";
         //sugListJSON["contextOut"] = [];
@@ -593,8 +627,9 @@ var NonPromBroadcastView = Backbone.View.extend({
         elementsArr = payloadDict["elements"];
 
         elementsDict = {};
-        elementsDict["title"] = this.$el.find('.text-text').html();
-        elementsDict["subtitle"] = "Dummy";
+        elementsDict["title"] = this.$el.find('.card-title').html();
+        elementsDict["subtitle"] = this.$el.find('.card-subtitle').html();
+        elementsDict["image_url"] = "https://s3.amazonaws.com/flobot/coupon-images/" + cardFileName;
         elementsDict["buttons"] = this.constructBtnJSON();
         
         elementsArr.push(elementsDict);
