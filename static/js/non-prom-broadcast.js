@@ -60,6 +60,48 @@ var NonPromBroadcastView = Backbone.View.extend({
         $.get('/admin/non-prom-broadcast/');
     },
 
+    showTextContainer: function showTextContainer() {
+        this.$el.find('.text-content-holder').removeClass('content-hide');
+    },
+
+    hideTextContainer: function hideTextContainer() {
+        this.$el.find('.text-content-holder').addClass('content-hide');
+    },
+
+    showMediaContainer: function showMediaContainer() {
+        this.$el.find('.media-content-holder').removeClass('content-hide');
+    },
+
+    hideMediaContainer: function hideMediaContainer() {
+        this.$el.find('.media-content-holder').addClass('content-hide');
+    },
+
+    showCardContainer: function showCardContainer() {
+        this.$el.find('.card-content-holder').removeClass('content-hide');
+    },
+
+    hideCardContainer: function hideCardContainer() {
+        this.$el.find('.card-content-holder').addClass('content-hide');
+    },
+
+    displayTextContainer: function displayTextContainer() {
+        this.hideMediaContainer();
+        this.hideCardContainer();
+        this.showTextContainer();
+    },
+
+    displayMediaContainer: function displayMediaContainer() {
+        this.hideTextContainer();
+        this.hideCardContainer();
+        this.showMediaContainer();
+    },
+
+    displayCardContainer: function displayCardContainer() {
+        this.hideTextContainer();
+        this.hideMediaContainer();
+        this.showCardContainer();
+    },
+
     /**
 
 
@@ -72,6 +114,7 @@ var NonPromBroadcastView = Backbone.View.extend({
         console.log('Text button event detected in main view');
         this.mainContentElement = 'text';
         this.mainContentViewList = [];
+        this.displayTextContainer();
         this.generateNewText();
     },
 
@@ -91,7 +134,8 @@ var NonPromBroadcastView = Backbone.View.extend({
 
 
     injectTextHtml: function injectTextHtml(textId) {
-        this.$el.find('.broadcast-builder-content-holder').html(this.createTextHtml(textId));
+        //this.$el.find('.broadcast-builder-content-holder').html(this.createTextHtml(textId));
+        this.$el.find('.text-content-holder').html(this.createTextHtml(textId));
         var self = this,
             textContainer = this.$el.find('#' + textId);
 
@@ -132,6 +176,7 @@ var NonPromBroadcastView = Backbone.View.extend({
         console.log('Media button event detected in main view');
         this.mainContentElement = 'media';  
         this.mainContentViewList = [];
+        this.displayMediaContainer();
     },
 
 
@@ -147,6 +192,7 @@ var NonPromBroadcastView = Backbone.View.extend({
         console.log('Card button event detected in main view');
         this.mainContentElement = 'card';
         this.mainContentViewList = [];
+        this.displayCardContainer();
     },
 
 
@@ -299,6 +345,8 @@ var NonPromBroadcastView = Backbone.View.extend({
         var constructedJSON = this.constructJSON();
         console.log("constructed json is::" + JSON.stringify(constructedJSON));
         $('.message-content-hidden-container').val(JSON.stringify(constructedJSON));
+        // Saving the broadcast type in the broadcast type hidden container
+        $('.broadcast-type-hidden-container').val(this.mainContentElement);
     },
 
     /*
@@ -389,7 +437,130 @@ var NonPromBroadcastView = Backbone.View.extend({
 
 
     constructMediaJSON: function constructMediaJSON() {
+        if (this.btnViewList.length > 0) {
+            return this.constructMediaBtnTemplateJSON();
+        } else {
+            return this.constructMediaSugListJSON();
+        }
+        
 
+    },
+
+    constructMediaBtnTemplateJSON: function constructMediaBtnTemplateJSON() {
+        var mediaFileName = $('.media-image')[0].value.replace('C:\\fakepath\\', '');
+        console.log('The filename is::'+mediaFileName);
+        var sugListJSON = {};
+        
+        sugListJSON["messages"] = [];
+
+
+        
+        dataSugListJSON = sugListJSON["messages"];
+
+        messagesDict = {};
+        messagesDict["attachment"] = {};
+        attachmentDict = messagesDict["attachment"];
+
+        attachmentDict["type"] = "template";
+        attachmentDict["payload"] = {};
+        payloadDict = attachmentDict["payload"];
+        
+        payloadDict["template_type"] = "media";
+        payloadDict["elements"] = [];
+        var elementsArr = payloadDict["elements"];
+
+        var elementsDict = {};
+        elementsDict["media_type"] = "image";
+        elementsDict["attachment_id"] = "https://s3.amazonaws.com/flobot/coupon-images/" + mediaFileName;
+        elementsDict["buttons"] = this.constructBtnJSON();
+
+        elementsArr.push(elementsDict);
+
+
+        messagesDict["quick_replies"] = this.constructQRJSON();
+
+
+        dataSugListJSON.push(messagesDict);
+
+        return sugListJSON;
+        /*
+        var mediaFileName = $('.media-image')[0].value.replace('C:\\fakepath\\', '');
+        console.log('The filename is::'+mediaFileName);
+        var sugListJSON = {};
+        //sugListJSON["source"] = "phillips-bot";
+        //sugListJSON["contextOut"] = [];
+        //sugListJSON["speech"] = this.$el.find('.text-text').html();
+        //sugListJSON["displayText"] = this.$el.find('.text-text').html();
+        //sugListJSON["data"] = {};
+
+        sugListJSON["messages"] = [];
+
+
+        //dataSugListJSON = sugListJSON["data"];
+        dataSugListJSON = sugListJSON["messages"];
+
+        messagesDict = {};
+        messagesDict["attachment"] = {};
+        attachmentDict = messagesDict["attachment"];
+
+        attachmentDict["type"] = "template";
+        attachmentDict["payload"] = {};
+        payloadDict = attachmentDict["payload"];
+        //facebookDict["facebook"] = {};
+        //dataSugListJSON["facebook"] = {};
+
+        //facebookSugListJSON = facebookDict["facebook"];
+        payloadDict["template_type"] = "media";
+        payloadDict["elements"] = [];
+        var elementsArr = payloadDict["elements"];
+
+        var elementsDict = {};
+        elementsDict["media_type"] = "image";
+        elementsDict["url"] = "https://s3.amazonaws.com/flobot/coupon-images/" + mediaFileName;
+        elementsDict["buttons"] = this.constructBtnJSON();
+
+        elementsArr.push(elementsDict);
+
+
+        messagesDict["quick_replies"] = this.constructQRJSON();
+
+
+        dataSugListJSON.push(messagesDict);
+
+        return sugListJSON;
+        */
+    },
+
+    constructMediaSugListJSON: function constructMediaSugListJSON() {
+        var mediaFileName = $('.media-image')[0].value.replace('C:\\fakepath\\', '');
+        console.log('The filename is::'+mediaFileName);
+        var sugListJSON = {};
+        
+
+        sugListJSON["messages"] = [];
+
+
+        //dataSugListJSON = sugListJSON["data"];
+        var dataSugListJSON = sugListJSON["messages"];
+
+        var messagesDict = {};
+        messagesDict["attachment"] = {};
+
+        var attachmentDict = messagesDict["attachment"];
+        attachmentDict["type"] = "image";
+        attachmentDict["payload"] = {};
+
+        var payloadDict = attachmentDict["payload"];
+        payloadDict["url"] = "https://s3.amazonaws.com/flobot/coupon-images/" + mediaFileName;
+        //payloadDict["buttons"] = this.constructBtnJSON();
+
+
+
+        messagesDict["quick_replies"] = this.constructQRJSON();
+
+        dataSugListJSON.push(messagesDict);
+
+        return sugListJSON;
     },
 
     constructCardJSON: function constructCardJSON() {

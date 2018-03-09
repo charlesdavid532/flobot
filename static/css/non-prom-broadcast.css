@@ -181,3 +181,15 @@ div .message-timing-date-time-widget-container.hidden-container {
 	width: 266px;
     height: 120px;
 }
+
+.text-content-holder.content-hide {
+	display: none;
+}
+
+.media-content-holder.content-hide {
+	display: none;
+}
+
+.card-content-holder.content-hide {
+	display: none;
+}
