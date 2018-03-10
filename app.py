@@ -43,7 +43,7 @@ from offers.show_generated_offer_form_view import ShowGeneratedOfferFormView
 from offers.redeem_offer_form_view import RedeemOfferFormView
 from offers.broadcast_offer_view import BroadcastOfferView
 from broadcastMsg.non_prom_broadcast_view import NonPromBroadcastView
-
+from labels.create_label_form_view import CreateLabelFormView
 
 
 try:
@@ -113,6 +113,10 @@ with app.app_context():
     nonPromBroadcastMainView = NonPromBroadcastView(name='Non Prom Broadcast', endpoint="non-prom-broadcast", category='Broadcast')
     nonPromBroadcastMainView.setMongo(mongo) 
     admin.add_view(nonPromBroadcastMainView)
+
+    labelView = CreateLabelFormView(mongo.db.labelList, 'LabelList', category='Labels')
+    labelView.setMongo(mongo) 
+    admin.add_view(labelView)
     #app.run()
 
 class JSONEncoder(json.JSONEncoder):
