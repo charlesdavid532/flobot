@@ -188,6 +188,8 @@ class CreateLabelFormView(ModelView):
 	def editLabel(self, form, model):
 		if model['labelName'] != self.currentEditedLabel:
 			print("Label has changed")
+			self.deleteLabel(model['labelId'])
+			self.validateAndCreateLabel(form, model)
 		else:
 			print("Label has not changed")
 
