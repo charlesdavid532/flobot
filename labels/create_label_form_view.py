@@ -11,7 +11,7 @@ from wtforms import validators
 class CreateLabelFormView(ModelView):
 	column_list = ('labelName', 'associatedGroups', 'associatedPSIDs', 'createdAt', 'labelId')
 	create_template = 'admin/model/create.html'
-	#edit_template = 'admin/model/coupon-edit.html'
+	edit_template = 'admin/model/edit.html'
 	form = LabelListForm
 	'''
 	def __init__(self, db, mongo, name, cat):
@@ -25,7 +25,10 @@ class CreateLabelFormView(ModelView):
 
 	def on_model_change(self, form, model, is_created):
 		print("model is:::" + str(model))
-		self.validateAndCreateLabel(form, model)
+		if is_created == True:
+			self.validateAndCreateLabel(form, model)
+		else:
+			self.editLabel(form, model)
 
 
 
@@ -148,19 +151,57 @@ class CreateLabelFormView(ModelView):
 		return psidList
 
 
+
+
+	def on_model_delete(self, model):
+		print("Deleted model is:::" + str(model))
+		isDeleted = self.deleteLabel(model['labelId'])
+
+		if isDeleted != True:
+			raise validators.ValidationError("Failure in deleting label")
+
+
+	def deleteLabel(self, labelId):
+		headers = {
+		    'Content-Type': 'application/json',
+		}
+
+		params = (
+		    ('access_token', 'EAAFYPdu4kLwBAB4MweT8P5mZBj895l6opCg9UbCjU0zkkT8zxRIq6yxdZCeCWVLVpCe0yYaF5fKm0QheaIZBWZCgJfZB1aA0bKhPGr6gV8RViv8hnti3uIDP46FuOlSSkvsVmJLXopTZAcMoVeMizLe8cIetMNuOGZAsA6yv3b4RQZDZD'),
+		)
+
+		response = requests.delete('https://graph.facebook.com/v2.11/' + labelId, headers=headers, params=params)
+		print(response.content)
+		jsonResponse = json.loads(response.content.decode('utf-8'))
+		return jsonResponse['success']
+
+
+	'''
+	Checks and edits the label and psids associated
+	1. If the label has changed then:
+		a. Delete the old label
+		b. Do the process of creating new label
+	2. If label has not changed then:
+		a. Find out which psids have to be added
+		b. Find out which psids have to be removed
+	'''
+	def editLabel(self, form, model):
+		if model['labelName'] != self.currentEditedLabel:
+			print("Label has changed")
+		else:
+			print("Label has not changed")
+
+
 	'''
 	Overrides the edit form function to change the model back to the way in which it can be displayed in wtforms
 	'''
+	
 	def edit_form(self, obj):
 		print("inside edit form")
-		print("Initial obj::" + str(obj))
+		
+		self.currentEditedLabel = obj['labelName']
+		print("The label that is currently being edited is::" + self.currentEditedLabel)
 
-		obj['minBillAmount'] = Decimal(obj['minBillAmount'])
-		obj['startedAt'] = DateUtils.convertDateStrToDate(obj['startedAt'].split()[0])
-		obj['expiresAt'] = DateUtils.convertDateStrToDate(obj['expiresAt'].split()[0])
-		if obj['percentOff'] != 'None' and obj['percentOff'] != None:
-			obj['percentOff'] = Decimal(obj['percentOff'])
-		else:
-			obj['percentOff'] = None
 		#return CouponListForm(obj=obj)
-		return super(CreateOfferFormView, self).edit_form(obj)
+		return super(CreateLabelFormView, self).edit_form(obj)
+	
