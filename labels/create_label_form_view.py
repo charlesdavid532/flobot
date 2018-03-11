@@ -54,17 +54,20 @@ class CreateLabelFormView(ModelView):
 		fbuserdata = self.mongo.db.fbuserdata
 
 		# Checking Validation 2
+		self.isValidPSIDORLabel(user_list, fbuserdata, labelData)
+
+		self.createLabelAndStoreInDB(createLabelForm, fLabelName, user_list, model)
+
+		print("Label created")
+		#return "Offer Created"
+
+	def isValidPSIDORLabel(self, user_list, fbuserdata, labelData):
 		for i in range(0, len(user_list)):
 			currentUser = user_list[i]
 			existing_user = fbuserdata.find_one({'psid': currentUser})
 			existing_label = labelData.find_one({'labelName': currentUser})
 			if not existing_user and not existing_label:
 				raise validators.ValidationError("One of the psids or labels does not exist")
-
-		self.createLabelAndStoreInDB(createLabelForm, fLabelName, user_list, model)
-
-		print("Label created")
-		#return "Offer Created"
 
 	def createLabelAndStoreInDB(self, createLabelForm, fLabelName, user_list, model):
 		labelId = self.createLabelCurl(fLabelName)
@@ -131,6 +134,26 @@ class CreateLabelFormView(ModelView):
 		#jsonResponse = json.loads(response.content.decode('utf-8'))
 		return jsonResponse['success']
 
+
+	def deleteAssociateGroupsCurl(self, associatedPSIDs, labelId):	
+
+		headers = {
+		    'Content-Type': 'application/json',
+		}
+
+		params = (
+		    ('access_token', 'EAAFYPdu4kLwBAB4MweT8P5mZBj895l6opCg9UbCjU0zkkT8zxRIq6yxdZCeCWVLVpCe0yYaF5fKm0QheaIZBWZCgJfZB1aA0bKhPGr6gV8RViv8hnti3uIDP46FuOlSSkvsVmJLXopTZAcMoVeMizLe8cIetMNuOGZAsA6yv3b4RQZDZD'),
+		)
+
+		for i in range(0, len(associatedPSIDs)):
+			currentPSID = associatedPSIDs[i]
+			data = '{    \n  "user":' + currentPSID + '\n}'
+			response = requests.delete('https://graph.facebook.com/v2.11/' + labelId + '/label', headers=headers, params=params, data=data)
+			print(response.content)
+			jsonResponse = json.loads(response.content.decode('utf-8'))
+
+		return jsonResponse['success']
+
 	
 	def getPsidListFromAssociatedGroups(self, user_list):
 		psidList = []
@@ -192,6 +215,69 @@ class CreateLabelFormView(ModelView):
 			self.validateAndCreateLabel(form, model)
 		else:
 			print("Label has not changed")
+			#self.deleteLabel(model['labelId'])
+			#self.validateAndCreateLabel(form, model)
+			self.handleEditLabel(form, model)
+
+
+	def handleEditLabel(self, form, model):
+		labelData = self.mongo.db.labelList	
+		fAssociatedGroups = model['associatedGroups']
+		fAssociatedGroups = fAssociatedGroups.replace(" ", "")
+		user_list = fAssociatedGroups.split(",")
+
+		fbuserdata = self.mongo.db.fbuserdata
+
+		self.isValidPSIDORLabel(user_list, fbuserdata, labelData)
+
+		curList = self.getPsidListFromAssociatedGroups(user_list)
+		prevList = self.currentAssociatedPSIDs
+
+		addList = self.getAddList(curList, prevList)
+
+		print("The add list is::") 
+		for i in range(0, len(addList)):
+			print(addList[i])
+
+		delList = self.getDeleteList(curList, prevList)
+
+		print("The del list is::") 
+		for i in range(0, len(delList)):
+			print(delList[i])
+
+		# Adding the psids to the label
+		if len(addList) > 0:
+			isPsidAssociated = self.createAssociateGroupsCurl(addList, model['labelId'])
+			if isPsidAssociated != True:
+				raise validators.ValidationError("Failure in associating psids")
+
+		
+
+		# Removing the psids to the label
+		if len(delList) > 0:
+			isPsidRemoved = self.deleteAssociateGroupsCurl(delList, model['labelId'])
+			if isPsidRemoved != True:
+				raise validators.ValidationError("Failure in deleting psids")
+
+		model['associatedPSIDs'] = curList
+
+
+
+	def getAddList(self, curList, prevList):
+		addList = []
+		for i in range(0, len(curList)):
+			if curList[i] not in prevList:
+				addList.append(curList[i])
+
+		return addList
+
+	def getDeleteList(self, curList, prevList):
+		delList = []
+		for i in range(0, len(prevList)):
+			if prevList[i] not in curList:
+				delList.append(prevList[i])
+
+		return delList
 
 
 	'''
@@ -203,6 +289,7 @@ class CreateLabelFormView(ModelView):
 		
 		self.currentEditedLabel = obj['labelName']
 		print("The label that is currently being edited is::" + self.currentEditedLabel)
+		self.currentAssociatedPSIDs = obj['associatedPSIDs']
 
 		#return CouponListForm(obj=obj)
 		return super(CreateLabelFormView, self).edit_form(obj)
