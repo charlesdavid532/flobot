@@ -8,6 +8,7 @@ from decimal import *
 import requests
 import json
 from wtforms import validators
+import os
 class CreateLabelFormView(ModelView):
 	column_list = ('labelName', 'associatedGroups', 'associatedPSIDs', 'createdAt', 'labelId')
 	create_template = 'admin/model/create.html'
@@ -85,12 +86,13 @@ class CreateLabelFormView(ModelView):
 	
 
 	def createLabelCurl(self, fLabelName):
+		#print("The access token is::"+os.environ['FACEBOOK_PAGE_ACCESS_TOKEN'])
 		headers = {
 		    'Content-Type': 'application/json',
 		}
 
 		params = (
-		    ('access_token', 'EAAFYPdu4kLwBAB4MweT8P5mZBj895l6opCg9UbCjU0zkkT8zxRIq6yxdZCeCWVLVpCe0yYaF5fKm0QheaIZBWZCgJfZB1aA0bKhPGr6gV8RViv8hnti3uIDP46FuOlSSkvsVmJLXopTZAcMoVeMizLe8cIetMNuOGZAsA6yv3b4RQZDZD'),
+		    ('access_token', str(os.environ['FACEBOOK_PAGE_ACCESS_TOKEN'])),
 		)
 
 		data = '{    \n  "name": "' + fLabelName + '",  \n}'
@@ -112,7 +114,7 @@ class CreateLabelFormView(ModelView):
 		}
 
 		params = (
-		    ('access_token', 'EAAFYPdu4kLwBAB4MweT8P5mZBj895l6opCg9UbCjU0zkkT8zxRIq6yxdZCeCWVLVpCe0yYaF5fKm0QheaIZBWZCgJfZB1aA0bKhPGr6gV8RViv8hnti3uIDP46FuOlSSkvsVmJLXopTZAcMoVeMizLe8cIetMNuOGZAsA6yv3b4RQZDZD'),
+		    ('access_token', str(os.environ['FACEBOOK_PAGE_ACCESS_TOKEN'])),
 		)
 
 		for i in range(0, len(associatedPSIDs)):
@@ -142,7 +144,7 @@ class CreateLabelFormView(ModelView):
 		}
 
 		params = (
-		    ('access_token', 'EAAFYPdu4kLwBAB4MweT8P5mZBj895l6opCg9UbCjU0zkkT8zxRIq6yxdZCeCWVLVpCe0yYaF5fKm0QheaIZBWZCgJfZB1aA0bKhPGr6gV8RViv8hnti3uIDP46FuOlSSkvsVmJLXopTZAcMoVeMizLe8cIetMNuOGZAsA6yv3b4RQZDZD'),
+		    ('access_token', str(os.environ['FACEBOOK_PAGE_ACCESS_TOKEN'])),
 		)
 
 		for i in range(0, len(associatedPSIDs)):
@@ -190,7 +192,7 @@ class CreateLabelFormView(ModelView):
 		}
 
 		params = (
-		    ('access_token', 'EAAFYPdu4kLwBAB4MweT8P5mZBj895l6opCg9UbCjU0zkkT8zxRIq6yxdZCeCWVLVpCe0yYaF5fKm0QheaIZBWZCgJfZB1aA0bKhPGr6gV8RViv8hnti3uIDP46FuOlSSkvsVmJLXopTZAcMoVeMizLe8cIetMNuOGZAsA6yv3b4RQZDZD'),
+		    ('access_token', str(os.environ['FACEBOOK_PAGE_ACCESS_TOKEN'])),
 		)
 
 		response = requests.delete('https://graph.facebook.com/v2.11/' + labelId, headers=headers, params=params)

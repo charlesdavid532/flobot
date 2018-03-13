@@ -17,6 +17,7 @@ from constants import Constants
 from common.amazon_s3 import AmazonS3
 from bson.decimal128 import Decimal128
 from werkzeug.utils import secure_filename
+import os
 
 class NonPromBroadCastForm(FlaskForm):
 	#data = StringField('Message Content', render_kw={'disabled':'disabled'})	
@@ -98,7 +99,7 @@ class NonPromBroadCastForm(FlaskForm):
 		}
 
 		params = (
-		    ('access_token', 'EAAFYPdu4kLwBAB4MweT8P5mZBj895l6opCg9UbCjU0zkkT8zxRIq6yxdZCeCWVLVpCe0yYaF5fKm0QheaIZBWZCgJfZB1aA0bKhPGr6gV8RViv8hnti3uIDP46FuOlSSkvsVmJLXopTZAcMoVeMizLe8cIetMNuOGZAsA6yv3b4RQZDZD'),
+		    ('access_token', str(os.environ['FACEBOOK_PAGE_ACCESS_TOKEN'])),
 		)
 
 		#data = '{    \n  "messages": [\n    {\n      "attachment":{\n        "type":"template",\n        "payload":{\n          "template_type":"generic",\n          "elements":[\n             {\n              "title":"Welcome to Our Marketplace!!",\n              "image_url":"https://www.facebook.com/jaspers.png",\n              "subtitle":"Fresh fruits and vegetables. Yum.",\n              "buttons":[\n                {\n                  "type":"web_url",\n                  "url":"https://www.jaspersmarket.com",\n                  "title":"View Website"\n                }              \n              ]      \n            }\n          ]\n        }       \n      }\n    }\n  ]\n}'
@@ -121,7 +122,7 @@ class NonPromBroadCastForm(FlaskForm):
 		}
 
 		params = (
-		    ('access_token', 'EAAFYPdu4kLwBAB4MweT8P5mZBj895l6opCg9UbCjU0zkkT8zxRIq6yxdZCeCWVLVpCe0yYaF5fKm0QheaIZBWZCgJfZB1aA0bKhPGr6gV8RViv8hnti3uIDP46FuOlSSkvsVmJLXopTZAcMoVeMizLe8cIetMNuOGZAsA6yv3b4RQZDZD'),
+		    ('access_token', str(os.environ['FACEBOOK_PAGE_ACCESS_TOKEN'])),
 		    
 		)
 
@@ -173,7 +174,7 @@ class NonPromBroadCastForm(FlaskForm):
 		}
 
 		params = (
-		    ('access_token', 'EAAFYPdu4kLwBAB4MweT8P5mZBj895l6opCg9UbCjU0zkkT8zxRIq6yxdZCeCWVLVpCe0yYaF5fKm0QheaIZBWZCgJfZB1aA0bKhPGr6gV8RViv8hnti3uIDP46FuOlSSkvsVmJLXopTZAcMoVeMizLe8cIetMNuOGZAsA6yv3b4RQZDZD'),
+		    ('access_token', str(os.environ['FACEBOOK_PAGE_ACCESS_TOKEN'])),
 		)
 
 		data = '{  \n  "message":{\n  "attachment":{\n  "type":"image", \n  "payload":{\n  "is_reusable": true,\n  "url":"' + str(filepath) + '"\n  }\n  }\n  }\n}'
