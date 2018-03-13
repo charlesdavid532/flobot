@@ -157,7 +157,7 @@ class NonPromBroadCastForm(FlaskForm):
 
 	def saveImageToAws(self, fileData, filename):       
 		myAmazonS3 = AmazonS3(Constants.getAWSBucketName())
-		myAmazonS3.saveResourceToAWS(fileData, Constants.getAWSCouponImagesBucketName() + '/' + filename, 
+		myAmazonS3.saveResourceToAWS(fileData, Constants.getAWSBroadcastImagesBucketName() + '/' + filename, 
 			Utils.getImageContentType(filename), Constants.getAWSBucketName())
 
 	'''
@@ -166,7 +166,7 @@ class NonPromBroadCastForm(FlaskForm):
 	'''
 	def getUpdatedMessageContentForImageType(self, bMessageContent, savedMediaImage):
 		filename = secure_filename(savedMediaImage.filename)
-		filepath = Constants.getAWSCouponsURL() + filename
+		filepath = Constants.getAWSBroadcastURL() + filename
 		print("THe image url is::" + filepath)
 		headers = {
 		    'Content-Type': 'application/json',

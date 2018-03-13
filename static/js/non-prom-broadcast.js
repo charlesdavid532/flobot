@@ -503,7 +503,7 @@ var NonPromBroadcastView = Backbone.View.extend({
 
         var elementsDict = {};
         elementsDict["media_type"] = "image";
-        elementsDict["attachment_id"] = "https://s3.amazonaws.com/flobot/coupon-images/" + mediaFileName;
+        elementsDict["attachment_id"] = "https://s3.amazonaws.com/flobot/broadcast-images/" + mediaFileName;
         elementsDict["buttons"] = this.constructBtnJSON();
 
         elementsArr.push(elementsDict);
@@ -583,7 +583,7 @@ var NonPromBroadcastView = Backbone.View.extend({
         attachmentDict["payload"] = {};
 
         var payloadDict = attachmentDict["payload"];
-        payloadDict["url"] = "https://s3.amazonaws.com/flobot/coupon-images/" + mediaFileName;
+        payloadDict["url"] = "https://s3.amazonaws.com/flobot/broadcast-images/" + mediaFileName;
         //payloadDict["buttons"] = this.constructBtnJSON();
 
 
@@ -629,7 +629,7 @@ var NonPromBroadcastView = Backbone.View.extend({
         elementsDict = {};
         elementsDict["title"] = this.$el.find('.card-title').html();
         elementsDict["subtitle"] = this.$el.find('.card-subtitle').html();
-        elementsDict["image_url"] = "https://s3.amazonaws.com/flobot/coupon-images/" + cardFileName;
+        elementsDict["image_url"] = "https://s3.amazonaws.com/flobot/broadcast-images/" + cardFileName;
         elementsDict["buttons"] = this.constructBtnJSON();
         
         elementsArr.push(elementsDict);

@@ -109,6 +109,10 @@ class Constants(object):
 		return "https://s3.amazonaws.com/flobot/coupon-images/"
 
 	@staticmethod
+	def getAWSBroadcastURL():
+		return "https://s3.amazonaws.com/flobot/broadcast-images/"
+
+	@staticmethod
 	def getAWSStoreImagesURL():
 		return "https://s3.amazonaws.com/flobot/my-store-images/"
 
@@ -127,6 +131,10 @@ class Constants(object):
 	@staticmethod
 	def getAWSCouponImagesBucketName():
 		return "coupon-images"
+
+	@staticmethod
+	def getAWSBroadcastImagesBucketName():
+		return "broadcast-images"
 
 	@staticmethod
 	def getStrImageContentType():
