@@ -22,7 +22,7 @@ class NonPromBroadCastForm(FlaskForm):
 	#data = StringField('Message Content', render_kw={'disabled':'disabled'})	
 	data = HiddenField('Message Content')	
 	broadcastType = HiddenField('')
-	messageUsers = StringField('Select the users to broadcast', validators=[DataRequired("Users are required")])
+	messageUsers = StringField('Select the labels to broadcast', validators=[DataRequired("Labels are required")])
 	messageTiming = RadioField('Message Timing', choices=[('0','Send Now'),('1','Send Later')])
 	messageTimingDateTimeWidget = StringField('Select the date and time to broadcast')
 	mediaImage = FileField(validators=[FileAllowed(['jpg', 'jpeg', 'png'], 'Images only!')])
@@ -38,7 +38,7 @@ class NonPromBroadCastForm(FlaskForm):
 
 	'''
 	Validates whether the broadcast is valid
-	1. Checks whether the user psids exist in the table
+	1. Checks whether the user psids exist in the table (Change to whether a label exists in the db)
 	2. Checks whether the broadcast time is in the future
 	'''
 	def validateBroadcast(self, broadcastForm):
@@ -53,14 +53,15 @@ class NonPromBroadCastForm(FlaskForm):
 		bMessageTiming = str(broadcastForm.messageTiming.data)
 		print("bMessageTiming" + bMessageTiming)
 		
-		fbuserdata = self.mongo.db.fbuserdata		
+		fbuserdata = self.mongo.db.fbuserdata
+		labels = self.mongo.db.labelList		
 
-		#Validating for the users entered
+		#Validating for the labels entered
 		for i in range(0, len(user_list)):
 			currentUser = user_list[i]
-			existing_user = fbuserdata.find_one({'psid': currentUser})
-			if not existing_user:
-				return 'One of the users you entered does not exist'
+			existing_label = labels.find_one({'labelName': currentUser})
+			if not existing_label:
+				return 'One of the labels you entered does not exist'
 
 		#Validating for the time
 		if bMessageTiming == '1':
@@ -82,12 +83,12 @@ class NonPromBroadCastForm(FlaskForm):
 
 
 		print("The message content is::" +bMessageContent)
-		self.createBroadcast(bBroadcastType, bMessageContent, savedMediaImage, savedCardImage)
+		self.createBroadcast(bBroadcastType, bMessageContent, user_list, savedMediaImage, savedCardImage)
 
 		return 'Valid Broadcast'
 
 
-	def createBroadcast(self, bBroadcastType, bMessageContent, savedMediaImage, savedCardImage):
+	def createBroadcast(self, bBroadcastType, bMessageContent, user_list, savedMediaImage, savedCardImage):
 		self.checkAndSaveImage(bBroadcastType, savedMediaImage, savedCardImage)
 		if bBroadcastType == 'media':
 			bMessageContent = self.getUpdatedMessageContentForImageType(bMessageContent, savedMediaImage)
@@ -97,7 +98,7 @@ class NonPromBroadCastForm(FlaskForm):
 		}
 
 		params = (
-		    ('access_token', 'EAACtGhC8ZAjsBALnvZAR60H8hZCJcAh5LF5MBZCCFKKFZBxHOW0ERQDo0dGAZAqvEzWEi9iuYlaKy7rZBNDWin92yKfcSdceeEdUfRvIniHednSIYlVJgMLk9p0XZBsWLQ4P7bmZBrG20Tg2aFoMAto0uUZAafKg9vNBDM8wKWtmq4mgZDZD'),
+		    ('access_token', 'EAAFYPdu4kLwBAB4MweT8P5mZBj895l6opCg9UbCjU0zkkT8zxRIq6yxdZCeCWVLVpCe0yYaF5fKm0QheaIZBWZCgJfZB1aA0bKhPGr6gV8RViv8hnti3uIDP46FuOlSSkvsVmJLXopTZAcMoVeMizLe8cIetMNuOGZAsA6yv3b4RQZDZD'),
 		)
 
 		#data = '{    \n  "messages": [\n    {\n      "attachment":{\n        "type":"template",\n        "payload":{\n          "template_type":"generic",\n          "elements":[\n             {\n              "title":"Welcome to Our Marketplace!!",\n              "image_url":"https://www.facebook.com/jaspers.png",\n              "subtitle":"Fresh fruits and vegetables. Yum.",\n              "buttons":[\n                {\n                  "type":"web_url",\n                  "url":"https://www.jaspersmarket.com",\n                  "title":"View Website"\n                }              \n              ]      \n            }\n          ]\n        }       \n      }\n    }\n  ]\n}'
@@ -110,26 +111,35 @@ class NonPromBroadCastForm(FlaskForm):
 		jsonResponse = json.loads(response.content.decode('utf-8'))
 		print(str(jsonResponse))
 
-		self.sendBroadcast(jsonResponse["message_creative_id"]);
+		self.sendBroadcast(jsonResponse["message_creative_id"], user_list);
 
 
-	def sendBroadcast(self, msgCreativeId):
-
+	def sendBroadcast(self, msgCreativeId, user_list):
+		print("Inside send broadcast")
 		headers = {
 		    'Content-Type': 'application/json',
 		}
 
 		params = (
-		    ('access_token', 'EAACtGhC8ZAjsBALnvZAR60H8hZCJcAh5LF5MBZCCFKKFZBxHOW0ERQDo0dGAZAqvEzWEi9iuYlaKy7rZBNDWin92yKfcSdceeEdUfRvIniHednSIYlVJgMLk9p0XZBsWLQ4P7bmZBrG20Tg2aFoMAto0uUZAafKg9vNBDM8wKWtmq4mgZDZD'),
+		    ('access_token', 'EAAFYPdu4kLwBAB4MweT8P5mZBj895l6opCg9UbCjU0zkkT8zxRIq6yxdZCeCWVLVpCe0yYaF5fKm0QheaIZBWZCgJfZB1aA0bKhPGr6gV8RViv8hnti3uIDP46FuOlSSkvsVmJLXopTZAcMoVeMizLe8cIetMNuOGZAsA6yv3b4RQZDZD'),
 		    
 		)
 
-		data = '{    \n  "message_creative_id":' + msgCreativeId + ',\n  "notification_type": "REGULAR",\n}'
+		for i in range(0, len(user_list)):
+			currentLabel = user_list[i]
+			currentLabelId = self.getLabelIdFromLabelName(currentLabel)
+			print("The current label id is:"+currentLabelId)
+			#data = '{    \n  "message_creative_id":' + msgCreativeId + ',\n  "notification_type": "REGULAR",\n}'
 
-		response = requests.post('https://graph.facebook.com/v2.11/me/broadcast_messages', headers=headers, params=params, data=data)
+			data = '{    \n  "message_creative_id":' + msgCreativeId + ',\n  "notification_type": "REGULAR",\n  "custom_label_id":"' + currentLabelId + '",\n}'
+			#data = '{    \n  "message_creative_id":' + msgCreativeId + ',\n  "notification_type": "REGULAR",\n  "custom_label_id":"1811704952195153",\n}'
 
-		print(str(response))
-		print(response.content)
+			#data = '{    \n  "message_creative_id":' + msgCreativeId + ',\n  "custom_label_id":"' + currentLabel + '",\n}'
+
+			response = requests.post('https://graph.facebook.com/v2.11/me/broadcast_messages', headers=headers, params=params, data=data)
+
+			print(str(response))
+			print(response.content)
 
 
 
@@ -163,7 +173,7 @@ class NonPromBroadCastForm(FlaskForm):
 		}
 
 		params = (
-		    ('access_token', 'EAACtGhC8ZAjsBALnvZAR60H8hZCJcAh5LF5MBZCCFKKFZBxHOW0ERQDo0dGAZAqvEzWEi9iuYlaKy7rZBNDWin92yKfcSdceeEdUfRvIniHednSIYlVJgMLk9p0XZBsWLQ4P7bmZBrG20Tg2aFoMAto0uUZAafKg9vNBDM8wKWtmq4mgZDZD'),
+		    ('access_token', 'EAAFYPdu4kLwBAB4MweT8P5mZBj895l6opCg9UbCjU0zkkT8zxRIq6yxdZCeCWVLVpCe0yYaF5fKm0QheaIZBWZCgJfZB1aA0bKhPGr6gV8RViv8hnti3uIDP46FuOlSSkvsVmJLXopTZAcMoVeMizLe8cIetMNuOGZAsA6yv3b4RQZDZD'),
 		)
 
 		data = '{  \n  "message":{\n  "attachment":{\n  "type":"image", \n  "payload":{\n  "is_reusable": true,\n  "url":"' + str(filepath) + '"\n  }\n  }\n  }\n}'
@@ -180,6 +190,13 @@ class NonPromBroadCastForm(FlaskForm):
 		jsonMessageContent["messages"][0]["attachment"]["payload"]["elements"][0]["attachment_id"] = attachmentId
 
 		return json.dumps(jsonMessageContent)
-				
+
+
+
+	def getLabelIdFromLabelName(self, labelName):
+		labels = self.mongo.db.labelList
+
+		for label in labels.find({'labelName': labelName}):
+			return label['labelId']	
 				
 		
