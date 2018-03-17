@@ -23,6 +23,7 @@ class NonPromBroadCastForm(FlaskForm):
 	#data = StringField('Message Content', render_kw={'disabled':'disabled'})	
 	data = HiddenField('Message Content')	
 	broadcastType = HiddenField('')
+	#broadcastContext = StringField('Context passed with broadcast')
 	messageUsers = StringField('Select the labels to broadcast', validators=[DataRequired("Labels are required")])
 	messageTiming = RadioField('Message Timing', choices=[('0','Send Now'),('1','Send Later')])
 	messageTimingDateTimeWidget = StringField('Select the date and time to broadcast')

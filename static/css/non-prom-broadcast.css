@@ -121,7 +121,8 @@ div .message-timing-date-time-widget-container.hidden-container {
     clear: both;
 }
 
-.message-user-outer-container {
+.message-user-outer-container,
+.message-context-outer-container {
 	clear: both;
 }
 

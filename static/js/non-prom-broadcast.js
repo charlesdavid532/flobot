@@ -416,6 +416,7 @@ var NonPromBroadcastView = Backbone.View.extend({
         //sugListJSON["data"] = {};
 
         sugListJSON["messages"] = [];
+        //sugListJSON["contextOut"] = this.constructContextJSON();
 
 
         //dataSugListJSON = sugListJSON["data"];
@@ -424,6 +425,7 @@ var NonPromBroadcastView = Backbone.View.extend({
         messagesDict = {};
         messagesDict["text"] = this.$el.find('.text-text').html();
         messagesDict["quick_replies"] = this.constructQRJSON();
+        //messagesDict["contextOut"] = this.constructContextJSON();
 
         dataSugListJSON.push(messagesDict);
 
@@ -439,6 +441,7 @@ var NonPromBroadcastView = Backbone.View.extend({
         //sugListJSON["data"] = {};
 
         sugListJSON["messages"] = [];
+        //sugListJSON["contextOut"] = this.constructContextJSON();
 
 
         //dataSugListJSON = sugListJSON["data"];
@@ -635,6 +638,7 @@ var NonPromBroadcastView = Backbone.View.extend({
         elementsArr.push(elementsDict);
 
         messagesDict["quick_replies"] = this.constructQRJSON();
+        //messagesDict["contextOut"] = this.constructContextJSON();
 
 
         dataSugListJSON.push(messagesDict);
@@ -664,6 +668,23 @@ var NonPromBroadcastView = Backbone.View.extend({
         console.log(JSON.stringify(qrJSONList));
         return qrJSONList;
 
+    },
+
+    constructContextJSON: function constructContextJSON() {
+        
+        var contextListJSON = [];
+
+        var contextObj = {};
+        
+        contextObj["name"] = this.$('.message-context-container').val();
+        contextObj["lifespan"] = 5;
+        contextObj["parameters"] = {};
+
+        
+
+        contextListJSON.push(contextObj);
+
+        return contextListJSON;
     }
 
     
