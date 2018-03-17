@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+
+</head>
+<body>
+    <div class="container"></div>
+    <script data-main="../../static/js/common" src="../../static/js/require.js"></script>
+    <script>
+    require(['common'], function() {
+        console.log("After common should have loaded")
+        require(['../../static/js/main']);
+    });
+    </script>
+</body>
+
+
+</html>

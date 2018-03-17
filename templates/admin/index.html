@@ -1,13 +1,15 @@
 {% extends 'admin/master.html' %}
 {% block head_css %}
 {{ super() }}
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
 <link href="{{ url_for('static', filename='css/admin-home.css') }}" rel="stylesheet">
 {% endblock head_css %}
 
 
 {% block head %}
 {{ super() }}
-<script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+<script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script type = "text/javascript" src = "https://ajax.cdnjs.com/ajax/libs/underscore.js/1.1.4/underscore-min.js"></script>
 <script type = "text/javascript" src = "https://ajax.cdnjs.com/ajax/libs/backbone.js/0.3.3/backbone-min.js"></script>
 {% endblock head %}

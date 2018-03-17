@@ -37,9 +37,13 @@ from user_data import UserDataModel
 from offers.offer_form import OffersForm
 from offers.create_offer_form import CreateOfferForm
 import flask_admin as admin
+from flask.ext.admin.base import MenuLink
 from offers.create_offer_form_view import CreateOfferFormView
 from offers.show_generated_offer_form_view import ShowGeneratedOfferFormView
 from offers.redeem_offer_form_view import RedeemOfferFormView
+from offers.broadcast_offer_view import BroadcastOfferView
+from broadcastMsg.non_prom_broadcast_view import NonPromBroadcastView
+from labels.create_label_form_view import CreateLabelFormView
 
 
 try:
@@ -93,13 +97,26 @@ mongo = PyMongo(app)
 
 with app.app_context():
     admin = admin.Admin(app, name='Flobot')
+    #admin.add_link(MenuLink(name='Back Home', url='/'))
     # Add views
-    admin.add_view(CreateOfferFormView(mongo.db.couponList, 'CouponList'))
-    admin.add_view(ShowGeneratedOfferFormView(mongo.db.couponGenerated, 'CouponGenerated'))
-    admin.add_view(ShowGeneratedOfferFormView(mongo.db.couponRedeemed, 'CouponRedeemed'))
-    redeemOfferView = RedeemOfferFormView(name='Redeem Now', endpoint="offers")
+    admin.add_view(CreateOfferFormView(mongo.db.couponList, 'CouponList', category='Offers'))
+    admin.add_view(ShowGeneratedOfferFormView(mongo.db.couponGenerated, 'CouponGenerated', category='Offers'))
+    admin.add_view(ShowGeneratedOfferFormView(mongo.db.couponRedeemed, 'CouponRedeemed', category='Offers'))
+    redeemOfferView = RedeemOfferFormView(name='Redeem Now', endpoint="offers", category='Offers')
     redeemOfferView.setMongo(mongo) 
     admin.add_view(redeemOfferView)
+    '''
+    broadcastMainView = BroadcastOfferView(name='Broadcast Now', endpoint="broadcast")
+    broadcastMainView.setMongo(mongo) 
+    admin.add_view(broadcastMainView)
+    '''
+    nonPromBroadcastMainView = NonPromBroadcastView(name='Non Prom Broadcast', endpoint="non-prom-broadcast", category='Broadcast')
+    nonPromBroadcastMainView.setMongo(mongo) 
+    admin.add_view(nonPromBroadcastMainView)
+
+    labelView = CreateLabelFormView(mongo.db.labelList, 'LabelList', category='Labels')
+    labelView.setMongo(mongo) 
+    admin.add_view(labelView)
     #app.run()
 
 class JSONEncoder(json.JSONEncoder):
@@ -1010,6 +1027,20 @@ def createOffers():
         #return redirect('/success')
     print("Before rendering template")
     return render_template('createOffers.html', form=form)
+
+'''
+@app.route('/non-prom-msg', methods=('GET', 'POST'))
+def NonPromOffers():
+    return redirect(url_for('NonPromBOffers'))
+
+@app.route('/admin/broadcast/non-prom-msg', methods=('GET', 'POST'))
+def NonPromBOffers():
+    print("In non prom offers endpoint")
+    print("Method is::" + str(request.method))
+    nonPromBView = NonPromBroadcastView(request, mongo)
+    print("the template to be rendered is::" + str(nonPromBView.render()))
+    return nonPromBView.render()
+'''    
 
 # Handling HTTP POST when APIAI sends us a payload of messages that have
 # have been sent to our bot. 

@@ -1,0 +1,201 @@
+#messageTiming {
+	list-style-type: none;
+}
+
+
+#messageTiming-0 {
+	float: left;
+}
+
+.label-radio-control {
+	float: left;
+    margin-left: 10px;
+}
+
+#messageTiming-1 {
+	margin-left: 10px;
+    float: left;
+}
+
+
+
+div #message-timing-date-time-widget {
+	clear: both;
+}
+
+div .message-timing-date-time-widget-container.hidden-container {
+	visibility: hidden;
+}
+
+
+.ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
+.ui-timepicker-div dl { text-align: left; }
+.ui-timepicker-div dl dt { float: left; clear:left; padding: 0 0 0 5px; }
+.ui-timepicker-div dl dd { margin: 0 10px 10px 40%; }
+.ui-timepicker-div td { font-size: 90%; }
+.ui-tpicker-grid-label { background: none; border: none; margin: 0; padding: 0; }
+.ui-timepicker-div .ui_tpicker_unit_hide{ display: none; }
+
+.ui-timepicker-div .ui_tpicker_time .ui_tpicker_time_input { background: none; color: inherit; border: none; outline: none; border-bottom: solid 1px #555; width: 95%; }
+.ui-timepicker-div .ui_tpicker_time .ui_tpicker_time_input:focus { border-bottom-color: #aaa; }
+
+.ui-timepicker-rtl{ direction: rtl; }
+.ui-timepicker-rtl dl { text-align: right; padding: 0 5px 0 0; }
+.ui-timepicker-rtl dl dt{ float: right; clear: right; }
+.ui-timepicker-rtl dl dd { margin: 0 40% 10px 10px; }
+
+/* Shortened version style */
+
+.ui-timepicker-div.ui-timepicker-oneLine { padding-right: 2px; }
+.ui-timepicker-div.ui-timepicker-oneLine .ui_tpicker_time, 
+.ui-timepicker-div.ui-timepicker-oneLine dt { display: none; }
+.ui-timepicker-div.ui-timepicker-oneLine .ui_tpicker_time_label { display: block; padding-top: 2px; }
+.ui-timepicker-div.ui-timepicker-oneLine dl { text-align: right; }
+.ui-timepicker-div.ui-timepicker-oneLine dl dd, 
+.ui-timepicker-div.ui-timepicker-oneLine dl dd > div { display:inline-block; margin:0; }
+.ui-timepicker-div.ui-timepicker-oneLine dl dd.ui_tpicker_minute:before,
+.ui-timepicker-div.ui-timepicker-oneLine dl dd.ui_tpicker_second:before { content:':'; display:inline-block; }
+.ui-timepicker-div.ui-timepicker-oneLine dl dd.ui_tpicker_millisec:before,
+.ui-timepicker-div.ui-timepicker-oneLine dl dd.ui_tpicker_microsec:before { content:'.'; display:inline-block; }
+.ui-timepicker-div.ui-timepicker-oneLine .ui_tpicker_unit_hide,
+.ui-timepicker-div.ui-timepicker-oneLine .ui_tpicker_unit_hide:before{ display: none; }
+
+
+.sidebar-container {
+	width: 100px;
+    height: 250px;
+    border: 1px solid black;
+    margin: 10 20;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    float: left;
+}
+
+.sidebar-elem-1,
+.sidebar-elem-2,
+.sidebar-elem-3,
+.sidebar-elem-4 {
+	height: 49px;
+	border-bottom: 1px solid black;
+}
+
+.sidebar-common {
+	text-align: center;
+	line-height: 50px;
+}
+
+.broadcast-builder-container {
+	float: left;
+    height: 250px;
+    width: 300px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    position: relative;
+    left: 150px;
+}
+
+.broadcast-builder-top-container {
+	height: 200px;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    border-top: 1px solid black;
+}
+
+.broadcast-builder-content-holder {
+	height: 150px;
+}
+
+.broadcast-builder-buttons-holder {
+	height: 50px;
+    border-top: 1px solid black;
+}
+
+.broadcast-builder-bottom-container {
+	height: 50px;
+    border: 1px solid black;
+    width: 400px;
+    position: relative;
+    left: -50px;
+    clear: both;
+}
+
+.message-user-outer-container,
+.message-context-outer-container {
+	clear: both;
+}
+
+
+.qr-elem,
+.btn-elem,
+.text-elem {
+	float: left;
+    margin: 10px;
+    width: 110px;
+    border: 1px solid blue;
+    height: 30px;
+}
+
+.btn-elem {
+	width: 86px;
+	height: 27px;
+	margin-right: 0px;
+    margin-left: 10px;
+}
+
+.text-elem {
+	width: 277px;
+	height: 120px;
+}
+
+.quick-reply-close-button,
+.btn-close-button,
+.text-close-button {
+	position: relative;
+    float: left;
+    /* border: 1px solid blue; */
+    width: 10px;
+    border-left: 1px solid blue;
+    border-bottom: 1px solid blue;
+    height: 15px;
+    line-height: 15px;
+    text-align: center;
+}
+
+.qr-text,
+.btn-text,
+.text-text {
+	float: left;
+    width: 99px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+}
+
+.btn-text {
+	width: 75px;
+	height: 27px;
+}
+
+.text-text {
+	width: 266px;
+    height: 120px;
+}
+
+.text-content-holder.content-hide {
+	display: none;
+}
+
+.media-content-holder.content-hide {
+	display: none;
+}
+
+.card-content-holder.content-hide {
+	display: none;
+}
+
+.card-title,
+.card-subtitle {
+	border: 1px solid blue;
+}

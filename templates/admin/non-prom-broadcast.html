@@ -1,0 +1,104 @@
+{% extends 'admin/master.html' %}
+
+{% block head_css %}
+{{ super() }}
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<link href="{{ url_for('static', filename='css/non-prom-broadcast.css') }}" rel="stylesheet">
+{% endblock head_css %}
+
+{% block head %}
+{{ super () }}
+<!--<script data-main="{{ url_for('static', filename='js/main.js') }}" src="{{ url_for('static', filename='js/require.js') }}"></script>-->
+
+<!--<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-ui-timepicker-addon.js') }}"></script>-->
+
+<!--<script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>-->
+<!--<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>-->
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>-->
+<!--<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-ui.js') }}"></script>-->
+<!--<script type = "text/javascript" src = "https://ajax.cdnjs.com/ajax/libs/underscore.js/1.1.4/underscore-min.js"></script>-->
+<!--<script type="text/javascript" src="{{ url_for('static', filename='js/underscore.min.js') }}"></script>-->
+<!--<script type = "text/javascript" src = "https://ajax.cdnjs.com/ajax/libs/backbone.js/0.3.3/backbone-min.js"></script>-->
+<!--<script type="text/javascript" src="{{ url_for('static', filename='js/backbone.min.js') }}"></script>-->
+
+<!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.6.3/i18n/jquery-ui-timepicker-addon-i18n.js"></script>-->
+
+
+{% endblock head %}
+
+{% block body %}
+<!--<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-ui-timepicker-addon.js') }}"></script>-->
+
+
+<div class="offer-container">
+    <form method="POST" id="offer-form" enctype="multipart/form-data" action="{{ url_for('non-prom-broadcast.index') }}">
+        {{ form.csrf_token }}
+        <div id="message-content-outer-container" class="message-content-outer-container">
+            {{ form.data.label }} {{ form.data(size=20,class_="message-content-hidden-container") }} 
+            {{ form.broadcastType(size=20,class_="broadcast-type-hidden-container") }}
+            <div id="message-content-container" class="message-content-container">
+                <div id="sidebar-container" class="sidebar-container">
+                    <div id="sidebar-text-holder" class="sidebar-text-holder sidebar-common sidebar-elem-1">Text</div>
+                    <div id="sidebar-media-holder" class="sidebar-media-holder sidebar-common sidebar-elem-2">Media</div>
+                    <div id="sidebar-card-holder" class="sidebar-card-holder sidebar-common sidebar-elem-3">Card</div>
+                    <div id="sidebar-button-holder" class="sidebar-button-holder sidebar-common sidebar-elem-4">Button</div>
+                    <div id="sidebar-quick-reply-holder" class="sidebar-quick-reply-holder sidebar-common sidebar-elem-5">Quick Reply</div>
+                </div>
+                <div id="broadcast-builder-container" class="broadcast-builder-container">
+                    <div id="broadcast-builder-top-container" class="broadcast-builder-top-container">
+                        <div id="broadcast-builder-content-holder" class="broadcast-builder-content-holder">
+                            <div id="text-content-holder" class="text-content-holder content-holder-element content-hide"></div>
+                            <div id="media-content-holder" class="media-content-holder content-holder-element content-hide">
+                                {{ form.mediaImage.label }} {{ form.mediaImage(class_="media-image") }}
+                            </div>
+                            <div id="card-content-holder" class="card-content-holder content-holder-element content-hide">
+                                {{ form.cardImage.label }} {{ form.cardImage(class_="card-image") }}
+                                <div id="card-text-holder" class="card-text-holder"></div>
+                            </div>
+                        </div>
+                        <div id="broadcast-builder-buttons-holder" class="broadcast-builder-buttons-holder"></div>
+                    </div>
+                    <div id="broadcast-builder-bottom-container" class="broadcast-builder-bottom-container"></div>
+                </div>
+            </div>
+        </div>        
+        <div id="message-user-outer-container" class="message-user-outer-container">
+            {{ form.messageUsers.label }} {{ form.messageUsers(size=20) }}
+            <div id="message-user-container" class="message-user-container">               
+            </div>
+        </div>
+        <div id="message-timing-outer-container" class="message-timing-outer-container">
+            <!--{{ form.messageTiming.label(class_="label-radio-control") }} {{ form.messageTiming(size=20) }} -->
+            {{ form.messageTiming.label }}
+            {% for subfield in form.messageTiming %}
+            <tr>
+                <td>{{ subfield }}</td>
+                <td>{{ subfield.label(class_="label-radio-control") }}</td>
+            </tr>
+            {% endfor %}
+            <div id="message-timing-date-time-widget-container" class="message-timing-date-time-widget-container">
+                <!--<input type="text" name="messageTimingDateTimeWidget" id="messageTimingDateTimeWidget" class="message-timing-date-time-widget" value="">         -->
+                {{ form.messageTimingDateTimeWidget(size=20, class_="message-timing-date-time-widget") }}
+            </div>
+        </div>
+        <div class="offer-button-container">         
+            <input type="submit" value="Broadcast" id="offer-submit" class="btn btn-primary">
+            <input type="button" id="redeem-another" value="Reset" class="btn btn-danger">
+        </div>
+    </form>
+    {% for message in get_flashed_messages() %}
+        <div class="flash">{{ message }}</div>
+    {% endfor %}
+</div>
+
+{% block tail_js %}
+
+{% endblock tail_js %}
+<!--<script type="text/javascript" src="{{ url_for('static', filename='js/non-prom-broadcast.js') }}"></script>-->
+<script data-main="../../static/js/common" src="../../static/js/require.js"></script>
+<script>
+require(['common'], function() {
+    require(['../../../../static/js/main']);
+});
+</script>
+{% endblock body %}

@@ -38,6 +38,31 @@ class DateUtils(object):
 	def convertDateStrToDateTimeStr(dateTime1):
 		return str(dateTime1) + " 00:00:00"
 
+	'''
+	Adds second component to the date time string
+	'''
+	@staticmethod
+	def addSecStrToDateTimeStr(dateTime1):
+		return str(dateTime1) + ":00"
+
+
+	'''
+	Converts MDY date format to YMD format
+	'''
+	@staticmethod
+	def convertMDYtoYMD(dateTime1):
+		dateTimeStr = dateTime1.split(" ")
+		dateStr = dateTimeStr[0].split("-")
+		return (dateStr[2] + "-" + dateStr[0] + "-" + dateStr[1] + " " + dateTimeStr[1])
+
+
+	'''
+	Replaces / in date string with -
+	'''
+	@staticmethod
+	def replaceSlashWithDash(dateTime1):
+		return dateTime1.replace("/", "-")
+
 
 	'''
 	Adds time component to the date string
@@ -57,4 +82,5 @@ class DateUtils(object):
 			return True
 		else:
 			return False
-		
+
+
