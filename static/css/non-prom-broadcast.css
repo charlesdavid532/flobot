@@ -199,3 +199,39 @@ div .message-timing-date-time-widget-container.hidden-container {
 .card-subtitle {
 	border: 1px solid blue;
 }
+
+.btn-context-menu-container {
+	width: 250px;
+    height: 175px;
+    border: 1px solid gray;
+    position: relative;
+    top: -180px;
+    left: 50px;
+    background-color: beige;
+}
+
+.btn-context-menu-container.hidden {
+	display: none;
+}
+
+.btn-type-label {	
+    margin-left: -73px;
+    margin-top: 5px;
+    float: left;
+}
+
+.btn-type-dropdown {
+	margin-left: 10px;
+}
+
+.btn-type-main-content-container {
+	margin-left: 10px;
+}
+
+.btn-type-postback.hidden {
+	display: none;
+}
+
+.btn-type-url.hidden {
+	display: none;
+}

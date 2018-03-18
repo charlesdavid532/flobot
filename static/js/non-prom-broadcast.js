@@ -30,10 +30,17 @@ var NonPromBroadcastView = Backbone.View.extend({
 
     render: function render() {
         console.log('Inside render');
+        var self = this;
         $('#messageTimingDateTimeWidget').datetimepicker();
         
         $("#messageTiming-0").attr('checked', true);
         $(".message-timing-date-time-widget-container").addClass('hidden-container');
+
+        // Binding the body click event
+        this.$el.on('click', function (ev) {
+            console.log('Body click event detected');
+            self.onBodyClicked(ev);
+        });
 
         this.sideBarModel = new SideBarData();
         this.sideBarView = new SideBarView({ model: this.sideBarModel });
@@ -43,6 +50,14 @@ var NonPromBroadcastView = Backbone.View.extend({
         this.listenTo(this.sideBarView, 'BUTTON_SIDEBAR_CLICKED', this.onButtonClicked);
         this.listenTo(this.sideBarView, 'QUICK_REPLY_SIDEBAR_CLICKED', this.onQuickReplyClicked);
         
+    },
+
+    onBodyClicked: function onBodyClicked(ev) {
+        this.hideAllBtnContextMenus();
+    },
+
+    hideAllBtnContextMenus: function hideAllBtnContextMenus() {
+        this.$('.btn-context-menu-container').addClass('hidden');
     },
 
     onMessageTimingBtnClicked: function(ev) {
@@ -270,10 +285,54 @@ var NonPromBroadcastView = Backbone.View.extend({
         btnContainer.find('.btn-close-button').on("click","", btnId, function(ev) {
             self.onBtnCloseBtnClicked(ev.data);
         });
+        // Binding the context menu event on the button
+        btnContainer.on("contextmenu",function(){             
+            return false;
+        }); 
+        // Binding the right click event on the button
+        btnContainer.mousedown(function(ev) {
+            if(ev.which == 3) //1: left, 2: middle, 3: right
+            {
+                console.log('Right click on button detected');
+                self.onBtnRightClicked(ev, btnId);
+            }
+        });
     },
 
     createBtnHtml: function createBtnHtml(btnId) {
         return "<div id='" + btnId + "' class='btn-elem'><div class='btn-text' contentEditable='true'></div><div class='btn-close-button'>x</div></div>"
+    },
+
+    
+    /**
+    TODO: Replace this with handlebars
+    */
+    createBtnContextHtml: function createBtnContextHtml(btnId) {
+        return "<div id='" + btnId + "-context-menu-container' class='btn-context-menu-container'>\
+                    <div class='btn-type-container'>\
+                        <div class='btn-type-label'>Type:</div>\
+                        <select name='btn-type' class='btn-type-dropdown'>\
+                            <option value='url'>url</option>\
+                            <option value='postback'>postback</option>\
+                        </select>\
+                    </div>\
+                    <div class='btn-type-main-content-container'>\
+                        <div class='btn-type-main-content'>\
+                            <div class='btn-type-url'>\
+                                <div class='btn-type-url-label'>URL:</div>\
+                                <input class='btn-type-url-text' name='urlText' size='20' type='text'>\
+                            </div>\
+                            <div class='btn-type-postback hidden'>\
+                                <div class='btn-type-postback-label'>POSTBACK:</div>\
+                                <input class='btn-type-postback-text' name='postbackText' size='20' type='text'>\
+                            </div>\
+                        </div>\
+                        <div class='btn-type-button-container'>\
+                            <input type='button' class='btn-type-ok btn' value='OK'>\
+                            <input type='button' class='btn-type-cancel btn' value='CANCEL'>\
+                        </div>\
+                    </div>\
+                </div>"
     },
 
     onBtnCloseBtnClicked: function onBtnCloseBtnClicked(data) {
@@ -290,6 +349,66 @@ var NonPromBroadcastView = Backbone.View.extend({
         }
     },
 
+    /**
+    1. Check if this button has a context menu.
+        a. If yes then unhide it
+        b. If no then create it
+    */
+    onBtnRightClicked: function onBtnRightClicked(ev, btnId) {
+        console.log("Inside onBtnRightClicked of main view");
+        this.hideAllBtnContextMenus();
+        var self = this,
+            btnContainer = this.$el.find('#' + btnId);
+
+        // Adding the check to see if there is such a context menu already
+        if (btnContainer.find('.btn-context-menu-container').length !== 0) {
+            btnContainer.find('.btn-context-menu-container').removeClass('hidden');
+        } else {
+            btnContainer.append(this.createBtnContextHtml(btnId));
+            this.bindBtnEvents(btnId);
+        }
+        ev.preventDefault();
+        ev.stopImmediatePropagation();
+        ev.stopPropagation();
+        return false;
+    },
+
+    bindBtnEvents: function bindBtnEvents(btnId) {
+        this.bindBtnContainerEvent(btnId);
+        this.btnContextBindEvents(btnId);
+    },
+
+    bindBtnContainerEvent: function bindBtnContainerEvent(btnId) {
+        var self = this,
+            btnContainer = this.$el.find('#' + btnId);
+
+        btnContainer.on("click", function(ev) {
+            console.log('Button container clicked');
+            ev.preventDefault();
+            ev.stopImmediatePropagation();
+            ev.stopPropagation();
+        });
+    },
+
+    btnContextBindEvents: function btnContextBindEvents(btnId) {
+        var self = this,
+            btnContainer = this.$el.find('#' + btnId),
+            dropDown = btnContainer.find('.btn-type-dropdown');
+
+        // Showing url or postback based on option selected
+        $(dropDown).change(function() {
+            optSelected =  $('option:selected', this).text();
+            if (optSelected == "url") {
+                // Hide postback and show url
+                btnContainer.find('.btn-type-postback').addClass('hidden');
+                btnContainer.find('.btn-type-url').removeClass('hidden');
+            } else if (optSelected == "postback") {
+                // Hide url and show postback
+                btnContainer.find('.btn-type-url').addClass('hidden');
+                btnContainer.find('.btn-type-postback').removeClass('hidden');
+            }
+        });
+    },
 
     /**
 
