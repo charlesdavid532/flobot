@@ -327,10 +327,6 @@ var NonPromBroadcastView = Backbone.View.extend({
                                 <input class='btn-type-postback-text' name='postbackText' size='20' type='text'>\
                             </div>\
                         </div>\
-                        <div class='btn-type-button-container'>\
-                            <input type='button' class='btn-type-ok btn' value='OK'>\
-                            <input type='button' class='btn-type-cancel btn' value='CANCEL'>\
-                        </div>\
                     </div>\
                 </div>"
     },
@@ -969,12 +965,24 @@ var ButtonView = Backbone.View.extend({
     },
 
     getJSON: function getJSON() {
-        var btnJSON = {};
-        btnJSON["type"] = "web_url";
-        var title = this.$el.find('.btn-text').html();
-        console.log("The title is::" + title);
-        btnJSON["title"] = title;
-        btnJSON["url"] = "https://www.google.com"
+        var optSelected =  this.$el.find('.btn-type-dropdown').val(),
+            btnJSON = {};
+
+        if (optSelected == "url") {
+            btnJSON["type"] = "web_url";
+            var title = this.$el.find('.btn-text').html();
+            console.log("The title is::" + title);
+            btnJSON["title"] = title;
+            //btnJSON["url"] = "https://www.google.com"
+            btnJSON["url"] = this.$el.find('.btn-type-url-text').val();
+        } else if (optSelected == "postback") {
+            btnJSON["type"] = "postback";
+            var title = this.$el.find('.btn-text').html();
+            console.log("The title is::" + title);
+            btnJSON["title"] = title;
+            btnJSON["payload"] = this.$el.find('.btn-type-postback-text').val();
+        }
+
         return btnJSON;
     }
 
